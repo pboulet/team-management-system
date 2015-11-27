@@ -1,46 +1,46 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
-    <f:view contentType="text/html">
-        <h:head>
-            <f:facet name="first">
-                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>Team Management System - Home</title>
-            </f:facet>
-        </h:head>
+    <body>
 
-        <h:body>
+        <ui:composition template="./mainLayout.xhtml">
 
-            <p:layout fullPage="true">
+            <ui:define name="top">
+                <h2>Team Management System</h2>
+                <p:commandButton style="float:right; margin-top: -40px; margin-right:10px" type="button" value="Logout"/>
+                    
 
-                <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
-                    Header
-                </p:layoutUnit>
+            </ui:define>
 
-                <p:layoutUnit position="est" size="175" header="Left" collapsible="true">
-                    <p:menu>
-                        <p:submenu label="Resources">
-                            <p:menuitem value="Demo" url="http://www.primefaces.org/showcase-labs/ui/home.jsf" />
-                            <p:menuitem value="Documentation" url="http://www.primefaces.org/documentation.html" />
-                            <p:menuitem value="Forum" url="http://forum.primefaces.org/" />
-                            <p:menuitem value="Themes" url="http://www.primefaces.org/themes.html" />
+            <ui:define name="content">
+                <p:tabView>
+                    <p:tab title="Student Courses">
+                        <p:layout >
+                            <p:layoutUnit position="east" size="175" header="Student Operational Menu" collapsible="true">
+                                <p:menu>
+                                    <p:menuitem value="ViewTeams" url="http://www.primefaces.org/showcase-labs/ui/home.jsf" />
+                                    <p:menuitem value="Set Up Parameters" url="http://www.primefaces.org/documentation.html" />
+                                </p:menu>
+                            </p:layoutUnit>
+                            <p:layoutUnit position="center">
+                                <h:outputText value="The story begins as Don Vito Corleone..." />
+                            </p:layoutUnit>
+                        </p:layout>
+                    </p:tab>
+                    <p:tab title="Instructor Courses">
+                        <h:panelGrid columns="2" cellpadding="10">
+                            <h:outputText value="Francis Ford Coppola's legendary..." />
+                        </h:panelGrid>
+                    </p:tab>
+                </p:tabView>
+            </ui:define>
 
-                        </p:submenu>
+        </ui:composition>
 
-                    </p:menu>
-                </p:layoutUnit>
-
-                <p:layoutUnit position="center">
-                    Content
-                </p:layoutUnit>
-
-            </p:layout>
-
-        </h:body>
-
-    </f:view>
+    </body>
 </html>
