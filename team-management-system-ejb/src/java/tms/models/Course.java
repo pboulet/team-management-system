@@ -39,7 +39,7 @@ public class Course implements Serializable {
     @Column(name="TEAM_CREATION_ALLOWED")
     private Boolean teamCreationAllowed;
 
-    @OneToMany(mappedBy="has")
+    @OneToMany(mappedBy="course")
     private List<Team> teams;
 
     @OneToOne(fetch=FetchType.LAZY)

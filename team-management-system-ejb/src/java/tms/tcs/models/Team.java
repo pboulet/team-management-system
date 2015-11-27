@@ -43,7 +43,7 @@ public class Team implements Serializable {
     @JoinColumn(name="COURSE_ID")
     private Course course;
 
-    @OneToMany(mappedBy="has")
+    @OneToMany(mappedBy="team")
     private List<JoinRequest> joinRequests;
 
     public List<JoinRequest> getJoinRequests() {
