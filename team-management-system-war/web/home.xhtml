@@ -24,7 +24,9 @@
                             <p:layoutUnit position="east" size="175" header="Student Operational Menu" collapsible="true">
                                 <p:menu>
                                     <p:menuitem value="ViewTeams" url="http://www.primefaces.org/showcase-labs/ui/home.jsf" />
-                                    <p:menuitem value="Set Up Parameters" outcome="setupParameters" />
+                                    <p:menuitem value="Set Up Parameters" outcome="setupParameters" >
+                                        <f:param name="courseid" value="12" />
+                                    </p:menuitem>
                                 </p:menu>
                             </p:layoutUnit>
                             <p:layoutUnit position="center">

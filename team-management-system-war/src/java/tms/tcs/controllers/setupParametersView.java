@@ -5,16 +5,16 @@
  */
 package tms.tcs.controllers;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import javax.faces.event.ActionEvent;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import tms.boundaries.CourseFacade;
+import tms.models.Course;
 import tms.tcs.boundaries.TeamParametersFacade;
 import tms.tcs.models.TeamParameters;
 
@@ -27,20 +27,50 @@ import tms.tcs.models.TeamParameters;
 public class setupParametersView {
 
     @EJB
+    private CourseFacade courseFacade;
+    @EJB
     private TeamParametersFacade teamParametersFacade;
 
     private TeamParameters teamParameters;
-    private String courseCode;
+    private Course course;
+    private String courseSection;
     private Integer minStudent;
     private Integer maxStudent;
     private Date deadline;
+    private Long courseid;
 
-    public String getCourseCode() {
-        return courseCode;
+    /**
+     * Creates a new instance of setupParametersView
+     */
+    public setupParametersView() {
+        teamParameters = new TeamParameters();
     }
 
-    public void setCourseCode(String courseCode) {
-        this.courseCode = courseCode;
+    public void init() {
+        if (courseid == null) {
+            return;
+        }
+        course = courseFacade.find(courseid);
+        if (course == null) {
+            return;
+        }
+        courseSection = course.getCourseSection();
+    }
+
+    public Long getCourseid() {
+        return courseid;
+    }
+
+    public void setCourseid(Long courseid) {
+        this.courseid = courseid;
+    }
+
+    public String getCourseSection() {
+        return courseSection;
+    }
+
+    public void setCourseSection(String courseSection) {
+        this.courseSection = courseSection;
     }
 
     public Integer getMinStudent() {
@@ -67,18 +97,21 @@ public class setupParametersView {
         this.deadline = deadline;
     }
 
-    /**
-     * Creates a new instance of setupParametersView
-     */
-    public setupParametersView() {
-        teamParameters = new TeamParameters();
-    }
-
     public void submit(ActionEvent actionEvent) {
+        if (course == null) {
+            course = courseFacade.find(courseid);
+            if (course == null) {
+                return;
+            }
+            courseSection = course.getCourseSection();
+        }
         teamParameters.setCreationDeadline(new Timestamp(deadline.getTime()));
         teamParameters.setMaxNumStudents(maxStudent);
         teamParameters.setMinNumStudents(minStudent);
+        course.setTeamCreationAllowed(true);
+        course.setTeamParams(teamParameters);
         teamParametersFacade.create(teamParameters);
+        courseFacade.edit(course);
     }
- 
+
 }

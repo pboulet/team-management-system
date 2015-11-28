@@ -5,7 +5,10 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-
+    <f:metadata>
+        <f:viewParam name="courseid" value="#{setupParametersView.courseid}" />
+        <f:event type="preRenderView" listener="#{setupParametersView.init}" />
+    </f:metadata>
     <body>
 
         <ui:composition template="./mainLayout.xhtml">
@@ -16,8 +19,8 @@
                 <h:form>
                     <h:panelGrid columns="3">
                         <p:outputLabel value="Course code:" />
-                        <p:inputText id="courseCode" value="#{setupParametersView.courseCode}"/>                        
-                        <p:message for="courseCode"/>
+                        <p:inputText value="#{setupParametersView.courseSection}" />                        
+                        <h:panelGroup />
                         <p:outputLabel value="Minimum number of students per teams:" />
                         <p:inputText 
                             id="minStudent" 
@@ -37,7 +40,9 @@
                         <p:outputLabel value="Deadline for teams creation:" />
                         <p:calendar id="deadline" value="#{setupParametersView.deadline}" required="true" requiredMessage="Please enter a deadline for the team creation"/>                        
                         <p:message for="deadline"/>
-                        <p:commandButton value="submit" actionListener="#{setupParametersView.submit}" action="home" update="@(form)"/>
+                        <p:commandButton value="submit" actionListener="#{setupParametersView.submit}" action="home" >
+                            <f:ajax execute="@form" render="@form" />
+                        </p:commandButton>
                     </h:panelGrid>
                 </h:form>
             </ui:define>
