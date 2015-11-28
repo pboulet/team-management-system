@@ -3,23 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-ejb/src/java/tms/boundaries/UserFacade.java</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-ejb/src/java/tms/models/User.java</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-ejb/src/java/tms/tcs/boundaries/TeamFacade.java</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-ejb/src/java/tms/boundaries/CourseFacade.java</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-ejb/src/java/tms/models/Notification.java</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-ejb/src/java/tms/boundaries/InstructorFacade.java</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-ejb/src/java/tms/boundaries/NotificationFacade.java</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-ejb/src/java/tms/boundaries/AbstractFacade.java</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-ejb/src/java/tms/tcs/models/Team.java</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-ejb/src/java/tms/tcs/boundaries/TeamParametersFacade.java</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-ejb/src/java/tms/boundaries/StudentFacade.java</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-ejb/src/java/tms/tcs/models/TeamParameters.java</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-ejb/src/java/tms/tcs/boundaries/JoinRequestFacade.java</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-ejb/src/java/tms/tcs/models/JoinRequest.java</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-ejb/src/java/tms/models/Student.java</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-ejb/src/java/tms/models/Instructor.java</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-ejb/src/java/tms/models/Course.java</file>
+            <file>file:/C:/Users/maxime/Documents/GitHub/team-management-system/team-management-system-ejb/src/java/tms/tcs/boundaries/TeamParametersFacade.java</file>
         </group>
     </open-files>
 </project-private>

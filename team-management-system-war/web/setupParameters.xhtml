@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./mainLayout.xhtml">
+
+            <ui:define name="content">
+                <h1>setup parameters</h1>
+
+                <h:form>
+                    <h:panelGrid columns="3">
+                        <p:outputLabel value="Course code:" />
+                        <p:inputText id="courseCode" value="#{setupParametersView.courseCode}"/>                        
+                        <p:message for="courseCode"/>
+                        <p:outputLabel value="Minimum number of students per teams:" />
+                        <p:inputText 
+                            id="minStudent" 
+                            value="#{setupParametersView.minStudent}"
+                            required="true"
+                            requiredMessage="Please enter a minimum number of students for this team"
+                            />
+                        <p:message for="minStudent"/>
+                        <p:outputLabel value="Maximum number of students per teams:" />
+                        <p:inputText 
+                            id="maxStudent" 
+                            value="#{setupParametersView.maxStudent}"
+                            required="true"
+                            requiredMessage="Please enter a maximum number of students for this team"
+                            />
+                        <p:message for="maxStudent"/>
+                        <p:outputLabel value="Deadline for teams creation:" />
+                        <p:calendar id="deadline" value="#{setupParametersView.deadline}" required="true" requiredMessage="Please enter a deadline for the team creation"/>                        
+                        <p:message for="deadline"/>
+                        <p:commandButton value="submit" actionListener="#{setupParametersView.submit}" action="home" update="@(form)"/>
+                    </h:panelGrid>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
