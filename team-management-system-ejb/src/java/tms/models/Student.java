@@ -6,28 +6,57 @@
 package tms.models;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import tms.tcs.models.Team;
 
 /**
  *
  * @author User
  */
 @Entity
-@Table(name="PNSM_Students")
+@Table(name = "PNSM_Students")
 public class Student implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name="STUDENT_ID")
+    @Column(name = "STUDENT_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    @Column(name="PROGRAM_OF_STUDY")
+
+    @Column(name = "PROGRAM_OF_STUDY")
     private String programOfStudy;
+
+    @OneToMany(mappedBy="liaison")
+    private List<Team> liaisonOf;
+    
+    @ManyToMany
+    @JoinColumn(name="TEAM_ID")
+    private List<Team> teamList;
+
+    public List<Team> getMemberOf() {
+        return teamList;
+    }
+
+    public void setMemberOf(List<Team> memberOf) {
+        this.teamList = memberOf;
+    }
+    
+    public List<Team> getLiaisonOf() {
+        return liaisonOf;
+    }
+
+    public void setLiaisonOf(List<Team> liaisonOf) {
+        this.liaisonOf = liaisonOf;
+    }
 
     public String getProgramOfStudy() {
         return programOfStudy;
@@ -69,5 +98,5 @@ public class Student implements Serializable {
     public String toString() {
         return "models.Student[ id=" + id + " ]";
     }
-    
+
 }

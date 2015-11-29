@@ -16,9 +16,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import tms.models.Student;
 
 /**
  *
@@ -45,6 +47,28 @@ public class Team implements Serializable {
 
     @OneToMany(mappedBy="team")
     private List<JoinRequest> joinRequests;
+  
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="STUDENT_ID" )
+    private Student liaison;
+    
+    @ManyToMany(mappedBy ="teamList")
+    private List<Student> studentList;
+
+    public List<Student> getStudentList() {
+        return studentList;
+    }
+
+    public void setStudentList(List<Student> studentList) {
+        this.studentList = studentList;
+    }
+    
+    public Student getLiaison() {
+        return liaison;    
+    }
+    public void setLiaison(Student liaison) {
+        this.liaison = liaison;
+    }
 
     public List<JoinRequest> getJoinRequests() {
         return joinRequests;
