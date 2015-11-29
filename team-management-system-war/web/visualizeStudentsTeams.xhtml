@@ -15,30 +15,24 @@
         <ui:composition template="./mainLayout.xhtml">
             <ui:define name="content">
                 <h1>Visualize Student Teams For Course #{visualizeStudentsTeamsController.course.courseSection}</h1>
-                <p:panel header="Colombie FTW" >
-                    <f:facet name="footer" >
-                        <span>Minimum number of student in the team: 2</span><br/>
-                        <span>Maximum number of student in the team: 4</span><br/>
-                        <span>The team is valid but not complete.</span>                    
-                    </f:facet>
-                    <h:panelGrid columns="2">
-                        <li style="font-weight: bold;">Team Liaison: Student Name</li>
-                        <li>Student2</li>
-                        <li>Student3</li>
+                <p:panel>
+                    <h:panelGrid columns="1">
+                        <p:outputLabel value="Minimum number of student in the team: #{visualizeStudentsTeamsController.course.teamParams.minNumStudents}"/>                    
+                        <p:outputLabel value="Maximimum number of student in the team: #{visualizeStudentsTeamsController.course.teamParams.maxNumStudents}"/>
                     </h:panelGrid>
                 </p:panel>
 
                 <ui:repeat var="team" value="#{visualizeStudentsTeamsController.course.teams}">
-                    <p:panel header="#{team.name}">
-                        <f:facet name="footer" >
-                            <span>Minimum number of student in the team: #{team.course.teamParams.minNumStudents}</span><br/>
-                            <span>Maximum number of student in the team: #{team.course.teamParams.maxNumStudents}</span><br/>
-                            <span>#{visualizeStudentsTeamsController.validate(team)}</span>                    
-                        </f:facet>
-                        <h:panelGrid columns="2">
-                            <li style="font-weight: bold;">Team Liaison: Student Name</li>
-                            <li>Student2</li>
-                            <li>Student3</li>
+                    <p:panel header="#{team.name}" toggleable="true">
+                        <h:panelGrid columns="1">
+                            <p:outputLabel value="Team Liaison: #{team.liaison.programOfStudy}" style="font-weight: bold"/> 
+                            <h:panelGroup/>
+                            <p:outputLabel value="Other team members:" rendered="#{team.studentList.size() > 1}"/>
+                            <ui:repeat var="student" value="#{team.studentList}">
+                                <h:panelGrid columns="1">
+                                    <p:outputLabel value="#{visualizeStudentsTeamsController.getStudentName(student, team)}"/> 
+                                </h:panelGrid>
+                            </ui:repeat>
                         </h:panelGrid>
                     </p:panel>                   
                 </ui:repeat>

@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import tms.boundaries.CourseFacade;
 import tms.models.Course;
@@ -21,7 +22,7 @@ import tms.tcs.models.TeamParameters;
  * @author maxime
  */
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class setupParametersController {
 
     @EJB
@@ -37,11 +38,8 @@ public class setupParametersController {
     private Date deadline;
     private Long courseid;
 
-    /**
-     * Creates a new instance of setupParametersView
-     */
+  
     public setupParametersController() {
-        teamParameters = new TeamParameters();
     }
 
     public void init() {
@@ -95,14 +93,8 @@ public class setupParametersController {
         this.deadline = deadline;
     }
 
-    public void submit(ActionEvent actionEvent) {
-        if (course == null) {
-            course = courseFacade.find(courseid);
-            if (course == null) {
-                return;
-            }
-            courseSection = course.getCourseSection();
-        }
+    public void submit(ActionEvent actionEvent) {  
+        teamParameters = new TeamParameters();
         teamParameters.setCreationDeadline(new Timestamp(deadline.getTime()));
         teamParameters.setMaxNumStudents(maxStudent);
         teamParameters.setMinNumStudents(minStudent);
