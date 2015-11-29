@@ -6,8 +6,8 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <f:metadata>
-        <f:viewParam name="courseid" value="#{setupParametersView.courseid}" />
-        <f:event type="preRenderView" listener="#{setupParametersView.init}" />
+        <f:viewParam name="courseid" value="#{setupParametersController.courseid}" />
+        <f:event type="preRenderView" listener="#{setupParametersController.init}" />
     </f:metadata>
     <body>
 
@@ -19,12 +19,12 @@
                 <h:form>
                     <h:panelGrid columns="3">
                         <p:outputLabel value="Course code:" />
-                        <p:inputText value="#{setupParametersView.courseSection}" />                        
+                        <p:inputText value="#{setupParametersController.courseSection}" />                        
                         <h:panelGroup />
                         <p:outputLabel value="Minimum number of students per teams:" />
                         <p:inputText 
                             id="minStudent" 
-                            value="#{setupParametersView.minStudent}"
+                            value="#{setupParametersController.minStudent}"
                             required="true"
                             requiredMessage="Please enter a minimum number of students for this team"
                             />
@@ -32,15 +32,15 @@
                         <p:outputLabel value="Maximum number of students per teams:" />
                         <p:inputText 
                             id="maxStudent" 
-                            value="#{setupParametersView.maxStudent}"
+                            value="#{setupParametersController.maxStudent}"
                             required="true"
                             requiredMessage="Please enter a maximum number of students for this team"
                             />
                         <p:message for="maxStudent"/>
                         <p:outputLabel value="Deadline for teams creation:" />
-                        <p:calendar id="deadline" value="#{setupParametersView.deadline}" required="true" requiredMessage="Please enter a deadline for the team creation"/>                        
+                        <p:calendar id="deadline" value="#{setupParametersController.deadline}" required="true" requiredMessage="Please enter a deadline for the team creation"/>                        
                         <p:message for="deadline"/>
-                        <p:commandButton value="submit" actionListener="#{setupParametersView.submit}" action="home" >
+                        <p:commandButton value="submit" actionListener="#{setupParametersController.submit}" action="home" >
                             <f:ajax execute="@form" render="@form" />
                         </p:commandButton>
                     </h:panelGrid>

@@ -6,13 +6,11 @@
 package tms.tcs.controllers;
 
 import java.sql.Timestamp;
-import javax.faces.event.ActionEvent;
 import java.util.Date;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import tms.boundaries.CourseFacade;
 import tms.models.Course;
 import tms.tcs.boundaries.TeamParametersFacade;
@@ -24,7 +22,7 @@ import tms.tcs.models.TeamParameters;
  */
 @ManagedBean
 @RequestScoped
-public class setupParametersView {
+public class setupParametersController {
 
     @EJB
     private CourseFacade courseFacade;
@@ -42,7 +40,7 @@ public class setupParametersView {
     /**
      * Creates a new instance of setupParametersView
      */
-    public setupParametersView() {
+    public setupParametersController() {
         teamParameters = new TeamParameters();
     }
 
@@ -112,6 +110,5 @@ public class setupParametersView {
         course.setTeamParams(teamParameters);
         teamParametersFacade.create(teamParameters);
         courseFacade.edit(course);
-    }
-
+    }    
 }
