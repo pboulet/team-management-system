@@ -29,8 +29,7 @@ public class Student implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Column(name = "STUDENT_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String id;
 
     @Column(name = "PROGRAM_OF_STUDY")
     private String programOfStudy;
@@ -66,11 +65,11 @@ public class Student implements Serializable {
         this.programOfStudy = programOfStudy;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

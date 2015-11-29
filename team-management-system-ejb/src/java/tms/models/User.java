@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -29,9 +30,13 @@ public class User implements Serializable {
     @Column(name = "USER_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @Column(name = "USERNAME")
-    private String username;
+    
+    @Lob
+    @Column(name = "PASSWORD")
+    private byte[] password; // salted + hashed password
+    @Lob
+    @Column(name = "SALT")
+    private byte[] salt; // the salt used for this account
 
     @Column(name = "EMAIL")
     private String email;
@@ -73,14 +78,6 @@ public class User implements Serializable {
     public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
     }
-    
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getEmail() {
         return email;
@@ -104,6 +101,22 @@ public class User implements Serializable {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+    
+    public byte[] getPassword() {
+        return password;
+    }
+
+    public void setPassword(byte[] password) {
+        this.password = password;
+    }
+    
+    public byte[] getSalt() {
+        return salt;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
     }
 
     @Override

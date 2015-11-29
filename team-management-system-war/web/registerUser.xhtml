@@ -1,0 +1,80 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>User Registration</title>
+    </h:head>
+    <h:body>
+        <h:form id="form1">
+	<h:panelGrid columns="3">
+		<p:outputLabel value="Email:"/>
+		<p:inputText id="email"
+					 value="#{registerController.email}"
+					 validatorMessage="Invalid Email format"
+					 label="EmailId" required="true"
+					 requiredMessage="An Email is required"
+					 title="Enter your email (e.g. xxx@xxx.xxx)">
+			<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+			<p:ajax event="keyup" update="emailMsg"/>
+		</p:inputText>
+		<p:message id="emailMsg" for="email"/>
+		<p:outputLabel value="Password:"/>
+		<p:password id="password"
+					value="#{registerController.password}"
+					feedback="true"
+					promptLabel="Enter Password"
+					weakLabel="Weak Password"
+					goodLabel="Good Password"
+					strongLabel="Strong Password"
+					match="confPwd" 
+					required="true"
+					requiredMessage="A Password is required"/>
+		<p:message for="password"/>
+		<p:outputLabel for="confPwd" value="Confirm Password"/>
+		<p:password id="confPwd"
+					value="#{registerController.password}"
+					required="true"
+					title="Repeat password as above"/>
+		<p:message for="confPwd"/>
+		<p:outputLabel value="FirstName:"/>
+		<p:inputText id="firstName"
+					 value="#{registerController.firstName}"
+					 required="true" label="FirstName"
+					 requiredMessage="A FirstName is required">
+			<p:ajax event="keyup" update="firstNameMsg"/>
+		</p:inputText>
+		<p:message  id="firstNameMsg" for="firstName"/>
+		<p:outputLabel value="LastName:"/>
+		<p:inputText id="lastName" value="#{registerController.lastName}"/>
+		<p:message for="lastName"/>
+		</h:panelGrid>
+		<p:selectBooleanCheckbox id="studentcheckbox" value="#{registerController.student}">
+				<p:ajax update="studentInfo" process="@this"/>
+		</p:selectBooleanCheckbox>
+            <h:panelGroup  id ="studentInfo">    
+                <h:panelGrid columns="3" rendered="#{registerController.student}">
+                        <p:outputLabel value="Student ID:"/>
+                        <p:inputText id="studentId" value="#{registerController.studentId}" required="true" requiredMessage="A student identification number is required"/>
+                        <p:message for="studentId"/>
+                        <p:outputLabel value="Program of Study:"/>
+                        <p:inputText id="studentProgram" value="#{registerController.programOfStudy}"/>
+                </h:panelGrid>
+            </h:panelGroup>
+            <p:selectBooleanCheckbox id="instructorcheckbox" value="#{registerController.instructor}">
+				<p:ajax update="studentInfo" process="@this"/>
+            </p:selectBooleanCheckbox>
+                <h:panelGroup id ="studentInfo"> 
+                <h:panelGrid id="instructorInfo" columns="3" rendered="#{registerController.instructor}">
+                        <p:outputLabel value="Instructor ID:"/>
+                        <p:inputText id="instructorId" value="#{registerController.instructorId}" required="true" requiredMessage="An instrutor identification number is required"/>
+                        <p:message for="instructorId"/>
+                </h:panelGrid>
+                </h:panelGroup>
+        </h:form>
+
+    </h:body>
+</html>
