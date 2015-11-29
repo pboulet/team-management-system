@@ -13,7 +13,7 @@
             <ui:define name="top">
                 <h2>Team Management System</h2>
                 <p:commandButton style="float:right; margin-top: -40px; margin-right:10px" type="button" value="Logout"/>
-                    
+
 
             </ui:define>
 
@@ -23,7 +23,9 @@
                         <p:layout >
                             <p:layoutUnit position="east" size="175" header="Student Operational Menu" collapsible="true">
                                 <p:menu>
-                                    <p:menuitem value="ViewTeams" url="http://www.primefaces.org/showcase-labs/ui/home.jsf" />
+                                    <p:menuitem value="ViewTeams" outcome="visualizeStudentsTeams">
+                                        <f:param name="courseid" value="12" />
+                                    </p:menuitem>
                                     <p:menuitem value="Set Up Parameters" outcome="setupParameters" >
                                         <f:param name="courseid" value="12" />
                                     </p:menuitem>

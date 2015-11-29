@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <f:metadata>
+        <f:viewParam name="courseid" value="#{visualizeStudentsTeamsController.courseid}" />
+        <f:event type="preRenderView" listener="#{visualizeStudentsTeamsController.init}" />
+    </f:metadata>
+    <body>
+
+        <ui:composition template="./mainLayout.xhtml">
+            <ui:define name="content">
+                <h1>Visualize Student Teams For Course #{visualizeStudentsTeamsController.course.courseSection}</h1>
+                <p:panel header="Colombie FTW" >
+                    <f:facet name="footer" >
+                        <span>Minimum number of student in the team: 2</span><br/>
+                        <span>Maximum number of student in the team: 4</span><br/>
+                        <span>The team is valid but not complete.</span>                    
+                    </f:facet>
+                    <h:panelGrid columns="2">
+                        <li style="font-weight: bold;">Team Liaison: Student Name</li>
+                        <li>Student2</li>
+                        <li>Student3</li>
+                    </h:panelGrid>
+                </p:panel>
+
+                <ui:repeat var="team" value="#{visualizeStudentsTeamsController.course.teams}">
+                    <p:panel header="#{team.name}">
+                        <f:facet name="footer" >
+                            <span>Minimum number of student in the team: #{team.course.teamParams.minNumStudents}</span><br/>
+                            <span>Maximum number of student in the team: #{team.course.teamParams.maxNumStudents}</span><br/>
+                            <span>#{visualizeStudentsTeamsController.validate(team)}</span>                    
+                        </f:facet>
+                        <h:panelGrid columns="2">
+                            <li style="font-weight: bold;">Team Liaison: Student Name</li>
+                            <li>Student2</li>
+                            <li>Student3</li>
+                        </h:panelGrid>
+                    </p:panel>                   
+                </ui:repeat>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
