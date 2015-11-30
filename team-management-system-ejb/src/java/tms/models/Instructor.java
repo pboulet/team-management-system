@@ -8,9 +8,12 @@ package tms.models;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -18,15 +21,26 @@ import javax.persistence.Table;
  * @author User
  */
 @Entity
-@Table(name="PNSM_Instructor")
+@Table(name = "PNSM_Instructor")
 public class Instructor implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name="INSTRUCTOR_ID")
+    @Column(name = "INSTRUCTOR_ID")
     private String id;
+    
+    @OneToOne(optional = false, mappedBy = "instructor")
+    @JoinColumn(name = "INSTRUCTOR_ID")
+    private User user;
 
-    
-    
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public String getId() {
         return id;
     }
@@ -59,5 +73,5 @@ public class Instructor implements Serializable {
     public String toString() {
         return "models.Instructor[ id=" + id + " ]";
     }
-    
+
 }

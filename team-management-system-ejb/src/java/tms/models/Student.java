@@ -9,12 +9,14 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import tms.tcs.models.Team;
 
@@ -31,14 +33,17 @@ public class Student implements Serializable {
     @Column(name = "STUDENT_ID")
     private String id;
 
+    @OneToOne(optional = false, mappedBy = "student")
+    private User user;
+
     @Column(name = "PROGRAM_OF_STUDY")
     private String programOfStudy;
 
-    @OneToMany(mappedBy="liaison")
+    @OneToMany(mappedBy = "liaison")
     private List<Team> liaisonOf;
-    
+
     @ManyToMany
-    @JoinColumn(name="TEAM_ID")
+    @JoinColumn(name = "TEAM_ID")
     private List<Team> teamList;
 
     public List<Team> getMemberOf() {
@@ -48,7 +53,7 @@ public class Student implements Serializable {
     public void setMemberOf(List<Team> memberOf) {
         this.teamList = memberOf;
     }
-    
+
     public List<Team> getLiaisonOf() {
         return liaisonOf;
     }
@@ -72,6 +77,23 @@ public class Student implements Serializable {
     public void setId(String id) {
         this.id = id;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Team> getTeamList() {
+        return teamList;
+    }
+
+    public void setTeamList(List<Team> teamList) {
+        this.teamList = teamList;
+    }
+    
 
     @Override
     public int hashCode() {

@@ -11,6 +11,7 @@ import javax.faces.bean.RequestScoped;
 import tms.boundaries.CourseFacade;
 import tms.models.Course;
 import tms.models.Student;
+import tms.models.User;
 import tms.tcs.models.Team;
 
 /**
@@ -71,7 +72,8 @@ public class visualizeStudentsTeamsController {
     public String getStudentName(Student student, Team team) {
         if (student.equals(team.getLiaison())) {
             return "";
-        }        
-        return student.getProgramOfStudy();
+        }   
+        User u = student.getUser();
+        return u.getFirstName() + " " + u.getLastName();
     }
 }
