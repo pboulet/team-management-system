@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <f:metadata>
+        <f:viewParam name="courseid" value="#{createTeamController.courseid}" />
+        <f:event type="preRenderView" listener="#{createTeamController.init}" />
+    </f:metadata>
+    <body>
+        <ui:composition template="./mainLayout.xhtml">
+            <ui:define name="content">
+                <h1>Create Team #{courseSection}</h1>
+                <p:panel>
+                    <h:panelGrid columns="1">        
+                        <h:outputText value="Team Name:"></h:outputText>
+                        <h:inputText id="teamName" value="#{createTeamController.teamName}">
+                        </h:inputText>        
+
+                        <form name="myForm" id="myForm" onsubmit="return validateForm()">
+                            Team Members: <br />
+                            <input type="text" id="Team members:" />
+                            <input type="button" id="addStudent" value="Add Student" />
+                            <br/>
+                        </form>
+                        <script>
+                            document.getElementById("addStudent").onclick = function () {
+                                var form = document.getElementById("myForm");
+                                var input = document.createElement("input");
+                                input.type = "text";
+                                var br = document.createElement("br");
+                                form.appendChild(input);
+                                form.appendChild(br);
+                            }</script>
+
+                        <h:commandButton value="Submit" type="command"  actionListener="#{createTeamController.submit}">
+                            <f:ajax execute="submit" 
+                                    render="status"/>
+                        </h:commandButton>
+                    </h:panelGrid>
+                </p:panel>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
