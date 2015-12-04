@@ -15,27 +15,41 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import tms.models.Student;
 
 /**
  *
  * @author User
  */
 @Entity
-@Table(name="PNSM_JoinRequests")
+@Table(name = "PNSM_JoinRequests")
 public class JoinRequest implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name="JOIN_REQUEST_ID")
+    @Column(name = "JOIN_REQUEST_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    @Column(name="ACCEPTED")
+
+    @Column(name = "ACCEPTED")
     private Boolean accepted;
 
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="Team_ID")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "Team_ID")
     private Team team;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "STUDENT_ID")
+    private Student student;
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
+    }    
+    
     public Team getTeam() {
         return team;
     }
@@ -43,7 +57,7 @@ public class JoinRequest implements Serializable {
     public void setTeam(Team team) {
         this.team = team;
     }
-    
+
     public Boolean getAccepted() {
         return accepted;
     }
@@ -84,5 +98,5 @@ public class JoinRequest implements Serializable {
     public String toString() {
         return "models.JoinRequest[ id=" + id + " ]";
     }
-    
+
 }

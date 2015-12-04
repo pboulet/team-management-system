@@ -3,7 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Nick/Documents/NetBeansProjects/team-management-system/team-management-system-war/web/WEB-INF/web.xml</file>
+            <file>file:/C:/Users/maxime/Documents/GitHub/team-management-system/team-management-system-war/src/java/tms/tcs/controllers/acceptStudentController.java</file>
+            <file>file:/C:/Users/maxime/Documents/GitHub/team-management-system/team-management-system-war/web/AcceptStudent.xhtml</file>
+            <file>file:/C:/Users/maxime/Documents/GitHub/team-management-system/team-management-system-war/src/java/tms/tcs/controllers/setupParametersController.java</file>
+            <file>file:/C:/Users/maxime/Documents/GitHub/team-management-system/team-management-system-war/web/home.xhtml</file>
         </group>
     </open-files>
 </project-private>
