@@ -6,10 +6,7 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       >
-    <f:metadata>
-        <f:viewParam name="courseid" value="#{createTeamController.courseid}" />
-        <f:event type="preRenderView" listener="#{createTeamController.init}" />
-    </f:metadata>
+
     <body>
         <ui:composition template="./mainLayout.xhtml">
             <ui:define name="content">
@@ -19,23 +16,20 @@
                         <h:outputText value="Team Name:"></h:outputText>
                         <h:inputText id="teamName" value="#{createTeamController.teamName}">
                         </h:inputText>        
-
-                        <form name="myForm" id="myForm" onsubmit="return validateForm()">
-                            Team Members: <br />
-                            <input type="text" id="Team members:" />
-                            <input type="button" id="addStudent" value="Add Student" />
-                            <br/>
-                        </form>
-                        <script>
-                            document.getElementById("addStudent").onclick = function () {
-                                var form = document.getElementById("myForm");
-                                var input = document.createElement("input");
-                                input.type = "text";
-                                var br = document.createElement("br");
-                                form.appendChild(input);
-                                form.appendChild(br);
-                            }</script>
-
+                        <p:outputLabel for="country" value="Available students: " />
+                        </h:panelGrid>
+                        <h:panelGrid columns="2"> 
+                        <p:selectOneMenu id="country" value="#{createTeamController.studentList}" style="width:160px">
+                            <p:ajax listener="#{dropdownView.onCountryChange}" update="" />
+                            <f:selectItem itemLabel="Select Team Member" itemValue="" noSelectionOption="true" />
+                            <f:selectItems value="#{dropdownView.countries}" />
+                            </p:selectOneMenu>
+                            <h:commandButton value="Add" type="command"  actionListener="#{createTeamController.submit}">
+                            <f:ajax execute="add" 
+                                    render="status"/>
+                        </h:commandButton>
+                       </h:panelGrid>
+                    <h:panelGrid columns="1"> 
                         <h:commandButton value="Submit" type="command"  actionListener="#{createTeamController.submit}">
                             <f:ajax execute="submit" 
                                     render="status"/>
