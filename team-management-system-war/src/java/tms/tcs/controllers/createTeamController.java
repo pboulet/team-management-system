@@ -31,6 +31,7 @@ private List<Student> studentList;
 private Team team;
 private Course course;
 private Long courseid;
+
     public createTeamController() {
         team = new Team();
     }
@@ -80,14 +81,18 @@ private Long courseid;
         this.courseid = courseId;
     }
     
+    public void add(ActionEvent actionEvent) {  
+        int currentStudent=0; //need to figure how to get the current student that being added
+    studentList.add(currentStudent, studentList.get(currentStudent)); //then add the student to the 
+    }
+    
     public void submit(ActionEvent actionEvent) {  
         team.setName(teamName);
-        team.setCourse(course); //todo
+        team.setCourse(course);
         team.setCreationDate((Timestamp) new Date());
         //team.setLiaison(currentStudent); //todo
-        team.setStudentList(studentList); //todo
+        team.setStudentList(studentList); 
         teamFacade.create(team);
-        team.setCourse(course);
         courseFacade.edit(course);
         
     }
