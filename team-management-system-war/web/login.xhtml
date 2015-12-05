@@ -1,39 +1,38 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
- <body>
-  <ui:composition template="./mainLayout.xhtml">
+  <ui:composition template="./WEB-INF/mainLayout.xhtml"
+                    xmlns="http://www.w3.org/1999/xhtml"
+                    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                    xmlns:h="http://xmlns.jcp.org/jsf/html"
+                    xmlns:f="http://xmlns.jcp.org/jsf/core"
+                    xmlns:p="http://primefaces.org/ui">
 
-            <ui:define name="content">
-                <f:view>
-                    <h:form>
-                    <h:panelGrid columns="2">
+    <ui:define name="content">
+        <p:outputPanel style="text-align:center;">
+            <h2>Please Sign In</h2>
+            <h:form>
+                <h:panelGrid columns="2" style="margin:0 auto; text-align:left;">
                     <h:outputText value="User Id"></h:outputText>
-                    <h:inputText id="id" value="#{loginController.username}">
-                    </h:inputText>          
+                    <p:inputText id="id" value="#{loginController.username}">
+                    </p:inputText>          
                     <h:outputText value="Password"></h:outputText>
-                    <h:inputSecret id="passwd" value="#{loginController.password}">
-                    </h:inputSecret>          
-                    </h:panelGrid>
-                   <h:commandButton value="Login" type="command"  actionListener="#{loginController.login}">
-                   <f:ajax execute="id  passwd" 
-                           render="status"/>
-                    </h:commandButton>      
+                    <p:password id="passwd" value="#{loginController.password}">
+                    </p:password> 
+                </h:panelGrid>
+                <p:commandButton style="width:250px" value="Login" type="command"  actionListener="#{loginController.login}">
+                <f:ajax execute="id  passwd" 
+                       render="status"/>
+                </p:commandButton>    
+                <br/>
+                <br/>
+                    <p:link outcome="registerUser.xhtml" value="Register"></p:link>  
                 <div>
-                    <hr/>
-                    <hr/>
                 <h:outputText  style="color:royalblue; font-size: large; font-weight: bold" id="status" value="#{loginController.status}"/>
                 </div>
-                    </h:form>
-                </f:view>
+            </h:form>
+        </p:outputPanel>
+    </ui:define>
 
-            </ui:define>
-
-        </ui:composition>
- </body>
-</html>
+</ui:composition>
 
