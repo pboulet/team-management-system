@@ -83,11 +83,12 @@
                                 <p:message for="instructorId"/>
                         </h:panelGrid>
                     </h:panelGroup>
-                        <br/>
-                        <p:commandButton style="width:250px" value="Register me" type="command"  actionListener="#{registerController.submit}">
-                           <f:ajax execute="register" render="register instructorInfo studentInfo"/>
-                        </p:commandButton>
-                        <h:outputText  style="color:royalblue; font-size: large; font-weight: bold" id="status" value="#{loginController.status}"/>
+                    <p:commandButton style="width:125px" value="Register me" type="command"  action="#{registerController.submit}">
+                       <f:ajax execute="register" render="status"/>
+                    </p:commandButton>
+                    <br/>
+                    <p:link outcome="login.xhtml" value="Cancel"></p:link>
+                    <h:outputText  style="color:royalblue; font-size: large; font-weight: bold" id="status" value="#{loginController.status}"/>
             </h:form>
         </p:outputPanel>
     </ui:define>

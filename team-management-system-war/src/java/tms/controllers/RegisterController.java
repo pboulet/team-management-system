@@ -15,7 +15,9 @@ import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.servlet.http.HttpSession;
 import tms.boundaries.InstructorFacade;
 import tms.boundaries.StudentFacade;
 import tms.boundaries.UserFacade;
@@ -143,7 +145,7 @@ public class RegisterController {
         this.status = status;
     }
 
-    public void submit(ActionEvent actionEvent) {
+    public String submit() {
                 try {
             User account = new User();
             account.setFirstName(firstName);
@@ -176,9 +178,13 @@ public class RegisterController {
             account.setPassword(passhash);
             userFacade.create(account);
             status="New Account Created Fine";
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            session.setAttribute("User", account);
+            return "/protected/home";
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException | RuntimeException ex ) {
             Logger.getLogger(RegisterController.class.getName()).log(Level.SEVERE, null, ex);
             status="Error While Creating New Account";
+            return "register";
         }
     }
 }
