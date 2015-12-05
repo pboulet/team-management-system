@@ -114,7 +114,12 @@ public class HomeController implements Serializable {
     public void init() {
         //TODO: hookup everything to the user from the session
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-                     user=(User)session.getAttribute("User");       
+        Object sessionUser = session.getAttribute("User");
+        
+        if(sessionUser != null) 
+            user=(User)sessionUser; 
+        else
+            user = userFacade.find((long) 1); // default workaround in case auth fails 
         
         if (user.isStudent()) 
             studentCourseList = user

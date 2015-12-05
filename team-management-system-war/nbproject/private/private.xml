@@ -4,7 +4,6 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/GitRepositories/team-management-system/team-management-system-war/web/protected/joinTeam.xhtml</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-war/src/java/tms/filters/AuthFilter.java</file>
             <file>file:/C:/GitRepositories/team-management-system/team-management-system-war/web/WEB-INF/web.xml</file>
             <file>file:/C:/GitRepositories/team-management-system/team-management-system-war/src/java/tms/tcs/controllers/JoinTeamController.java</file>
             <file>file:/C:/GitRepositories/team-management-system/team-management-system-war/src/java/tms/tcs/boundaries/HomeView.java</file>
@@ -14,8 +13,11 @@
             <file>file:/C:/GitRepositories/team-management-system/team-management-system-war/src/java/tms/tcs/controllers/HomeController.java</file>
             <file>file:/C:/GitRepositories/team-management-system/team-management-system-war/web/protected/createTeam.xhtml</file>
             <file>file:/C:/GitRepositories/team-management-system/team-management-system-war/src/java/tms/tcs/controllers/VisualizeStudentsTeamsController.java</file>
+            <file>file:/C:/GitRepositories/team-management-system/team-management-system-war/web/protected/setupParameters.xhtml</file>
+            <file>file:/C:/GitRepositories/team-management-system/team-management-system-war/src/java/filters/AuthenticationFilter.java</file>
+            <file>file:/C:/GitRepositories/team-management-system/team-management-system-war/web/protected/visualizeStudentsTeams.xhtml</file>
             <file>file:/C:/GitRepositories/team-management-system/team-management-system-war/web/login.xhtml</file>
-            <file>file:/C:/GitRepositories/team-management-system/team-management-system-war/src/java/tms/tcs/controllers/SetupParametersController.java</file>
+            <file>file:/C:/GitRepositories/team-management-system/team-management-system-war/src/java/tms/tcs/controllers/setupParametersController.java</file>
             <file>file:/C:/GitRepositories/team-management-system/team-management-system-war/web/WEB-INF/mainLayout.xhtml</file>
             <file>file:/C:/GitRepositories/team-management-system/team-management-system-war/src/java/tms/tcs/controllers/CreateTeamController.java</file>
             <file>file:/C:/GitRepositories/team-management-system/team-management-system-war/web/protected/home.xhtml</file>
