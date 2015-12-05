@@ -38,9 +38,6 @@ public class Course implements Serializable {
     
     @Column(name="COURSE_SECTION")
     private String courseSection;
-    
-    @Column(name="TEAM_CREATION_ALLOWED")
-    private Boolean teamCreationAllowed;
 
     @OneToMany(mappedBy="course")
     private List<Team> teams;
@@ -83,14 +80,6 @@ public class Course implements Serializable {
 
     public void setCourseSection(String SECTION) {
         this.courseSection = SECTION;
-    }
-
-    public Boolean getTeamCreationAllowed() {
-        return teamCreationAllowed;
-    }
-
-    public void setTeamCreationAllowed(Boolean teamCreationAllowed) {
-        this.teamCreationAllowed = teamCreationAllowed;
     }
 
     public Long getId() {

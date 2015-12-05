@@ -122,7 +122,6 @@ public class SetupParametersController {
         teamParameters.setCreationDeadline(new Timestamp(deadline.getTime()));
         teamParameters.setMaxNumStudents(maxStudent);
         teamParameters.setMinNumStudents(minStudent);
-        course.setTeamCreationAllowed(true);
         course.setTeamParams(teamParameters);
         teamParametersFacade.create(teamParameters);
         courseFacade.edit(course);
