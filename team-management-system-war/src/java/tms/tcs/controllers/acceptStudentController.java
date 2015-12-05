@@ -54,8 +54,12 @@ public class AcceptStudentController {
         joinRequestList = team.getJoinRequests();
         LinkedList<Student> studentSource = new LinkedList<>();
         LinkedList<Student> studentTarget = new LinkedList<>();
+        //get all join request not already accepted and add the student 
+        //to the student list
         for (JoinRequest j : joinRequestList) {
-            studentSource.add(j.getStudent());
+            if (!j.getAccepted()) {
+                studentSource.add(j.getStudent());
+            }
         }
         studentList = new DualListModel<>(studentSource, studentTarget);
         maxStudents = team.getCourse().getTeamParams().getMaxNumStudents() - team.getStudentList().size();
@@ -80,29 +84,23 @@ public class AcceptStudentController {
             return;
         }
         int totalItemsNumber = 0;
-
         totalItemsNumber = studentList.getTarget().size();
-
         List<?> items = event.getItems();
         if (items != null) {
             totalItemsNumber = totalItemsNumber + items.size();
         }
-
         if (totalItemsNumber > maxStudents) {
             // limit of selected students is exceeded
             FacesMessage msg = new FacesMessage();
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             msg.setSummary("Exceeded number of students in the team");
             FacesContext.getCurrentInstance().addMessage(null, msg);
-
             List<Student> studentSource = studentList.getSource();
             List<Student> studentTarget = studentList.getTarget();
-            for (int i = maxStudents; i < studentList.getTarget().size(); i++) {
-                studentSource.add(studentTarget.remove(i));
-                i--;
+            while (maxStudents < studentList.getTarget().size()) {
+                studentSource.add(studentTarget.remove(studentTarget.size() - 1));
             }
             studentList = new DualListModel<>(studentSource, studentTarget);
-        
         }
     }
 
