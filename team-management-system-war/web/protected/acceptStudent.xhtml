@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:metadata>
+        <f:viewParam name="teamid" value="#{acceptStudentController.teamid}" />
+        <f:event type="preRenderView" listener="#{acceptStudentController.init}" />
+    </f:metadata>
+    <body>
+        <ui:define name="top">
+            <h2><p:link value="Team Management System" outcome="./home.xhtml"></p:link> : Accept Students for team #{acceptStudentController.team.name}</h2>
+            <p:commandButton style="float:right; margin-top: -40px; margin-right:10px" type="button" value="Logout"/>
+        </ui:define>
+
+
+        <ui:define name="content">
+            <h:form>
+                <p:growl id="msg" escape="false" />
+                <h1>Accept student to team: #{acceptStudentController.team.name}</h1>
+                <h3>The team currently have #{acceptStudentController.team.studentList.size()} member(s):</h3>
+                <ui:repeat var="student" value="#{acceptStudentController.team.studentList}">
+                    <p:outputLabel value="- #{student.user.firstName} #{student.user.lastName}" style="margin-left: 20px;"/>
+                </ui:repeat>
+                <h3>#{acceptStudentController.maxStudents} more members are allowed</h3>
+                <p:pickList value="#{acceptStudentController.studentList}" var="student" 
+                            itemLabel="#{student.user.firstName} #{student.user.lastName}" itemValue="#{student}">
+                    <p:ajax event="transfer" listener="#{acceptStudentController.onTransfer}" update="@form" />
+                </p:pickList>                
+                <p:commandButton value="submit" actionListener="#{acceptStudentController.submit}" action="home" />
+            </h:form>
+        </ui:define>
+
+    </body>
+</html>

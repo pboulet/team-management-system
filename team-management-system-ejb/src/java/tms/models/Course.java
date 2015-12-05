@@ -14,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -25,26 +26,38 @@ import tms.tcs.models.TeamParameters;
  * @author User
  */
 @Entity
-@Table(name="PNSM_Courses")
+@Table(name = "PNSM_Courses")
 public class Course implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
-    @Column(name="COURSE_ID")
+    @Column(name = "COURSE_ID")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    @Column(name="NAME")
+
+    @Column(name = "NAME")
     private String name;
-    
-    @Column(name="COURSE_SECTION")
+
+    @Column(name = "COURSE_SECTION")
     private String courseSection;
 
-    @OneToMany(mappedBy="course")
+    @OneToMany(mappedBy = "course")
     private List<Team> teams;
 
-    @OneToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="TEAM_PARAMETERS_ID")
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "TEAM_PARAMETERS_ID")
     private TeamParameters teamParams;
+
+    @ManyToMany(mappedBy = "courseList")
+    private List<Student> studentList;
+
+    public List<Student> getStudentList() {
+        return studentList;
+    }
+
+    public void setStudentList(List<Student> studentList) {
+        this.studentList = studentList;
+    }
 
     public String getName() {
         return name;
@@ -57,7 +70,7 @@ public class Course implements Serializable {
     public boolean hasTeamParams() {
         return teamParams != null;
     }
-    
+
     public TeamParameters getTeamParams() {
         return teamParams;
     }
@@ -65,7 +78,7 @@ public class Course implements Serializable {
     public void setTeamParams(TeamParameters teamParams) {
         this.teamParams = teamParams;
     }
-    
+
     public List<Team> getTeams() {
         return teams;
     }
@@ -73,7 +86,7 @@ public class Course implements Serializable {
     public void setTeams(List<Team> teams) {
         this.teams = teams;
     }
-    
+
     public String getCourseSection() {
         return courseSection;
     }
@@ -114,5 +127,5 @@ public class Course implements Serializable {
     public String toString() {
         return "models.Course[ id=" + id + " ]";
     }
-    
+
 }
