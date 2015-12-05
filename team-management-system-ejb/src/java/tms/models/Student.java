@@ -18,6 +18,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import tms.tcs.models.JoinRequest;
 import tms.tcs.models.Team;
 
 /**
@@ -46,6 +47,17 @@ public class Student implements Serializable {
     @JoinColumn(name = "TEAM_ID")
     private List<Team> teamList;
 
+    @OneToMany(mappedBy = "student")
+    private List<JoinRequest> joinRequests;
+
+    public List<JoinRequest> getJoinRequests() {
+        return joinRequests;
+    }
+
+    public void setJoinRequests(List<JoinRequest> joinRequests) {
+        this.joinRequests = joinRequests;
+    }    
+    
     public List<Team> getMemberOf() {
         return teamList;
     }
@@ -93,7 +105,6 @@ public class Student implements Serializable {
     public void setTeamList(List<Team> teamList) {
         this.teamList = teamList;
     }
-    
 
     @Override
     public int hashCode() {
