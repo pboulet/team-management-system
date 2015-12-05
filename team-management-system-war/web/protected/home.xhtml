@@ -22,7 +22,7 @@
                         <p:menu>
                             <p:menuitem rendered="#{homeView.showStudentMenuOptions}" 
                                         disabled="#{homeView.selectedStudentCourse == null}" 
-                                        value="Visualize Incomplete Teams" >
+                                        value="Visualize Incomplete Teams" outcome="joinTeam" >
                                 <f:param name="courseid" 
                                          value="#{homeView.selectedStudentCourse.id}" />
                             </p:menuitem>
