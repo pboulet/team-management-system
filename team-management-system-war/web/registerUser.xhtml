@@ -11,7 +11,7 @@
     <ui:define name="content">
         <p:outputPanel style="text-align:center;  margin-left:auto">
             <h2>User Registration</h2>
-                <h:form id="form1">
+                <h:form id="register">
                     <h:panelGrid columns="3" style="margin:0 auto; min-width:350px; text-align:left">
                         <p:outputLabel value="Email:"/>
                         <p:inputText id="email"
@@ -76,7 +76,7 @@
                                 <p:inputText id="studentProgram" value="#{registerController.programOfStudy}"/>
                         </h:panelGrid>
                     </p:outputPanel>
-                    <h:panelGroup id ="instructorInfo"> 
+                    <h:panelGroup id ="instructorInfo">
                         <h:panelGrid columns="3" style="margin:0 auto; text-align:left" rendered="#{registerController.instructor}">
                                 <p:outputLabel value="Instructor ID:"/>
                                 <p:inputText id="instructorId" value="#{registerController.instructorId}" required="true" requiredMessage="An instrutor identification number is required"/>
@@ -84,10 +84,10 @@
                         </h:panelGrid>
                     </h:panelGroup>
                         <br/>
-                        <p:commandButton style="width:250px" value="Register me" type="command"  actionListener="#{loginController.login}">
-                            <f:ajax execute="id  passwd" 
-                                    render="status"/>
-                        </p:commandButton>    
+                        <p:commandButton style="width:250px" value="Register me" type="command"  actionListener="#{registerController.submit}">
+                           <f:ajax execute="register" render="register instructorInfo studentInfo"/>
+                        </p:commandButton>
+                        <h:outputText  style="color:royalblue; font-size: large; font-weight: bold" id="status" value="#{loginController.status}"/>
             </h:form>
         </p:outputPanel>
     </ui:define>

@@ -13,9 +13,11 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
+import tms.boundaries.InstructorFacade;
+import tms.boundaries.StudentFacade;
 import tms.boundaries.UserFacade;
 import tms.models.Instructor;
 import tms.models.Student;
@@ -25,11 +27,15 @@ import tms.models.User;
  * @author Nick
  */
 @ManagedBean
-@RequestScoped
+@ViewScoped
 public class RegisterController {
 
     @EJB
     private UserFacade userFacade;
+    @EJB
+    private StudentFacade studentFacade;
+    @EJB
+    private InstructorFacade instructorFacade;
     
     private String password;
     private String login;
@@ -148,11 +154,14 @@ public class RegisterController {
                 s.setId(studentId);
                 s.setProgramOfStudy(programOfStudy);
                 account.setStudent(s);
+                studentFacade.create(s);
+                
             }
             if(instructor){
                 Instructor i = new Instructor();
                 i.setId(instructorId);
                 account.setInstructor(i);
+                instructorFacade.create(i);
             }
             // randomly generate salt value
             final Random r = new SecureRandom();
@@ -165,6 +174,7 @@ public class RegisterController {
             byte[] passhash = digest.digest(saltedPass.getBytes("UTF-8"));
             account.setSalt(salt);
             account.setPassword(passhash);
+            userFacade.create(account);
             status="New Account Created Fine";
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException | RuntimeException ex ) {
             Logger.getLogger(RegisterController.class.getName()).log(Level.SEVERE, null, ex);

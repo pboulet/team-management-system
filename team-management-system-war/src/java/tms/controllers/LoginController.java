@@ -5,6 +5,7 @@
  */
 package tms.controllers;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -16,7 +17,11 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import tms.boundaries.InstructorFacade;
+import tms.boundaries.StudentFacade;
 import tms.boundaries.UserFacade;
+import tms.models.Instructor;
+import tms.models.Student;
 import tms.models.User;
 
 /**
@@ -26,11 +31,12 @@ import tms.models.User;
 @ManagedBean
 @RequestScoped
 public class LoginController {
-    private String username;
+    private String userId;
     private String password;
     private String status;
     @EJB
-    private UserFacade userFacade;
+    private StudentFacade studentFacade;
+    private InstructorFacade instructorFacade;
     /**
      * Creates a new instance of LoginBean
      */
@@ -41,14 +47,14 @@ public class LoginController {
      * @return the userId
      */
     public String getUsername() {
-        return username;
+        return userId;
     }
 
     /**
      * @param id the userId to set
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUsername(String userId) {
+        this.userId = userId;
     }
 
     /**
@@ -73,7 +79,19 @@ public class LoginController {
     }
 
     public void login() {
-         User account = userFacade.find(username);
+        User account=null;
+        if(userId.charAt(0)=='e'){
+            Instructor instructor = instructorFacade.find(userId);
+            if(instructor!=null){
+                account = instructor.getUser();
+            }
+        }
+        else{
+            Student student = studentFacade.find(userId);
+            if(student!=null){
+                account = student.getUser();
+            }
+        }
          if (account != null) {
              try {
                  // check password
@@ -86,7 +104,13 @@ public class LoginController {
                      //login ok - set user in session context
                      HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
                      session.setAttribute("User", account);
-                     status="Login Successful - " + "Welcome " + account.getFirstName(); 
+                     try{
+                         System.out.println("did this");
+                        FacesContext.getCurrentInstance().getExternalContext().redirect("/team-management-system-war/protected/home.xhtml");
+                     }catch(Exception ex){
+                         System.out.print("error here");
+                         Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
+                     }
                  } else {
                     status="Invalid Login, Please Try again"; 
                  }
@@ -94,6 +118,7 @@ public class LoginController {
                  Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
              }
          } else {
+             System.out.print("did this");
              status="Invalid Login, Please Try again";
          }
     }

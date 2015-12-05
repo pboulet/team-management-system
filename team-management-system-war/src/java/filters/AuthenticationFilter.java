@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package tms.filters;
+package filters;
 
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -25,14 +25,14 @@ import javax.servlet.http.HttpSession;
  * 
  * Look in web.xml for the filter mapping.
  */
-public class AuthFilter implements Filter {
+public class AuthenticationFilter implements Filter {
 
     // The filter configuration object we are associated with.  If
     // this value is null, this filter instance is not currently
     // configured. 
     private FilterConfig filterConfig = null;
     
-    public AuthFilter() {
+    public AuthenticationFilter() {
     }    
     
 
