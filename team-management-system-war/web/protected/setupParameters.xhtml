@@ -1,53 +1,51 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../WEB-INF/mainLayout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
     <f:metadata>
         <f:viewParam name="courseid" value="#{setupParametersController.courseid}" />
         <f:event type="preRenderView" listener="#{setupParametersController.init}" />
     </f:metadata>
-    <body>
 
-        <ui:composition template="./mainLayout.xhtml">
+    <ui:define name="top">
+        <h2><p:link value="Team Management System" outcome="./home.xhtml"></p:link> : Setup Team Parameters for #{setupParametersController.course.name}</h2>
+        <p:commandButton style="float:right; margin-top: -40px; margin-right:10px" type="button" value="Logout"/>
+    </ui:define>
 
-            <ui:define name="content">
-                <h1>setup parameters</h1>
+    <ui:define name="content">
+        
+        <h:form>
+            <h:panelGrid columns="3">
+                <p:outputLabel value="Course Section:" />
+                <p:outputLabel value="#{setupParametersController.courseSection}"/>                        
+                <h:panelGroup />
+                <p:outputLabel value="Minimum number of students per teams:" />
+                <p:inputText 
+                    id="minStudent" 
+                    value="#{setupParametersController.minStudent}"
+                    required="true"
+                    requiredMessage="Please enter a minimum number of students for this team"
+                    />
+                <p:message for="minStudent"/>
+                <p:outputLabel value="Maximum number of students per teams:" />
+                <p:inputText 
+                    id="maxStudent" 
+                    value="#{setupParametersController.maxStudent}"
+                    required="true"
+                    requiredMessage="Please enter a maximum number of students for this team"
+                    />
+                <p:message for="maxStudent"/>
+                <p:outputLabel value="Deadline for teams creation:" />
+                <p:calendar id="deadline" value="#{setupParametersController.deadline}" required="true" requiredMessage="Please enter a deadline for the team creation"/>                        
+                <p:message for="deadline"/>
+                <p:commandButton value="submit" actionListener="#{setupParametersController.submit}" action="home" >
+                    <f:ajax execute="@form" render="@form" />
+                </p:commandButton>
+            </h:panelGrid>
+        </h:form>
+    </ui:define>
 
-                <h:form>
-                    <h:panelGrid columns="3">
-                        <p:outputLabel value="Course code:" />
-                        <p:outputLabel value="#{setupParametersController.courseSection}"/>                        
-                        <h:panelGroup />
-                        <p:outputLabel value="Minimum number of students per teams:" />
-                        <p:inputText 
-                            id="minStudent" 
-                            value="#{setupParametersController.minStudent}"
-                            required="true"
-                            requiredMessage="Please enter a minimum number of students for this team"
-                            />
-                        <p:message for="minStudent"/>
-                        <p:outputLabel value="Maximum number of students per teams:" />
-                        <p:inputText 
-                            id="maxStudent" 
-                            value="#{setupParametersController.maxStudent}"
-                            required="true"
-                            requiredMessage="Please enter a maximum number of students for this team"
-                            />
-                        <p:message for="maxStudent"/>
-                        <p:outputLabel value="Deadline for teams creation:" />
-                        <p:calendar id="deadline" value="#{setupParametersController.deadline}" required="true" requiredMessage="Please enter a deadline for the team creation"/>                        
-                        <p:message for="deadline"/>
-                        <p:commandButton value="submit" actionListener="#{setupParametersController.submit}" action="home" >
-                            <f:ajax execute="@form" render="@form" />
-                        </p:commandButton>
-                    </h:panelGrid>
-                </h:form>
-            </ui:define>
-
-        </ui:composition>
-
-    </body>
-</html>
+</ui:composition>

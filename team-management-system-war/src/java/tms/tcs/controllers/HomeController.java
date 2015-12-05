@@ -10,11 +10,14 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.view.ViewScoped;
+import org.primefaces.event.TabChangeEvent;
 import tms.boundaries.CourseFacade;
 import tms.boundaries.UserFacade;
 import tms.models.Course;
 import tms.models.User;
+import tms.tcs.boundaries.HomeView;
 
 /**
  * Controller for the Home view.
@@ -30,6 +33,9 @@ public class HomeController implements Serializable {
     
     @EJB
     private UserFacade userFacade;
+    
+    @ManagedProperty("#{homeView}")
+    private HomeView homeView;
     
     private User user;
 
@@ -61,6 +67,14 @@ public class HomeController implements Serializable {
     public void setInstructorCourseList(List<Course> instructorCourseList) {
         this.instructorCourseList = instructorCourseList;
     }
+
+    public HomeView getHomeView() {
+        return homeView;
+    }
+
+    public void setHomeView(HomeView homeView) {
+        this.homeView = homeView;
+    }
     
     /**
      * Creates a new instance of HomeController
@@ -68,20 +82,51 @@ public class HomeController implements Serializable {
     public HomeController() {
         
     }
+    
+    public void setMenuOptionsVisibility() {
+        boolean hasBothRoles = 
+                user.isInstructor() && 
+                user.isStudent();
+        
+        homeView.setShowStudentMenuOptions(
+            hasBothRoles &&
+            homeView.getCourseListTv().getActiveIndex() == homeView.getSTUDENT_TAB_INDEX() ||
+            user.isStudent());
+        
+        homeView.setShowInstructorMenuOptions(
+            hasBothRoles &&
+            homeView.getCourseListTv().getActiveIndex() == homeView.getINSTRUCTOR_TAB_INDEX() ||
+            user.isInstructor());
+    }
 
+    public void onCourseListTabChange( TabChangeEvent e) {
+        homeView.getCourseListTv()
+                .setActiveIndex(homeView
+                                    .getCourseListTv()
+                                    .getChildren()
+                                    .indexOf(e.getTab()));
+        setMenuOptionsVisibility();
+    }
+    
     @PostConstruct
     public void init() {
         //TODO: hookup everything to the user from the session
         user = userFacade.find((long) 2);        
         
-        if (user.isStudent())
+        if (user.isStudent()) 
             studentCourseList = user
                                 .getStudent()
                                 .getCourseList();
         
-        if (user.isInstructor())
+        if (user.isInstructor()){
             instructorCourseList = user
                                     .getInstructor()
                                     .getCourseList();
+            
+
+            homeView.getCourseListTv().getChildren().get(1);
+        }
+        
+        setMenuOptionsVisibility();
     }
 }

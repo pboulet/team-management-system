@@ -52,8 +52,8 @@ public class AcceptStudentController {
             return;
         }
         joinRequestList = team.getJoinRequests();
-        LinkedList<Student> studentSource = new LinkedList<Student>();
-        LinkedList<Student> studentTarget = new LinkedList<Student>();
+        LinkedList<Student> studentSource = new LinkedList<>();
+        LinkedList<Student> studentTarget = new LinkedList<>();
         for (JoinRequest j : joinRequestList) {
             studentSource.add(j.getStudent());
         }

@@ -92,6 +92,22 @@ public class SetupParametersController {
         this.deadline = deadline;
     }
 
+    public TeamParameters getTeamParameters() {
+        return teamParameters;
+    }
+
+    public void setTeamParameters(TeamParameters teamParameters) {
+        this.teamParameters = teamParameters;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
     public void submit(ActionEvent actionEvent) {  
         teamParameters = new TeamParameters();
         teamParameters.setCreationDeadline(new Timestamp(deadline.getTime()));

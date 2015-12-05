@@ -30,6 +30,9 @@ public class HomeView implements Serializable {
     
     private TabView courseListTv;
     
+    private boolean showStudentMenuOptions;
+    private boolean showInstructorMenuOptions;
+    
     /**
      * Creates a new instance of HomeView
      */
@@ -60,15 +63,27 @@ public class HomeView implements Serializable {
         this.selectedInstructorCourse = selectedInstructorCourse;
     }
 
+    public boolean isShowStudentMenuOptions() {
+        return showStudentMenuOptions;
+    }
+
+    public void setShowStudentMenuOptions(boolean showStudentMenuOptions) {
+        this.showStudentMenuOptions = showStudentMenuOptions;
+    }
+
+    public boolean isShowInstructorMenuOptions() {
+        return showInstructorMenuOptions;
+    }
+
+    public void setShowInstructorMenuOptions(boolean showInstructorMenuOptions) {
+        this.showInstructorMenuOptions = showInstructorMenuOptions;
+    }
+
     public int getSTUDENT_TAB_INDEX() {
         return STUDENT_TAB_INDEX;
     }
 
     public int getINSTRUCTOR_TAB_INDEX() {
         return INSTRUCTOR_TAB_INDEX;
-    }
-    
-    public void onCourseListTabChange( TabChangeEvent e) {
-        courseListTv.setActiveIndex(courseListTv.getChildren().indexOf(e.getTab()));
     }
 }

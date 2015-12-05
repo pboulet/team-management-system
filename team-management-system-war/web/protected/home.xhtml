@@ -14,34 +14,36 @@
         <p:layout id="control-menu-container">
             <p:layoutUnit position="east" size="190" style="border:none">
                 <h:form id="control-menu">
-                    <p:menu>
-                        <p:menuitem rendered="#{homeView.courseListTv.activeIndex == homeView.STUDENT_TAB_INDEX}" 
-                                    disabled="#{homeView.selectedStudentCourse == null}" 
-                                    value="Visualize Incomplete Teams" >
-                            <f:param name="courseid" 
-                                     value="#{homeView.selectedStudentCourse.id}" />
-                        </p:menuitem>
-                        <p:menuitem rendered="#{homeView.courseListTv.activeIndex == homeView.STUDENT_TAB_INDEX}"
-                                    disabled="#{homeView.selectedStudentCourse == null}" 
-                                    value="Create a Team" outcome="createTeam" >
-                            <f:param name="courseid" value="#{homeView.selectedStudentCourse.id}" />
-                        </p:menuitem>
-                        <p:menuitem rendered="#{homeView.courseListTv.activeIndex == homeView.INSTRUCTOR_TAB_INDEX}"
-                                    disabled="#{homeView.selectedInstructorCourse == null}" 
-                                    value="ViewTeams" outcome="visualizeStudentsTeams">
-                            <f:param name="courseid" value="#{homeView.selectedInstructorCourse.id}" />
-                        </p:menuitem>
-                        <p:menuitem rendered="#{homeView.courseListTv.activeIndex == homeView.INSTRUCTOR_TAB_INDEX}"
-                                    disabled="#{homeView.selectedInstructorCourse == null}" 
-                                    value="Set Up Parameters" outcome="setupParameters" >
-                            <f:param name="courseid" value="#{homeView.selectedInstructorCourse.id}" />
-                        </p:menuitem>
-                    </p:menu>
+                    <p:outputPanel rendered="#{homeView.showInstructorMenuOptions || homeView.showStudentMenuOptions}">
+                        <p:menu>
+                            <p:menuitem rendered="#{homeView.showStudentMenuOptions}" 
+                                        disabled="#{homeView.selectedStudentCourse == null}" 
+                                        value="Visualize Incomplete Teams" >
+                                <f:param name="courseid" 
+                                         value="#{homeView.selectedStudentCourse.id}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{homeView.showStudentMenuOptions}"
+                                        disabled="#{homeView.selectedStudentCourse == null}" 
+                                        value="Create a Team" outcome="createTeam" >
+                                <f:param name="courseid" value="#{homeView.selectedStudentCourse.id}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{homeView.showInstructorMenuOptions}"
+                                        disabled="#{homeView.selectedInstructorCourse == null}" 
+                                        value="ViewTeams" outcome="visualizeStudentsTeams">
+                                <f:param name="courseid" value="#{homeView.selectedInstructorCourse.id}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{homeView.showInstructorMenuOptions}"
+                                        disabled="#{homeView.selectedInstructorCourse == null}" 
+                                        value="Set Up Parameters" outcome="setupParameters" >
+                                <f:param name="courseid" value="#{homeView.selectedInstructorCourse.id}" />
+                            </p:menuitem>
+                        </p:menu>
+                    </p:outputPanel>
                 </h:form>
             </p:layoutUnit>
             <p:layoutUnit position="center" style="border:none">
                 <p:tabView binding="#{homeView.courseListTv}" dynamic="true">
-                    <p:ajax event="tabChange" listener="#{homeView.onCourseListTabChange}" 
+                    <p:ajax event="tabChange" listener="#{homeController.onCourseListTabChange}" 
                             update=":control-menu"/>
                     <p:tab rendered="#{homeController.user.isStudent()}" title="Student Courses">
                         <h:form>
