@@ -16,7 +16,7 @@ import tms.tcs.models.Team;
 
 @Named(value = "joinTeamController")
 @RequestScoped
-public class joinTeamController {
+public class JoinTeamController {
     @EJB
     private TeamFacade teamFacade;
 
@@ -28,7 +28,7 @@ private Long courseid;
 public void init() {
 
 }
-    public joinTeamController() {
+    public JoinTeamController() {
         
     }
 

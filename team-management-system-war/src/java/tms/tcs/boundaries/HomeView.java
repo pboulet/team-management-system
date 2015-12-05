@@ -13,8 +13,9 @@ import org.primefaces.event.TabChangeEvent;
 import tms.models.Course;
 
 /**
- *
- * @author User
+ * View Model for the Home view.
+ * 
+ * @author Patrice Boulet
  */
 @Named(value = "homeView")
 @ViewScoped

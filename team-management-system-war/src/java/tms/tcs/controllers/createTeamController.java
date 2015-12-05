@@ -20,22 +20,22 @@ import tms.tcs.models.Team;
 
 @Named(value = "createTeamController")
 @RequestScoped
-public class createTeamController {
+public class CreateTeamController {
     @EJB
     private CourseFacade courseFacade;
     @EJB
     private TeamFacade teamFacade;
     
-private String teamName;
-private List<Student> studentList;
-private Team team;
-private Course course;
-private Long courseid;
+    private String teamName;
+    private List<Student> studentList;
+    private Team team;
+    private Course course;
+    private Long courseid;
 
-    public createTeamController() {
+    public CreateTeamController() {
         team = new Team();
     }
- public void init() {
+    public void init() {
         if (courseid == null) {
             return;
         }

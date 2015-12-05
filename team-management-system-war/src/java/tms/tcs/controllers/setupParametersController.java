@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import tms.boundaries.CourseFacade;
@@ -21,9 +20,9 @@ import tms.tcs.models.TeamParameters;
  *
  * @author maxime
  */
-@ManagedBean
+@ManagedBean(name = "setupParametersController")
 @ViewScoped
-public class setupParametersController {
+public class SetupParametersController {
 
     @EJB
     private CourseFacade courseFacade;
@@ -39,7 +38,7 @@ public class setupParametersController {
     private Long courseid;
 
   
-    public setupParametersController() {
+    public SetupParametersController() {
     }
 
     public void init() {

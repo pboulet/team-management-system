@@ -17,8 +17,9 @@ import tms.models.Course;
 import tms.models.User;
 
 /**
- *
- * @author User
+ * Controller for the Home view.
+ * 
+ * @author Patrice Boulet
  */
 @ManagedBean(name = "homeController")
 @ViewScoped
@@ -71,7 +72,7 @@ public class HomeController implements Serializable {
     @PostConstruct
     public void init() {
         //TODO: hookup everything to the user from the session
-        user = userFacade.find((long) 1);        
+        user = userFacade.find((long) 2);        
         
         if (user.isStudent())
             studentCourseList = user

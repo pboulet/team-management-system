@@ -18,9 +18,9 @@ import tms.tcs.models.Team;
  *
  * @author maxime
  */
-@ManagedBean
+@ManagedBean(name = "visualizeStudentsTeamsController")
 @RequestScoped
-public class visualizeStudentsTeamsController {
+public class VisualizeStudentsTeamsController {
 
     @EJB
     private CourseFacade courseFacade;
@@ -38,7 +38,7 @@ public class visualizeStudentsTeamsController {
     /**
      * Creates a new instance of visualizeStudentsTeamsController
      */
-    public visualizeStudentsTeamsController() {
+    public VisualizeStudentsTeamsController() {
     }
 
     public void init() {

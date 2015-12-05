@@ -8,7 +8,6 @@ package tms.tcs.controllers;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -26,9 +25,9 @@ import tms.tcs.models.Team;
  *
  * @author maxime
  */
-@ManagedBean
+@ManagedBean(name = "acceptStudentController")
 @ViewScoped
-public class acceptStudentController {
+public class AcceptStudentController {
 
     @EJB
     private TeamFacade teamFacade;
@@ -41,7 +40,7 @@ public class acceptStudentController {
     private List<JoinRequest> joinRequestList;
     private int maxStudents;
 
-    public acceptStudentController() {
+    public AcceptStudentController() {
     }
 
     public void init() {
