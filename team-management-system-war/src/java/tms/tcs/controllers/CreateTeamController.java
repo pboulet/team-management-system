@@ -131,15 +131,18 @@ public class CreateTeamController {
         team.setLiaison(currentStudent);
         List<Student> teamList = new LinkedList<Student>();
         teamList.add(currentStudent);
+        currentStudent.getTeamList().add(team);
         for (String s : studentList.getTarget()) {
             Student t = studentFacade.find(s.split(" ")[0]);
             teamList.add(t);
             t.getTeamList().add(team);
-            studentFacade.edit(t);
         }
         team.setStudentList(teamList);
         teamFacade.create(team);
         courseFacade.edit(course);
+        for(Student s : teamList){
+            studentFacade.edit(s);
+        }
 
     }
 
