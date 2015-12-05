@@ -25,7 +25,7 @@
                         </h:panelGrid>
                         <h:panelGrid columns="2" id="students"> 
                             <p:pickList value="#{createTeamController.studentList}" var="student" 
-                                        itemLabel="#{student.user.firstName} #{student.user.lastName}" itemValue="#{student}">
+                                        itemLabel="#{student}" itemValue="#{student}">
                                 <p:ajax event="transfer" listener="#{createTeamController.onTransfer}" update="msg"/>
                             </p:pickList>  
                         </h:panelGrid>
