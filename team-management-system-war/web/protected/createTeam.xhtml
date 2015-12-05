@@ -1,19 +1,22 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="./home.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">  
+
     <f:metadata>
         <f:viewParam name="courseid" value="#{createTeamController.courseid}" />
         <f:event type="preRenderView" listener="#{createTeamController.init}" />
     </f:metadata>
-    <body>
 
-        <ui:composition template="./home.xhtml">
-            <ui:define name="content">
-                <h:form id="form">
+    <ui:define name="top">
+        <h2><p:link value="Team Management System" outcome="./home.xhtml"></p:link> : Create a Team for #{createTeamController.course.name}</h2>
+        <p:commandButton style="float:right; margin-top: -40px; margin-right:10px" type="button" value="Logout"/>
+    </ui:define>
+
+    <ui:define name="content">
+               <h:form id="form">
                     <p:growl id="msg" escape="false" />
                     <h1>Create Team for course #{createTeamController.course.name}</h1>
                     <p:panel>
@@ -34,8 +37,5 @@
                         </h:panelGrid>
                     </p:panel>
                 </h:form>
-            </ui:define>
-        </ui:composition>
-
-    </body>
-</html>
+    </ui:define>
+</ui:composition>

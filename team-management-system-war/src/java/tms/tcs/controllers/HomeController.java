@@ -91,14 +91,12 @@ public class HomeController implements Serializable {
                 user.isStudent();
         
         homeView.setShowStudentMenuOptions(
-            hasBothRoles &&
             homeView.getCourseListTv().getActiveIndex() == homeView.getSTUDENT_TAB_INDEX() ||
-            user.isStudent());
+            (!hasBothRoles && user.isStudent()));
         
         homeView.setShowInstructorMenuOptions(
-            hasBothRoles &&
             homeView.getCourseListTv().getActiveIndex() == homeView.getINSTRUCTOR_TAB_INDEX() ||
-            user.isInstructor());
+            (!hasBothRoles && user.isInstructor()));
     }
 
     public void onCourseListTabChange( TabChangeEvent e) {
