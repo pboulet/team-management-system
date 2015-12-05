@@ -113,7 +113,6 @@ public class LoginController {
                  Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
              }
          } else {
-             System.out.print("did this");
              status="Invalid Login, Please Try again";
          }
          return "login";
@@ -124,6 +123,6 @@ public class LoginController {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         session.invalidate();
         // navigate to index - see faces-config.xml for navigation rules
-        return "logout";
+        return "login";
     }
 }
