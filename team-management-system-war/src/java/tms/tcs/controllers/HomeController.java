@@ -11,7 +11,9 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.servlet.http.HttpSession;
 import org.primefaces.event.TabChangeEvent;
 import tms.boundaries.CourseFacade;
 import tms.boundaries.UserFacade;
@@ -111,7 +113,8 @@ public class HomeController implements Serializable {
     @PostConstruct
     public void init() {
         //TODO: hookup everything to the user from the session
-        user = userFacade.find((long) 2);        
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+                     user=(User)session.getAttribute("User");       
         
         if (user.isStudent()) 
             studentCourseList = user

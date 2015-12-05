@@ -20,7 +20,7 @@
                     <p:password id="passwd" value="#{loginController.password}">
                     </p:password> 
                 </h:panelGrid>
-                <h:commandButton style="width:250px" value="Login" type="command"  actionListener="#{loginController.login}" action="home" >
+                <h:commandButton style="width:250px" value="Login" type="command" action="#{loginController.login}" >
                 <f:ajax execute="@form" render="@form"/>
                 </h:commandButton>    
                 <br/>

@@ -36,6 +36,7 @@ public class LoginController {
     private String status;
     @EJB
     private StudentFacade studentFacade;
+    @EJB
     private InstructorFacade instructorFacade;
     /**
      * Creates a new instance of LoginBean
@@ -78,7 +79,7 @@ public class LoginController {
         return status;
     }
 
-    public void login() {
+    public String login() {
         User account=null;
         if(userId.charAt(0)=='e'){
             Instructor instructor = instructorFacade.find(userId);
@@ -104,13 +105,7 @@ public class LoginController {
                      //login ok - set user in session context
                      HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
                      session.setAttribute("User", account);
-                     try{
-                         System.out.println("did this");
-                        FacesContext.getCurrentInstance().getExternalContext().redirect("/team-management-system-war/protected/home.xhtml");
-                     }catch(Exception ex){
-                         System.out.print("error here");
-                         Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-                     }
+                     return "/protected/home";
                  } else {
                     status="Invalid Login, Please Try again"; 
                  }
@@ -121,6 +116,7 @@ public class LoginController {
              System.out.print("did this");
              status="Invalid Login, Please Try again";
          }
+         return "login";
     }
     
     public String logout() {
