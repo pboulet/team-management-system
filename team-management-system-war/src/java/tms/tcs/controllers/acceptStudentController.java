@@ -83,13 +83,7 @@ public class AcceptStudentController {
         if (!event.isAdd()) {
             return;
         }
-        int totalItemsNumber = 0;
-        totalItemsNumber = studentList.getTarget().size();
-        List<?> items = event.getItems();
-        if (items != null) {
-            totalItemsNumber = totalItemsNumber + items.size();
-        }
-        if (totalItemsNumber > maxStudents) {
+        if (studentList.getTarget().size() > maxStudents) {
             // limit of selected students is exceeded
             FacesMessage msg = new FacesMessage();
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
