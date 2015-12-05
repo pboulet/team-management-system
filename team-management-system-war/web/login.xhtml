@@ -14,21 +14,23 @@
             <h:form>
                 <h:panelGrid columns="2" style="margin:0 auto; text-align:left;">
                     <h:outputText value="User Id"></h:outputText>
-                    <p:inputText id="id" value="#{loginController.username}">
+                    <p:inputText id="id" value="#{loginController.username}" required="true">
                     </p:inputText>          
                     <h:outputText value="Password"></h:outputText>
-                    <p:password id="passwd" value="#{loginController.password}">
+                    <p:password id="passwd" value="#{loginController.password}" required="true">
                     </p:password> 
                 </h:panelGrid>
-                <h:commandButton style="width:250px" value="Login" type="command" action="#{loginController.login}" >
+                <p:commandButton style="width:250px" value="Login" type="command" action="#{loginController.login}" >
                 <f:ajax execute="@form" render="@form"/>
-                </h:commandButton>    
+                </p:commandButton>
                 <br/>
                 <br/>
-                    <p:link outcome="registerUser.xhtml" value="Register"></p:link>  
-                <div>
-                <h:outputText  style="color:royalblue; font-size: large; font-weight: bold" id="status" value="#{loginController.status}"/>
-                </div>
+                    <p:link outcome="registerUser.xhtml" value="Register"></p:link>
+                     <br/>
+                <br/>
+                    <p:outputPanel autoUpdate="true">
+                        <h:outputText  style="color:royalblue; font-size: large; font-weight: bold;" id="status" value="#{loginController.status}"/>
+                    </p:outputPanel>
             </h:form>
         </p:outputPanel>
     </ui:define>

@@ -165,6 +165,10 @@ public class RegisterController {
                 account.setInstructor(i);
                 instructorFacade.create(i);
             }
+            if(!(student||instructor)){
+                status="must be an instructor or a student";
+                return "register";
+            }
             // randomly generate salt value
             final Random r = new SecureRandom();
             byte[] salt = new byte[32];

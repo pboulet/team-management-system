@@ -66,7 +66,6 @@
                             </p:selectBooleanCheckbox>
                         </p:outputPanel>
                     </h:panelGrid>
-                    <p:message for="instructorcheckbox"></p:message>
                     <p:outputPanel  id="studentInfo">    
                         <h:panelGrid columns="3" style="margin:0 auto; text-align:left; min-width:350px;" rendered="#{registerController.student}" >
                                 <p:outputLabel value="Student ID:"/>
@@ -79,16 +78,24 @@
                     <h:panelGroup id ="instructorInfo">
                         <h:panelGrid columns="3" style="margin:0 auto; text-align:left" rendered="#{registerController.instructor}">
                                 <p:outputLabel value="Instructor ID:"/>
-                                <p:inputText id="instructorId" value="#{registerController.instructorId}" required="true" requiredMessage="An instrutor identification number is required"/>
-                                <p:message for="instructorId"/>
+                                <p:inputText id="instructorId" value="#{registerController.instructorId}" required="#{registerController.instructor}"
+                                             validatorMessage="Invalid instructor identification number format"
+                                             requiredMessage="An instrutor identification number is required">
+                                    <f:validateRegex pattern="^e+[0-9]*" />
+                                    <p:ajax event="keyup" update="instructorIdMsg"/>
+                                </p:inputText>
+                                <p:message id="instructorIdMsg" for="instructorId"/>
                         </h:panelGrid>
                     </h:panelGroup>
                     <p:commandButton style="width:125px" value="Register me" type="command"  action="#{registerController.submit}">
-                       <f:ajax execute="register" render="status"/>
+                       <f:ajax execute="@form" render="@form"/>
                     </p:commandButton>
                     <br/>
                     <p:link outcome="login.xhtml" value="Cancel"></p:link>
+                    
+                    <p:outputPanel autoUpdate="true">
                     <h:outputText  style="color:royalblue; font-size: large; font-weight: bold" id="status" value="#{loginController.status}"/>
+                    </p:outputPanel>
             </h:form>
         </p:outputPanel>
     </ui:define>
