@@ -56,6 +56,10 @@ public class Course implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    public boolean hasTeamParams() {
+        return teamParams != null;
+    }
     
     public TeamParameters getTeamParams() {
         return teamParams;

@@ -17,8 +17,9 @@ import tms.tcs.boundaries.TeamParametersFacade;
 import tms.tcs.models.TeamParameters;
 
 /**
- *
- * @author maxime
+ * Controller for the Setup Parameters View
+ * 
+ * @author Maxime Bélair, Patrice Boulet
  */
 @ManagedBean(name = "setupParametersController")
 @ViewScoped
@@ -50,6 +51,14 @@ public class SetupParametersController {
             return;
         }
         courseSection = course.getCourseSection();
+        
+        // initialize fields with model properties
+        if (course.hasTeamParams()) {
+            TeamParameters tp = course.getTeamParams();
+            minStudent = tp.getMinNumStudents();
+            maxStudent = tp.getMaxNumStudents();
+            deadline = tp.getCreationDeadline();
+        }
     }
 
     public Long getCourseid() {
