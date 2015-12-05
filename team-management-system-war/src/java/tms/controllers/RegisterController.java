@@ -5,6 +5,7 @@
  */
 package tms.controllers;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -16,7 +17,6 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
 import tms.boundaries.InstructorFacade;
 import tms.boundaries.StudentFacade;
@@ -30,7 +30,7 @@ import tms.models.User;
  */
 @ManagedBean
 @ViewScoped
-public class RegisterController {
+public class RegisterController implements Serializable {
 
     @EJB
     private UserFacade userFacade;

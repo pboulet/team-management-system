@@ -20,7 +20,7 @@ import javax.persistence.Table;
  * @author Patrice Boulet
  */
 @Entity
-@Table(name = "PNSM_Instructor")
+@Table(name = "PNSM_Notification")
 public class Notification implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
