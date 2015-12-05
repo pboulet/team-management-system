@@ -15,8 +15,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- *
- * @author User
+ * Entity for Team Parameters Models
+ * 
+ * @author Patrice Boulet
  */
 @Entity
 @Table(name="PNSM_TeamParameters")

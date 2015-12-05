@@ -23,8 +23,9 @@ import javax.persistence.Table;
 import tms.models.Student;
 
 /**
- *
- * @author User
+ * Entity for Team Models
+ * 
+ * @author Patrice Boulet
  */
 @Entity
 @Table(name="PNSM_Teams")

@@ -12,12 +12,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
- *
- * @author User
+ * Entity for Instructor Models
+ * 
+ * @author Patrice Boulet
  */
 @Entity
+@Table(name = "PNSM_Instructor")
 public class Notification implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

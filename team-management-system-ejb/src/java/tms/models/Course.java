@@ -22,8 +22,9 @@ import tms.tcs.models.Team;
 import tms.tcs.models.TeamParameters;
 
 /**
- *
- * @author User
+ * Entity for Course Models
+ * 
+ * @author Patrice Boulet
  */
 @Entity
 @Table(name = "PNSM_Courses")

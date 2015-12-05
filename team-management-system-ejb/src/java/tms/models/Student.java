@@ -19,8 +19,9 @@ import tms.tcs.models.JoinRequest;
 import tms.tcs.models.Team;
 
 /**
- *
- * @author User
+ * Entity for Student Models
+ * 
+ * @author Patrice Boulet
  */
 @Entity
 @Table(name = "PNSM_Students")

@@ -18,8 +18,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
- *
- * @author User
+ * Entity for User Models
+ * 
+ * @author Patrice Boulet
  */
 @Entity
 @Table(name = "PNSM_Users")
