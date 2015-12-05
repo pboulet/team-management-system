@@ -52,6 +52,7 @@
 		<p:inputText id="lastName" value="#{registerController.lastName}"/>
 		<p:message for="lastName"/>
 		</h:panelGrid>
+            <p:outputLabel for="studentcheckbox" value="I'm a Student"></p:outputLabel>
 		<p:selectBooleanCheckbox id="studentcheckbox" value="#{registerController.student}">
 				<p:ajax update="studentInfo" process="@this"/>
 		</p:selectBooleanCheckbox>
@@ -64,11 +65,12 @@
                         <p:inputText id="studentProgram" value="#{registerController.programOfStudy}"/>
                 </h:panelGrid>
             </h:panelGroup>
+            <p:outputLabel for="instructorcheckbox" value="I'm an Instructor"></p:outputLabel>
             <p:selectBooleanCheckbox id="instructorcheckbox" value="#{registerController.instructor}">
 				<p:ajax update="studentInfo" process="@this"/>
             </p:selectBooleanCheckbox>
-                <h:panelGroup id ="studentInfo"> 
-                <h:panelGrid id="instructorInfo" columns="3" rendered="#{registerController.instructor}">
+                <h:panelGroup id ="instructorInfo"> 
+                <h:panelGrid columns="3" rendered="#{registerController.instructor}">
                         <p:outputLabel value="Instructor ID:"/>
                         <p:inputText id="instructorId" value="#{registerController.instructorId}" required="true" requiredMessage="An instrutor identification number is required"/>
                         <p:message for="instructorId"/>

@@ -1,50 +1,73 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+<ui:composition template="./mainLayout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
 
-    <body>
+    <ui:define name="top">
+        <h2>Team Management System</h2>
+        <p:commandButton style="float:right; margin-top: -40px; margin-right:10px" type="button" value="Logout"/>
+    </ui:define>
 
-        <ui:composition template="./mainLayout.xhtml">
-
-            <ui:define name="top">
-                <h2>Team Management System</h2>
-                <p:commandButton style="float:right; margin-top: -40px; margin-right:10px" type="button" value="Logout"/>
-
-
-            </ui:define>
-
-            <ui:define name="content">
-                <p:tabView>
+    <ui:define name="content">   
+        <p:layout>
+            <p:layoutUnit position="east" size="190" header="Student Operational Menu" style="border:none">
+                <h:form id="control-menu">
+                    <p:menu>
+                        <p:menuitem rendered="#{homeView.courseListTv.activeIndex == homeView.STUDENT_TAB_INDEX}" 
+                                    disabled="#{homeView.selectedStudentCourse == null}" 
+                                    value="Visualize Incomplete Teams" >
+                            <f:param name="courseid" 
+                                     value="#{homeView.selectedStudentCourse.id}" />
+                        </p:menuitem>
+                        <p:menuitem rendered="#{homeView.courseListTv.activeIndex == homeView.STUDENT_TAB_INDEX}"
+                                    disabled="#{homeView.selectedStudentCourse == null}" 
+                                    value="Create a Team" outcome="createTeam" >
+                            <f:param name="courseid" value="#{homeView.selectedStudentCourse.id}" />
+                        </p:menuitem>
+                        <p:menuitem rendered="#{homeView.courseListTv.activeIndex == homeView.INSTRUCTOR_TAB_INDEX}"
+                                    disabled="#{homeView.selectedInstructorCourse == null}" 
+                                    value="ViewTeams" outcome="visualizeStudentsTeams">
+                            <f:param name="courseid" value="#{homeView.selectedInstructorCourse.id}" />
+                        </p:menuitem>
+                        <p:menuitem rendered="#{homeView.courseListTv.activeIndex == homeView.INSTRUCTOR_TAB_INDEX}"
+                                    disabled="#{homeView.selectedInstructorCourse == null}" 
+                                    value="Set Up Parameters" outcome="setupParameters" >
+                            <f:param name="courseid" value="#{homeView.selectedInstructorCourse.id}" />
+                        </p:menuitem>
+                    </p:menu>
+                </h:form>
+            </p:layoutUnit>
+            <p:layoutUnit position="center" style="border:none">
+                <p:tabView binding="#{homeView.courseListTv}" dynamic="true">
+                    <p:ajax event="tabChange" listener="#{homeView.onCourseListTabChange}" 
+                            update=":control-menu"/>
                     <p:tab title="Student Courses">
-                        <p:layout >
-                            <p:layoutUnit position="east" size="175" header="Student Operational Menu" collapsible="true">
-                                <p:menu>
-                                    <p:menuitem value="ViewTeams" outcome="visualizeStudentsTeams">
-                                        <f:param name="courseid" value="1" />
-                                    </p:menuitem>
-                                    <p:menuitem value="Set Up Parameters" outcome="setupParameters" >
-                                        <f:param name="courseid" value="1" />
-                                    </p:menuitem>
-                                </p:menu>
-                            </p:layoutUnit>
-                            <p:layoutUnit position="center">
-                                <h:outputText value="The story begins as Don Vito Corleone..." />
-                            </p:layoutUnit>
-                        </p:layout>
+                        <h:form>
+                            <p:dataTable id="student-course-list" var="course" value="#{homeController.studentCourseList}" 
+                                            selectionMode="single" selection="#{homeView.selectedStudentCourse}" rowKey="#{course.id}">
+                                <p:ajax event="rowSelect" update=":control-menu" />
+                                <p:column headerText="My Courses">
+                                    <h:outputText value="#{course.name}" />
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
                     </p:tab>
                     <p:tab title="Instructor Courses">
-                        <h:panelGrid columns="2" cellpadding="10">
-                            <h:outputText value="Francis Ford Coppola's legendary..." />
-                        </h:panelGrid>
+                        <h:form>
+                            <p:dataTable id="instructor-course-list" var="course" value="#{homeController.instructorCourseList}" 
+                                            selectionMode="single" selection="#{homeView.selectedInstructorCourse}" rowKey="#{course.id}">
+                                <p:ajax event="rowSelect" update=":control-menu" />
+                                <p:column headerText="My Courses">
+                                    <h:outputText value="#{course.name}" />
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
                     </p:tab>
                 </p:tabView>
-            </ui:define>
+            </p:layoutUnit>
+        </p:layout>
+    </ui:define>
+</ui:composition>
 
-        </ui:composition>
-
-    </body>
-</html>

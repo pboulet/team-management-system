@@ -33,6 +33,9 @@ public class Course implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    @Column(name="NAME")
+    private String name;
+    
     @Column(name="COURSE_SECTION")
     private String courseSection;
     
@@ -46,6 +49,14 @@ public class Course implements Serializable {
     @JoinColumn(name="TEAM_PARAMETERS_ID")
     private TeamParameters teamParams;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     public TeamParameters getTeamParams() {
         return teamParams;
     }
