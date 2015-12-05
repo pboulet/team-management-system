@@ -11,8 +11,8 @@
     </ui:define>
 
     <ui:define name="content">   
-        <p:layout>
-            <p:layoutUnit position="east" size="190" header="Student Operational Menu" style="border:none">
+        <p:layout id="control-menu-container">
+            <p:layoutUnit position="east" size="190" style="border:none">
                 <h:form id="control-menu">
                     <p:menu>
                         <p:menuitem rendered="#{homeView.courseListTv.activeIndex == homeView.STUDENT_TAB_INDEX}" 
@@ -43,7 +43,7 @@
                 <p:tabView binding="#{homeView.courseListTv}" dynamic="true">
                     <p:ajax event="tabChange" listener="#{homeView.onCourseListTabChange}" 
                             update=":control-menu"/>
-                    <p:tab title="Student Courses">
+                    <p:tab rendered="#{homeController.user.isStudent()}" title="Student Courses">
                         <h:form>
                             <p:dataTable id="student-course-list" var="course" value="#{homeController.studentCourseList}" 
                                             selectionMode="single" selection="#{homeView.selectedStudentCourse}" rowKey="#{course.id}">
@@ -54,7 +54,7 @@
                             </p:dataTable>
                         </h:form>
                     </p:tab>
-                    <p:tab title="Instructor Courses">
+                    <p:tab rendered="#{homeController.user.isInstructor()}" title="Instructor Courses">
                         <h:form>
                             <p:dataTable id="instructor-course-list" var="course" value="#{homeController.instructorCourseList}" 
                                             selectionMode="single" selection="#{homeView.selectedInstructorCourse}" rowKey="#{course.id}">

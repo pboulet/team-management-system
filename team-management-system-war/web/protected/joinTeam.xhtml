@@ -1,36 +1,26 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      >
-    <f:metadata>
-    </f:metadata>
-    <body>
+<ui:composition template="../WEB-INF/mainLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h1>Join A Team</h1>
+        <p:panel>
+            <h:panelGrid columns="2"> 
+                <p:selectOneMenu id="dropdownTeamList" value="#{joinTeamController.teamList}" style="width:160px">
 
-        <ui:composition template="./mainLayout.xhtml">
-            <ui:define name="content">
-                <h1>Join Team #</h1>
-                <p:panel>
-                    <h:panelGrid columns="2"> 
-                        <p:selectOneMenu id="dropdownTeamList" value="#{joinTeamController.teamList}" style="width:160px">
-
-                            <f:selectItem itemLabel="Select Teams" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{joinTeamController.teamList}" />
-                        </p:selectOneMenu>
-                        <h:commandButton value="Add" type="command"  actionListener="#{joinTeamController.add}">
-                            <f:ajax execute="add" 
-                                    render="status"/>
-                        </h:commandButton>
-                        <h:commandButton value="Submit" type="command"  actionListener="#{joinTeamController.submit}">
-                            <f:ajax execute="submit" 
-                                    render="status"/>
-                        </h:commandButton>
-                    </h:panelGrid>
-                </p:panel>
-            </ui:define>
-        </ui:composition>
-    </body>
-</html>
+                    <f:selectItem itemLabel="Select Teams" itemValue="" noSelectionOption="true" />
+                    <f:selectItems value="#{joinTeamController.teamList}" />
+                </p:selectOneMenu>
+                <h:commandButton value="Add" type="command"  actionListener="#{joinTeamController.add}">
+                    <f:ajax execute="add" 
+                            render="status"/>
+                </h:commandButton>
+                <h:commandButton value="Submit" type="command"  actionListener="#{joinTeamController.submit}">
+                    <f:ajax execute="submit" 
+                            render="status"/>
+                </h:commandButton>
+            </h:panelGrid>
+        </p:panel>
+    </ui:define>
+</ui:composition>

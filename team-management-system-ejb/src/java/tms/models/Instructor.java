@@ -6,13 +6,12 @@
 package tms.models;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -33,6 +32,10 @@ public class Instructor implements Serializable {
     @JoinColumn(name = "INSTRUCTOR_ID")
     private User user;
 
+    @ManyToMany
+    @JoinColumn(name="COURSE_ID")
+    private List<Course> courseList;
+       
     public User getUser() {
         return user;
     }
@@ -47,6 +50,14 @@ public class Instructor implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public List<Course> getCourseList() {
+        return courseList;
+    }
+
+    public void setCourseList(List<Course> courseList) {
+        this.courseList = courseList;
     }
 
     @Override

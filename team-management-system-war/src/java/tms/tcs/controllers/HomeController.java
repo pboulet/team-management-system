@@ -12,7 +12,9 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
 import tms.boundaries.CourseFacade;
+import tms.boundaries.UserFacade;
 import tms.models.Course;
+import tms.models.User;
 
 /**
  *
@@ -24,11 +26,24 @@ public class HomeController implements Serializable {
     
     @EJB
     private CourseFacade courseFacade;
+    
+    @EJB
+    private UserFacade userFacade;
+    
+    private User user;
 
     // mock until I know how to get the session user
     private List<Course> studentCourseList; 
     
     private List<Course> instructorCourseList;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
     
     public List<Course> getStudentCourseList() {
         return studentCourseList;
@@ -55,18 +70,17 @@ public class HomeController implements Serializable {
 
     @PostConstruct
     public void init() {
-        studentCourseList = courseFacade.findAll();
+        //TODO: hookup everything to the user from the session
+        user = userFacade.find((long) 1);        
+        
+        if (user.isStudent())
+            studentCourseList = user
+                                .getStudent()
+                                .getCourseList();
+        
+        if (user.isInstructor())
+            instructorCourseList = user
+                                    .getInstructor()
+                                    .getCourseList();
     }
-
-    
-//    public void onCoureSelect(SelectEvent event) {
-//        Long selectedCourseId = ((Course) event.getObject()).getId();
-//        
-//        Course tmpCourse = new Course();
-//        tmpCourse.setId(selectedCourseId);
-//        
-//        selectedCourse = studentCourseList.stream().filter(
-//            course -> course.equals(tmpCourse)
-//        ).findFirst().get();
-//    }
 }

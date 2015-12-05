@@ -119,6 +119,15 @@ public class User implements Serializable {
         this.salt = salt;
     }
 
+    public boolean isStudent() {
+        return student != null;
+    }
+    
+    public boolean isInstructor() {
+        return instructor != null;
+    }
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;

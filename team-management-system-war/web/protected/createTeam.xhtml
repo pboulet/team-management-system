@@ -1,41 +1,34 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
-      >
-
-    <body>
-        <ui:composition template="./mainLayout.xhtml">
-            <ui:define name="content">
-                <h1>Create Team</h1>
-                <p:panel>
-                    <h:panelGrid columns="1">        
-                        <h:outputText value="Team Name:"></h:outputText>
-                        <h:inputText id="teamName" value="#{createTeamController.teamName}">
-                        </h:inputText>        
-                        <p:outputLabel for="dropdownTeamList" value="Available students: " />
-                        </h:panelGrid>
-                        <h:panelGrid columns="2"> 
-                        <p:selectOneMenu id="dropdownTeamList" value="#{createTeamController.studentList}" style="width:160px">                
-                            <f:selectItem itemLabel="Select Team Member" itemValue="" noSelectionOption="true" />
-                            <f:selectItems value="#{dropdownView.team}" />
-                            </p:selectOneMenu>
-                            <h:commandButton value="Add" type="command"  actionListener="#{createTeamController.add}">
-                            <f:ajax execute="add" 
-                                    render="status"/>
-                        </h:commandButton>
-                       </h:panelGrid>
-                    <h:panelGrid columns="1"> 
-                        <h:commandButton value="Submit" type="command"  actionListener="#{createTeamController.submit}">
-                            <f:ajax execute="submit" 
-                                    render="status"/>
-                        </h:commandButton>
-                    </h:panelGrid>
-                </p:panel>
-            </ui:define>
-        </ui:composition>
-    </body>
-</html>
+<ui:composition template="../WEB-INF/mainLayout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h1>Create Team</h1>
+        <p:panel>
+            <h:panelGrid columns="1">        
+                <h:outputText value="Team Name:"></h:outputText>
+                <h:inputText id="teamName" value="#{createTeamController.teamName}">
+                </h:inputText>        
+                <p:outputLabel for="dropdownTeamList" value="Available students: " />
+                </h:panelGrid>
+                <h:panelGrid columns="2"> 
+                <p:selectOneMenu id="dropdownTeamList" value="#{createTeamController.studentList}" style="width:160px">                
+                    <f:selectItem itemLabel="Select Team Member" itemValue="" noSelectionOption="true" />
+                    <f:selectItems value="#{dropdownView.team}" />
+                    </p:selectOneMenu>
+                    <h:commandButton value="Add" type="command"  actionListener="#{createTeamController.add}">
+                    <f:ajax execute="add" 
+                            render="status"/>
+                </h:commandButton>
+               </h:panelGrid>
+            <h:panelGrid columns="1"> 
+                <p:commandButton value="Submit" type="command"  actionListener="#{createTeamController.submit}">
+                    <f:ajax execute="submit" 
+                            render="status"/>
+                </p:commandButton>
+            </h:panelGrid>
+        </p:panel>
+    </ui:define>
+</ui:composition>
