@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -14,9 +15,11 @@
     <h:body>
 
         <div id="top" class="top">
+            
+                <h2><p:link value="Team Management System" outcome="/faces/protected/home.xhtml"></p:link> 
             <ui:insert name="top">
-                <h2>Team Management System</h2>
-            </ui:insert>
+            </ui:insert></h2>
+            <p:commandButton style="float:right; margin-top: -40px; margin-right:10px" action="#{loginController.logout}" value="Logout"/>
         </div>
 
         <div id="content">

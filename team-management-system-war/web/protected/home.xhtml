@@ -9,11 +9,6 @@
         <f:event type="preRenderView" listener="#{homeController.init}" />
     </f:metadata>
 
-    <ui:define name="top">
-        <h2>Team Management System</h2>
-        <p:commandButton style="float:right; margin-top: -40px; margin-right:10px" action="#{loginController.logout}" value="Logout"/>
-    </ui:define>
-
     <ui:define name="content">   
         <p:layout id="control-menu-container">
             <p:layoutUnit position="east" size="190" style="border:none">
