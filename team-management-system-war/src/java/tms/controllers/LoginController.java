@@ -119,10 +119,11 @@ public class LoginController {
     }
     
     public String logout() {
+        System.out.println("called log out");
         // invalidate session to remove User
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         session.invalidate();
         // navigate to index - see faces-config.xml for navigation rules
-        return "login";
+        return "/faces/login.xhtml?faces-redirect=true";
     }
 }
