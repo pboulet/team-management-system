@@ -33,6 +33,7 @@ public class HomeView implements Serializable {
     private boolean showInstructorMenuOptions;
     
     private boolean showCreateTeamOption;
+    private boolean showAcceptStudentsOption;
     
     /**
      * Creates a new instance of HomeView
@@ -40,6 +41,14 @@ public class HomeView implements Serializable {
     public HomeView() {
     }
 
+    public boolean isShowAcceptStudentsOption() {
+        return showAcceptStudentsOption;
+    }
+
+    public void setShowAcceptStudentsOption(boolean showAcceptStudentsOption) {
+        this.showAcceptStudentsOption = showAcceptStudentsOption;
+    }
+    
     public boolean isShowCreateTeamOption() {
         return showCreateTeamOption;
     }

@@ -27,6 +27,7 @@ import tms.models.User;
 /**
  *
  * @author Nick
+ * Controller to register a user
  */
 @ManagedBean
 @ViewScoped
@@ -144,7 +145,18 @@ public class RegisterController implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
-
+    /**
+     * Called when the user submits the form
+     * set's the information of the account inside the created user bean,
+     * if student information was provided a student bean is created and filled,
+     * student bean is associated to user bean and put on the db
+     * if instructor information was provided an instructor bean is created and filled,
+     * instructor bean is associated to user bean and put on the db
+     * if none were provided the status is said and the register form is displayed
+     * the password is encoded and salt is added to it
+     * user bean is set to db
+     * @return the view to be displayed
+     */
     public String submit() {
                 try {
             User account = new User();

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tms.controllers;
 
 import java.io.IOException;
@@ -27,6 +22,7 @@ import tms.models.User;
 /**
  *
  * @author Nick
+ * Controller to take care of the login page and the logout function
  */
 @ManagedBean
 @RequestScoped
@@ -78,7 +74,14 @@ public class LoginController {
     public String getStatus() {
         return status;
     }
-
+    /**
+     * Goes to find the account associated to the id and password entered
+     * if it's an employee id performs a query in the instructor db
+     * if it's a student id it performs a query in the student db
+     * Then it get's the associated user, confirms the password 
+     * and put's the user in the session.
+     * @return Page to navigate to.
+     */
     public String login() {
         User account=null;
         if(userId.charAt(0)=='e'){
@@ -117,13 +120,15 @@ public class LoginController {
          }
          return "login";
     }
-    
+    /**
+     * Called by the logout button
+     * Clears the session to remove current user
+     * @return navigate to login page 
+     */
     public String logout() {
         System.out.println("called log out");
-        // invalidate session to remove User
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         session.invalidate();
-        // navigate to index - see faces-config.xml for navigation rules
         return "/faces/login.xhtml?faces-redirect=true";
     }
 }
