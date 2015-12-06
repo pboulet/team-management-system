@@ -105,7 +105,7 @@ public class LoginController {
                      //login ok - set user in session context
                      HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
                      session.setAttribute("User", account);
-                     return "/protected/home";
+                     return "/protected/home?faces-redirect=true";
                  } else {
                     status="Invalid Login, Please Try again"; 
                  }

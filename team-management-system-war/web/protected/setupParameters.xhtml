@@ -41,7 +41,7 @@
                 <p:outputLabel value="Deadline for teams creation:" />
                 <p:calendar id="deadline" value="#{setupParametersController.deadline}" required="true" requiredMessage="Please enter a deadline for the team creation"/>                        
                 <p:message for="deadline"/>
-                <p:commandButton value="submit" actionListener="#{setupParametersController.submit}" action="home" >
+                <p:commandButton value="submit" actionListener="#{setupParametersController.submit}" action="home?faces-redirect=true" >
                     <f:ajax execute="@form" render="@form" />
                 </p:commandButton>
             </h:panelGrid>
