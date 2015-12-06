@@ -11,11 +11,11 @@
 
     <ui:define name="content">   
         <p:layout id="control-menu-container">
-            <p:layoutUnit position="east" size="190" style="border:none">
+            <p:layoutUnit position="east" size="190" style="border:none; min-height: 200px;">
                 <h:form id="control-menu">
                     <p:outputPanel rendered="#{homeView.showInstructorMenuOptions || homeView.showStudentMenuOptions}">
                         <p:menu>
-                            <p:menuitem rendered="#{homeView.showStudentMenuOptions}" 
+                            <p:menuitem rendered="#{homeView.showJoinTeamOption}" 
                                         disabled="#{homeView.selectedStudentCourse == null}" 
                                         value="Visualize Incomplete Teams" outcome="joinTeam" >
                                 <f:param name="courseid" 
@@ -29,7 +29,7 @@
                             <p:menuitem rendered="#{homeView.showAcceptStudentsOption}"
                                         disabled="#{homeView.selectedStudentCourse == null}" 
                                         value="Accept Students Join Requests" outcome="acceptStudent" >
-                                <f:param name="teamid" value="2" />
+                                <f:param name="teamid" value="#{homeController.getStudentTeamForSelectedCourse().getId()}" />
                             </p:menuitem>
                             <p:menuitem rendered="#{homeView.showInstructorMenuOptions}"
                                         disabled="#{homeView.selectedInstructorCourse == null}" 

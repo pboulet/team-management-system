@@ -109,13 +109,19 @@ public class HomeController implements Serializable {
         Course selectedCourse = homeView.getSelectedStudentCourse();
         
         if ( selectedCourse != null ) {    
+            boolean isAlreadyInAteam = isAlreadyInAteamFor(selectedCourse);
+            boolean isLiaisonInTeam = isLiaisonInTeamFor(selectedCourse);
+            
             homeView.setShowCreateTeamOption(
-                    !isAlreadyInAteamFor(selectedCourse) && 
+                    !isAlreadyInAteam && 
                     selectedCourse.hasTeamParams() && 
-                    homeView.isShowStudentMenuOptions()
-            );
+                    homeView.isShowStudentMenuOptions());
+            homeView.setShowJoinTeamOption(!isAlreadyInAteam && 
+                                homeView.isShowStudentMenuOptions());
+            homeView.setShowAcceptStudentsOption(isLiaisonInTeam);
         } else {
             homeView.setShowCreateTeamOption(false);
+            homeView.setShowJoinTeamOption(false);
         }
     }
     
@@ -146,10 +152,49 @@ public class HomeController implements Serializable {
     private boolean isAlreadyInAteamFor(Course selectedCourse){
         for(Team t : user.getStudent().getTeamList()) {
             if (t.getCourse().equals(selectedCourse)){
-                return false;
+                return true;
             }
         }
         return false;
+    }
+    
+    /**
+     * Checks if the session User Student is a 
+     * liaison for a team in the selected course.
+     * 
+     * @param selectedCourse the selected course
+     * 
+     * @return true if the session User Student is
+     * a liaison for an existing team in the selected,
+     * false otherwise.
+     * 
+     * @author Patrice Boulet
+     */
+    private boolean isLiaisonInTeamFor(Course selectedCourse){
+        for(Team t: user.getStudent().getLiaisonOf()){
+            if (t.getCourse().equals(selectedCourse))
+                return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Gets the Team of the Student Session User
+     * for the selected Course.
+     * 
+     * @return the Student Team for the selected Course.
+     * 
+     * @author Patrice Boulet
+     */
+    public Team getStudentTeamForSelectedCourse(){
+        Course selectedCourse = homeView.getSelectedStudentCourse();
+        if(user != null && selectedCourse != null){
+            for (Team t : user.getStudent().getLiaisonOf()){
+                if(t.getCourse().equals(selectedCourse))
+                    return t;
+            }
+        }
+        return null;
     }
     
     /**

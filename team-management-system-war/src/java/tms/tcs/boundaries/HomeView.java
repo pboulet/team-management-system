@@ -24,7 +24,6 @@ public class HomeView implements Serializable {
     private final int INSTRUCTOR_TAB_INDEX = 1;
     
     private Course selectedStudentCourse;  
-    
     private Course selectedInstructorCourse;
     
     private TabView courseListTv;
@@ -33,6 +32,7 @@ public class HomeView implements Serializable {
     private boolean showInstructorMenuOptions;
     
     private boolean showCreateTeamOption;
+    private boolean showJoinTeamOption;
     private boolean showAcceptStudentsOption;
     
     /**
@@ -41,6 +41,14 @@ public class HomeView implements Serializable {
     public HomeView() {
     }
 
+    public boolean isShowJoinTeamOption() {
+        return showJoinTeamOption;
+    }
+
+    public void setShowJoinTeamOption(boolean showJoinTeamOption) {
+        this.showJoinTeamOption = showJoinTeamOption;
+    }
+    
     public boolean isShowAcceptStudentsOption() {
         return showAcceptStudentsOption;
     }
