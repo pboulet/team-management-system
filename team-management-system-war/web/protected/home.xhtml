@@ -26,6 +26,11 @@
                                         value="Create a Team" outcome="createTeam" >
                                 <f:param name="courseid" value="#{homeView.selectedStudentCourse.id}" />
                             </p:menuitem>
+                            <p:menuitem rendered="#{homeView.showAcceptStudentsOption}"
+                                        disabled="#{homeView.selectedStudentCourse == null}" 
+                                        value="Accept Students Join Requests" outcome="acceptStudent" >
+                                <f:param name="teamid" value="2" />
+                            </p:menuitem>
                             <p:menuitem rendered="#{homeView.showInstructorMenuOptions}"
                                         disabled="#{homeView.selectedInstructorCourse == null}" 
                                         value="ViewTeams" outcome="visualizeStudentsTeams">
