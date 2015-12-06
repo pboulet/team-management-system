@@ -57,7 +57,7 @@ public class AuthenticationFilter implements Filter {
         // is made by an anonymous (not logged) user
         
         //TODO: replace securePath by "protected" when ready -P
-        if (reqURI.contains("/securePath/") && (ses == null || (ses != null && ses.getAttribute("User") == null))) {
+        if (reqURI.contains("/protected/") && (ses == null || (ses != null && ses.getAttribute("User") == null))) {
             String loginURL = req.getContextPath() + "/faces/login.xhtml";
             res.sendRedirect(loginURL);
         } else {

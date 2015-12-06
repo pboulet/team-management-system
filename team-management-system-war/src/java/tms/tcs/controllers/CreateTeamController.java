@@ -43,6 +43,7 @@ public class CreateTeamController {
     private Course course;
     private Long courseid;
     private Student currentStudent;
+    private boolean submitDisabled = false;
 
     public CreateTeamController() {
         team = new Team();
@@ -131,19 +132,23 @@ public class CreateTeamController {
         team.setLiaison(currentStudent);
         List<Student> teamList = new LinkedList<Student>();
         teamList.add(currentStudent);
+        currentStudent.getTeamList().add(team);
         for (String s : studentList.getTarget()) {
             Student t = studentFacade.find(s.split(" ")[0]);
             teamList.add(t);
             t.getTeamList().add(team);
-            studentFacade.edit(t);
         }
         team.setStudentList(teamList);
         teamFacade.create(team);
         courseFacade.edit(course);
+        for (Student s : teamList) {
+            studentFacade.edit(s);
+        }
 
     }
 
     public void onTransfer(TransferEvent event) {
+        submitDisabled = (studentList.getTarget().size() > course.getTeamParams().getMaxNumStudents() - 1);
         if (!event.isAdd()) {
             return;
         }
@@ -153,12 +158,6 @@ public class CreateTeamController {
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             msg.setSummary("Exceeded number of students in the team");
             FacesContext.getCurrentInstance().addMessage(null, msg);
-            List<String> studentSource = studentList.getSource();
-            List<String> studentTarget = studentList.getTarget();
-            while (course.getTeamParams().getMaxNumStudents() - 1 < studentList.getTarget().size()) {
-                studentSource.add(studentTarget.remove(studentTarget.size() - 1));
-            }
-            studentList = new DualListModel<>(studentSource, studentTarget);
         }
     }
 
@@ -168,6 +167,14 @@ public class CreateTeamController {
 
     public void setCurrentStudent(Student currentStudent) {
         this.currentStudent = currentStudent;
+    }
+
+    public boolean isSubmitDisabled() {
+        return submitDisabled;
+    }
+
+    public void setSubmitDisabled(boolean submitDisabled) {
+        this.submitDisabled = submitDisabled;
     }
 
 }
