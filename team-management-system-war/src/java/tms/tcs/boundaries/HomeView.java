@@ -9,7 +9,6 @@ import java.io.Serializable;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.component.tabview.TabView;
-import org.primefaces.event.TabChangeEvent;
 import tms.models.Course;
 
 /**
@@ -33,12 +32,22 @@ public class HomeView implements Serializable {
     private boolean showStudentMenuOptions;
     private boolean showInstructorMenuOptions;
     
+    private boolean showCreateTeamOption;
+    
     /**
      * Creates a new instance of HomeView
      */
     public HomeView() {
     }
 
+    public boolean isShowCreateTeamOption() {
+        return showCreateTeamOption;
+    }
+
+    public void setShowCreateTeamOption(boolean showCreateTeamOption) {
+        this.showCreateTeamOption = showCreateTeamOption;
+    }
+    
     public TabView getCourseListTv() {
         return courseListTv;
     }
@@ -62,7 +71,7 @@ public class HomeView implements Serializable {
     public void setSelectedInstructorCourse(Course selectedInstructorCourse) {
         this.selectedInstructorCourse = selectedInstructorCourse;
     }
-
+    
     public boolean isShowStudentMenuOptions() {
         return showStudentMenuOptions;
     }

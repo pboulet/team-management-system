@@ -26,7 +26,7 @@
                                 <f:param name="courseid" 
                                          value="#{homeView.selectedStudentCourse.id}" />
                             </p:menuitem>
-                            <p:menuitem rendered="#{homeView.showStudentMenuOptions}"
+                            <p:menuitem rendered="#{homeView.showCreateTeamOption}"
                                         disabled="#{homeView.selectedStudentCourse == null}" 
                                         value="Create a Team" outcome="createTeam" >
                                 <f:param name="courseid" value="#{homeView.selectedStudentCourse.id}" />

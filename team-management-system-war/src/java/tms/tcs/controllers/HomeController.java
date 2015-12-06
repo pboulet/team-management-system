@@ -97,8 +97,15 @@ public class HomeController implements Serializable {
         homeView.setShowInstructorMenuOptions(
             homeView.getCourseListTv().getActiveIndex() == homeView.getINSTRUCTOR_TAB_INDEX() ||
             (!hasBothRoles && user.isInstructor()));
+        
+        // do not show the create team option if no existing team params for selected course
+        Course tmpCourse = homeView.getSelectedStudentCourse();
+        if ( tmpCourse != null )    
+            homeView.setShowCreateTeamOption(tmpCourse.hasTeamParams() && homeView.isShowStudentMenuOptions());
+        else
+            homeView.setShowCreateTeamOption(false);
     }
-
+    
     public void onCourseListTabChange( TabChangeEvent e) {
         homeView.getCourseListTv()
                 .setActiveIndex(homeView
