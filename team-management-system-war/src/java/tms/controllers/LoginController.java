@@ -105,7 +105,7 @@ public class LoginController {
                      //login ok - set user in session context
                      HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
                      session.setAttribute("User", account);
-                     return "/protected/home";
+                     return "/protected/home?faces-redirect=true";
                  } else {
                     status="Invalid Login, Please Try again"; 
                  }
@@ -119,10 +119,11 @@ public class LoginController {
     }
     
     public String logout() {
+        System.out.println("called log out");
         // invalidate session to remove User
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         session.invalidate();
         // navigate to index - see faces-config.xml for navigation rules
-        return "login";
+        return "/faces/login.xhtml?faces-redirect=true";
     }
 }
