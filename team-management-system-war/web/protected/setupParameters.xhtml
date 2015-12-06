@@ -15,8 +15,8 @@
     </ui:define>
 
     <ui:define name="content">
-        
-        <h:form>
+
+        <h:form id="form">            
             <h:panelGrid columns="3">
                 <p:outputLabel value="Course Section:" />
                 <p:outputLabel value="#{setupParametersController.courseSection}"/>                        
@@ -34,13 +34,13 @@
                     id="maxStudent" 
                     value="#{setupParametersController.maxStudent}"
                     required="true"
-                    requiredMessage="Please enter a maximum number of students for this team"
+                    requiredMessage="Please enter a maximum number of students for this team" 
                     />
                 <p:message for="maxStudent"/>
                 <p:outputLabel value="Deadline for teams creation:" />
                 <p:calendar id="deadline" value="#{setupParametersController.deadline}" required="true" requiredMessage="Please enter a deadline for the team creation"/>                        
                 <p:message for="deadline"/>
-                <p:commandButton value="submit" actionListener="#{setupParametersController.submit}" action="home?faces-redirect=true" >
+                <p:commandButton value="submit" action="#{setupParametersController.submit}" >
                     <f:ajax execute="@form" render="@form" />
                 </p:commandButton>
             </h:panelGrid>
