@@ -20,6 +20,7 @@ import tms.boundaries.UserFacade;
 import tms.models.Course;
 import tms.models.User;
 import tms.tcs.boundaries.HomeView;
+import tms.tcs.models.Team;
 
 /**
  * Controller for the Home view.
@@ -99,11 +100,22 @@ public class HomeController implements Serializable {
             (!hasBothRoles && user.isInstructor()));
         
         // do not show the create team option if no existing team params for selected course
+        // do not show the create team option if the student is already in a team for that course
         Course tmpCourse = homeView.getSelectedStudentCourse();
-        if ( tmpCourse != null )    
-            homeView.setShowCreateTeamOption(tmpCourse.hasTeamParams() && homeView.isShowStudentMenuOptions());
-        else
+        boolean alreadyInAteam = false;
+        if ( tmpCourse != null ) {    
+            for(Team t : user.getStudent().getTeamList()) {
+                if (t.getCourse().equals(tmpCourse)){
+                    alreadyInAteam = true;
+                    break;
+                }
+            }
+            homeView.setShowCreateTeamOption(!alreadyInAteam && 
+                                                tmpCourse.hasTeamParams() && 
+                                                homeView.isShowStudentMenuOptions());
+        } else {
             homeView.setShowCreateTeamOption(false);
+        }
     }
     
     public void onCourseListTabChange( TabChangeEvent e) {
