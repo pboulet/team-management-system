@@ -3,8 +3,10 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
+     <ui:define name="top">
+            : Join Team
+        </ui:define>
     <ui:define name="content">
-        <h1>Join A Team</h1>
         <p:panel>
             <h:panelGrid columns="2"> 
                 <p:selectOneMenu id="dropdownTeamList" value="#{joinTeamController.teamList}" style="width:160px">
