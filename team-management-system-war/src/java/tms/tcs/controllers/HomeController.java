@@ -146,7 +146,7 @@ public class HomeController implements Serializable {
     private boolean isAlreadyInAteamFor(Course selectedCourse){
         for(Team t : user.getStudent().getTeamList()) {
             if (t.getCourse().equals(selectedCourse)){
-                return false;
+                return true;
             }
         }
         return false;
