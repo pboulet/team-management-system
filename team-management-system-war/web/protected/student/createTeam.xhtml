@@ -31,7 +31,7 @@
                             </p:pickList>  
                         </h:panelGrid>
                         <h:panelGrid columns="1"> 
-                            <p:commandButton id="submit" value="Submit" type="command"  actionListener="#{createTeamController.submit}" action="home?faces-redirect=true" disabled="#{createTeamController.submitDisabled}"/>
+                            <p:commandButton id="submit" value="Submit" type="command"  actionListener="#{createTeamController.submit}" action="/faces/protected/home?faces-redirect=true" disabled="#{createTeamController.submitDisabled}"/>
                         </h:panelGrid>
                     </p:panel>
                 </h:form>

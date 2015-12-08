@@ -27,7 +27,7 @@
                         itemLabel="#{student}" itemValue="#{student}">
                 <p:ajax event="transfer" listener="#{acceptStudentController.onTransfer}" update="msg submit" />
             </p:pickList>                
-            <p:commandButton id="submit" value="submit" actionListener="#{acceptStudentController.submit}" action="home?faces-redirect=true" disabled="#{acceptStudentController.submitDisabled}" />
+            <p:commandButton id="submit" value="submit" actionListener="#{acceptStudentController.submit}" action="/faces/protected/home?faces-redirect=true" disabled="#{acceptStudentController.submitDisabled}" />
         </h:form>
     </ui:define>
 </ui:composition>
