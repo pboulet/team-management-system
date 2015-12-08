@@ -126,7 +126,6 @@ public class LoginController {
      * @return navigate to login page 
      */
     public String logout() {
-        System.out.println("called log out");
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         session.invalidate();
         return "/faces/login.xhtml?faces-redirect=true";

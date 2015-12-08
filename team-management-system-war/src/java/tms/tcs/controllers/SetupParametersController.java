@@ -137,16 +137,8 @@ public class SetupParametersController {
     }
 
     public String submit() {
-        if (maxStudent < minStudent) {
-            //TODO : try to display the msg?!
-            /*
-            FacesMessage msg = new FacesMessage();
-            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-            msg.setSummary("Maximum students in team must be higher than minimum students");
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            RequestContext.getCurrentInstance().update("msg");*/
-          //  FacesContext.getCurrentInstance().addMessage("form:maxStudent", new FacesMessage("Maximum students in team must be higher than minimum students"));
-          //  RequestContext.getCurrentInstance().update("form:maxStudent");
+         if (maxStudent < minStudent) {
+            FacesContext.getCurrentInstance().addMessage("form:maxStudent", new FacesMessage("Maximum students in team must be higher than minimum students"));
             return null;
         }
         boolean newTeamPara = (teamParameters == null);
@@ -163,6 +155,6 @@ public class SetupParametersController {
             teamParametersFacade.edit(teamParameters);
         }
         courseFacade.edit(course);
-        return "home?faces-redirect=true";
+        return "/faces/protected/home?faces-redirect=true";
     }
 }

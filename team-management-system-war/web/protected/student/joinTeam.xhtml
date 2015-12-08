@@ -1,0 +1,37 @@
+<ui:composition template="../../WEB-INF/mainLayout.xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <f:metadata>
+        <f:viewParam name="courseid" value="#{joinTeamController.courseid}" />
+        <f:event type="preRenderView" listener="#{joinTeamController.init}" />
+    </f:metadata>
+
+    <ui:define name="top">
+        : Join a Team for #{joinTeamController.course.name}
+    </ui:define>
+
+    <ui:define name="content">
+        <h:form>
+            <p:dataTable id="teamList" var="team" value="#{joinTeamController.teamList}" selection="#{joinTeamController.selectedTeam}" rowKey="#{team.id}" style="margin-bottom:0">
+                <f:facet name="header">
+                    Team List
+                </f:facet>
+                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                <p:column headerText="Team Id">
+                    <h:outputText value="#{team.id}" />
+                </p:column>
+                <p:column headerText="Team Name">
+                    <h:outputText value="#{team.name}" />
+                </p:column>
+                <p:column headerText="Team Liaison">
+                    <h:outputText value="#{team.liaison.user.firstName} #{team.liaison.user.lastName}" />
+                </p:column>
+                <f:facet name="footer">
+                    <p:commandButton id="submit" value="Submit"  actionListener="#{joinTeamController.submit}" action="/faces/protected/home?faces-redirect=true"/>
+                </f:facet>
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+</ui:composition>
