@@ -81,41 +81,13 @@ public class LoginController {
      * @return Page to navigate to.
      */
     public String login() {
-        User account=null;
-        if(userId.charAt(0)=='e'){
-            Instructor instructor = tmsFacade.getInstructor(userId);
-            if(instructor!=null){
-                account = instructor.getUser();
-            }
-        }
-        else{
-            Student student = tmsFacade.getStudent(userId);
-            if(student!=null){
-                account = student.getUser();
-            }
-        }
-         if (account != null) {
-             try {
-                 // check password
-                 byte[] salt = account.getSalt();
-                 String saltString = new String(salt, "UTF-8");
-                 String checkPass = saltString+password;
-                 MessageDigest digest = MessageDigest.getInstance("SHA-256");
-                 byte[] checkPassHash = digest.digest(checkPass.getBytes("UTF-8"));
-                 if (Arrays.equals(checkPassHash, account.getPassword())) {
-                     //login ok - set user in session context
+        User account= tmsFacade.login(userId, password);
+            if(account!=null){
                      HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
                      session.setAttribute("User", account);
                      return "/protected/home?faces-redirect=true";
-                 } else {
-                    status="Invalid Login, Please Try again"; 
-                 }
-             } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
-                 Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-             }
-         } else {
-             status="Invalid Login, Please Try again";
-         }
+            }
+        status="Invalid Login, Please Try again";     
          return "login";
     }
     /**

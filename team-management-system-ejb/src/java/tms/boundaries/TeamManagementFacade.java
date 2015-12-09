@@ -6,9 +6,14 @@ package tms.boundaries;
  * and open the template in the editor.
  */
 
-
 import java.util.LinkedList;
 import java.util.List;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -64,18 +69,43 @@ public class TeamManagementFacade implements ITeamManagementFacade {
     }
     
     @Override
-    public void createStudent(Student s){
-        studentFacade.create(s);
-    }
-    
-    @Override
-    public void createInstructor(Instructor i){
-        instructorFacade.create(i);
-    }
-    
-    @Override
     public void createUser(User u){
         userFacade.create(u);
+        if(u.isInstructor()) instructorFacade.create(u.getInstructor());
+        if(u.isStudent()) studentFacade.create(u.getStudent());
+    }
+    
+    @Override
+    public User login(String userId, String password){
+        User account=null;
+        if(userId.charAt(0)=='e'){
+            Instructor instructor = instructorFacade.find(userId);
+            if(instructor!=null){
+                account = instructor.getUser();
+            }
+        }
+        else{
+            Student student = studentFacade.find(userId);
+            if(student!=null){
+                account = student.getUser();
+            }
+        }
+         if (account != null) {
+             try {
+                 // check password
+                 byte[] salt = account.getSalt();
+                 String saltString = new String(salt, "UTF-8");
+                 String checkPass = saltString+password;
+                 MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                 byte[] checkPassHash = digest.digest(checkPass.getBytes("UTF-8"));
+                 if (Arrays.equals(checkPassHash, account.getPassword())) {
+                     return account;
+                 }
+             } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
+              Logger.getLogger(TeamManagementFacade.class.getName()).log(Level.SEVERE, null, ex);
+             }
+         }
+         return null;
     }
     
     @Override

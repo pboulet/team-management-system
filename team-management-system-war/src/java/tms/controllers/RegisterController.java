@@ -162,14 +162,12 @@ public class RegisterController implements Serializable {
                 s.setId(studentId);
                 s.setProgramOfStudy(programOfStudy);
                 account.setStudent(s);
-                tmsFacade.createStudent(s);
                 
             }
             if(instructor){
                 Instructor i = new Instructor();
                 i.setId(instructorId);
                 account.setInstructor(i);
-                tmsFacade.createInstructor(i);
             }
             if(!(student||instructor)){
                 status="must be an instructor or a student";
