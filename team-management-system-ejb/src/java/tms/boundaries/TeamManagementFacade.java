@@ -234,6 +234,51 @@ public class TeamManagementFacade implements ITeamManagementFacade {
             return false;
         }
     }
+
+    @Override
+    public List<String> getStudentsFromJoinRequest(Team team) {
+        List<JoinRequest> joinRequestList = team.getJoinRequests();
+        List<String> studentSource = new LinkedList<>();
+        //get all join request not already accepted and add the student 
+        //to the student list
+        boolean toAdd = true;
+        for (JoinRequest j : joinRequestList) {
+            if (!j.getAccepted()) {
+                Student s = j.getStudent();
+                //get only the students that are not already in a team for this class
+                for (Team t : s.getTeamList()) {
+                    if (t.getCourse().equals(team.getCourse())) {
+                        toAdd = false;
+                    }
+                }
+                if (toAdd) {
+                    studentSource.add(s.getId() + " : " + s.getUser().getFirstName() + " " + s.getUser().getLastName());
+                }
+            }
+        }
+        return studentSource;
+    }
+
+    @Override
+    public int getMaxStudent(Team team) {
+        return team.getCourse().getTeamParams().getMaxNumStudents();
+    }
+
+    @Override
+    public void acceptStudent(List<String> selectedStudentList, Team team) {
+        List<JoinRequest> joinRequestList = team.getJoinRequests();
+        for (String s : selectedStudentList) {
+            Student student = getStudent(s.split(" ")[0]);
+            team.getStudentList().add(student);
+            student.getTeamList().add(team);
+            editStudent(student);
+            for (JoinRequest j : joinRequestList) {
+                if (j.getStudent().equals(student)) {
+                    j.setAccepted(true);
+                    editJoinRequest(j);
+                }
+            }
+        }
+        editTeam(team);
+    }
 }
-
-
