@@ -69,4 +69,8 @@ public interface ITeamManagementFacade {
     int getMaxStudent(Team team);
 
     void acceptStudent(List<String> selectedStudentList, Team team);
+
+    List<String> getStudentsNotInTeam(Course course, Student currentStudent);
+
+    void createTeam(String teamName, Course course, Student currentStudent, List<String> selectedStudentList);
 }

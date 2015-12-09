@@ -28,7 +28,7 @@ import tms.tcs.models.Team;
 @ViewScoped
 public class AcceptStudentController {
 
-    @EJB(beanName="TeamManagementFacade")
+    @EJB(beanName = "TeamManagementFacade")
     private ITeamManagementFacade tmsFacade;
 
     private Long teamid;
@@ -48,16 +48,14 @@ public class AcceptStudentController {
         if (team == null) {
             return;
         }
-        List<String> studentSource = tmsFacade.getStudentsFromJoinRequest(team);
-  
-        studentList = new DualListModel<>(studentSource, new LinkedList<String>());
+        studentList = new DualListModel<>(tmsFacade.getStudentsFromJoinRequest(team), new LinkedList<String>());
         maxStudents = tmsFacade.getMaxStudent(team);
         maxStudents -= team.getStudentList().size();
     }
 
     public void submit(ActionEvent actionEvent) {
         tmsFacade.acceptStudent(studentList.getTarget(), team);
-       
+
     }
 
     public void onTransfer(TransferEvent event) {
@@ -90,8 +88,6 @@ public class AcceptStudentController {
         this.team = team;
     }
 
-
-
     public int getMaxStudents() {
         return maxStudents;
     }
@@ -115,7 +111,5 @@ public class AcceptStudentController {
     public void setSubmitDisabled(boolean submitDisabled) {
         this.submitDisabled = submitDisabled;
     }
-    
-  
 
 }

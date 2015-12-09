@@ -238,7 +238,7 @@ public class TeamManagementFacade implements ITeamManagementFacade {
     @Override
     public List<String> getStudentsFromJoinRequest(Team team) {
         List<JoinRequest> joinRequestList = team.getJoinRequests();
-        List<String> studentSource = new LinkedList<>();
+        List<String> availableStudentList = new LinkedList<>();
         //get all join request not already accepted and add the student 
         //to the student list
         boolean toAdd = true;
@@ -252,11 +252,11 @@ public class TeamManagementFacade implements ITeamManagementFacade {
                     }
                 }
                 if (toAdd) {
-                    studentSource.add(s.getId() + " : " + s.getUser().getFirstName() + " " + s.getUser().getLastName());
+                    availableStudentList.add(s.getId() + " : " + s.getUser().getFirstName() + " " + s.getUser().getLastName());
                 }
             }
         }
-        return studentSource;
+        return availableStudentList;
     }
 
     @Override
@@ -280,5 +280,51 @@ public class TeamManagementFacade implements ITeamManagementFacade {
             }
         }
         editTeam(team);
+    }
+
+    @Override
+    public List<String> getStudentsNotInTeam(Course course, Student currentStudent) {
+        List<String> availableStudentList = new LinkedList<>();
+        boolean toAdd;
+        for (Student s : course.getStudentList()) {
+            toAdd = true;
+            if (s.getId().equals(currentStudent.getId())) {
+                toAdd = false;
+            } else {
+                for (Team t : s.getTeamList()) {
+                    if (t.getCourse() == course) {
+                        //already in a team, don't display in list
+                        toAdd = false;
+                    }
+                }
+            }
+            if (toAdd) {
+                availableStudentList.add(s.getId() + " : " + s.getUser().getFirstName() + " " + s.getUser().getLastName());
+            }
+        }
+        return availableStudentList;
+    }
+
+    @Override
+    public void createTeam(String teamName, Course course, Student currentStudent, List<String> selectedStudentList) {
+        Team team = new Team();
+        team.setName(teamName);
+        team.setCourse(course);
+        team.setCreationDate(new Timestamp(new Date().getTime()));
+        team.setLiaison(currentStudent);
+        List<Student> teamList = new LinkedList<>();
+        teamList.add(currentStudent);
+        currentStudent.getTeamList().add(team);
+        for (String s : selectedStudentList) {
+            Student t = getStudent(s.split(" ")[0]);
+            teamList.add(t);
+            t.getTeamList().add(team);
+        }
+        team.setStudentList(teamList);
+        createTeam(team);
+        editCourse(course);
+        for (Student s : teamList) {
+            editStudent(s);
+        }
     }
 }
