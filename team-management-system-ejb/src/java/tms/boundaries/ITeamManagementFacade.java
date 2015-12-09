@@ -21,11 +21,7 @@ import tms.tcs.models.TeamParameters;
 @Local
 public interface ITeamManagementFacade {
 
-    void createInstructor(Instructor i);
-
     void createJoinRequest(JoinRequest j);
-
-    void createStudent(Student s);
 
     void createTeam(Team t);
 
@@ -54,5 +50,7 @@ public interface ITeamManagementFacade {
     TeamParameters getTeamParameters(Long id);
 
     User getUser(Long id);
+    
+    User login(String userId, String password);
     
 }
