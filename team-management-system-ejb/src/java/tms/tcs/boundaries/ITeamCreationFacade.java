@@ -2,6 +2,7 @@ package tms.tcs.boundaries;
 
 import java.util.List;
 import javax.ejb.Local;
+import tms.models.Course;
 import tms.models.Student;
 import tms.models.User;
 import tms.tcs.models.JoinRequest;
@@ -36,4 +37,6 @@ public interface ITeamCreationFacade {
     TeamParameters getTeamParameters(Long id);
     
     boolean joinTeams(List<Team> teams, Student s);
+
+    Team createTeam(String teamName, Course course, Student currentStudent, List<String> selectedStudentList);
 }
