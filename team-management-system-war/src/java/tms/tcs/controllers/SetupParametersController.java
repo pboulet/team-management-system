@@ -8,27 +8,27 @@ package tms.tcs.controllers;
 import java.sql.Timestamp;
 import java.util.Date;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.ActionEvent;
-import tms.boundaries.CourseFacade;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
+import tms.boundaries.ITeamManagementFacade;
 import tms.models.Course;
-import tms.tcs.boundaries.TeamParametersFacade;
 import tms.tcs.models.TeamParameters;
 
 /**
  * Controller for the Setup Parameters View
- * 
+ *
  * @author Maxime Bélair, Patrice Boulet
  */
 @ManagedBean(name = "setupParametersController")
 @ViewScoped
 public class SetupParametersController {
 
-    @EJB
-    private CourseFacade courseFacade;
-    @EJB
-    private TeamParametersFacade teamParametersFacade;
+    @EJB(beanName="TeamManagementFacade")
+    private ITeamManagementFacade tmsFacade;
 
     private TeamParameters teamParameters;
     private Course course;
@@ -38,26 +38,40 @@ public class SetupParametersController {
     private Date deadline;
     private Long courseid;
 
-  
     public SetupParametersController() {
     }
+    /*
+     Get the first initialisation of the page, get the course and general information about teams
+     */
 
     public void init() {
         if (courseid == null) {
             return;
         }
-        course = courseFacade.find(courseid);
+        //get the team from courseId
+        course = tmsFacade.getCourse(courseid);
         if (course == null) {
             return;
         }
         courseSection = course.getCourseSection();
-        
+
         // initialize fields with model properties
-        if (course.hasTeamParams()) {
-            TeamParameters tp = course.getTeamParams();
-            minStudent = tp.getMinNumStudents();
-            maxStudent = tp.getMaxNumStudents();
-            deadline = tp.getCreationDeadline();
+        if (course.hasTeamParams() && teamParameters == null) {
+            teamParameters = course.getTeamParams();
+            minStudent = teamParameters.getMinNumStudents();
+            maxStudent = teamParameters.getMaxNumStudents();
+            deadline = teamParameters.getCreationDeadline();
+        }
+    }
+
+    public void validateMax(FacesContext context, UIComponent component, Object value) {
+
+        if ((Integer) value < minStudent) {
+            FacesMessage msg = new FacesMessage();
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            msg.setSummary("Maximum students in team must be higher than minimum students");
+            // FacesContext.getCurrentInstance().addMessage(null, msg);
+            throw new ValidatorException(msg);
         }
     }
 
@@ -117,13 +131,25 @@ public class SetupParametersController {
         this.course = course;
     }
 
-    public void submit(ActionEvent actionEvent) {  
-        teamParameters = new TeamParameters();
+    public String submit() {
+         if (maxStudent < minStudent) {
+            FacesContext.getCurrentInstance().addMessage("form:maxStudent", new FacesMessage("Maximum students in team must be higher than minimum students"));
+            return null;
+        }
+        boolean newTeamPara = (teamParameters == null);
+        if (newTeamPara) {
+            teamParameters = new TeamParameters();
+        }
         teamParameters.setCreationDeadline(new Timestamp(deadline.getTime()));
         teamParameters.setMaxNumStudents(maxStudent);
         teamParameters.setMinNumStudents(minStudent);
         course.setTeamParams(teamParameters);
-        teamParametersFacade.create(teamParameters);
-        courseFacade.edit(course);
-    }    
+        if (newTeamPara) {
+            tmsFacade.createTeamParameters(teamParameters);
+        } else {
+            tmsFacade.editTeamParameters(teamParameters);
+        }
+        tmsFacade.editCourse(course);
+        return "/faces/protected/home?faces-redirect=true";
+    }
 }

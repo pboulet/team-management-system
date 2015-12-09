@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tms.tcs.controllers;
 
 import java.io.Serializable;
@@ -15,8 +10,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.servlet.http.HttpSession;
 import org.primefaces.event.TabChangeEvent;
-import tms.boundaries.CourseFacade;
-import tms.boundaries.UserFacade;
+import tms.boundaries.ITeamManagementFacade;
 import tms.models.Course;
 import tms.models.User;
 import tms.tcs.boundaries.HomeView;
@@ -31,18 +25,14 @@ import tms.tcs.models.Team;
 @ViewScoped
 public class HomeController implements Serializable {
     
-    @EJB
-    private CourseFacade courseFacade;
-    
-    @EJB
-    private UserFacade userFacade;
+    @EJB(beanName="TeamManagementFacade")
+    private ITeamManagementFacade tmsFacade;
     
     @ManagedProperty("#{homeView}")
     private HomeView homeView;
     
     private User user;
 
-    // mock until I know how to get the session user
     private List<Course> studentCourseList; 
     
     private List<Course> instructorCourseList;
@@ -86,38 +76,129 @@ public class HomeController implements Serializable {
         
     }
     
+    /**
+     * Sets the visibility of the operational menu items.
+     * 
+     * @author Patrice Boulet
+     */
     public void setMenuOptionsVisibility() {
-        boolean hasBothRoles = 
-                user.isInstructor() && 
-                user.isStudent();
+        boolean hasBothRoles = user.isInstructor() && user.isStudent();
+        
+        setShowStudentOptions(hasBothRoles);
+        setShowInstructorsOptions(hasBothRoles);    
+    }
+    
+    /**
+     * Sets the visibility of the students options in the right most menu.
+     * 
+     * @param hasBothRoles if the user is both a Student and an Instructor
+     * @author Patrice Boulet
+     */
+    private void setShowStudentOptions(boolean hasBothRoles) {
         
         homeView.setShowStudentMenuOptions(
             homeView.getCourseListTv().getActiveIndex() == homeView.getSTUDENT_TAB_INDEX() ||
             (!hasBothRoles && user.isStudent()));
         
-        homeView.setShowInstructorMenuOptions(
-            homeView.getCourseListTv().getActiveIndex() == homeView.getINSTRUCTOR_TAB_INDEX() ||
-            (!hasBothRoles && user.isInstructor()));
+          
+        Course selectedCourse = homeView.getSelectedStudentCourse();
         
-        // do not show the create team option if no existing team params for selected course
-        // do not show the create team option if the student is already in a team for that course
-        Course tmpCourse = homeView.getSelectedStudentCourse();
-        boolean alreadyInAteam = false;
-        if ( tmpCourse != null ) {    
-            for(Team t : user.getStudent().getTeamList()) {
-                if (t.getCourse().equals(tmpCourse)){
-                    alreadyInAteam = true;
-                    break;
-                }
-            }
-            homeView.setShowCreateTeamOption(!alreadyInAteam && 
-                                                tmpCourse.hasTeamParams() && 
-                                                homeView.isShowStudentMenuOptions());
+        if ( selectedCourse != null ) {    
+            boolean isAlreadyInAteam = isAlreadyInAteamFor(selectedCourse);
+            boolean isLiaisonInTeam = isLiaisonInTeamFor(selectedCourse);
+            
+            homeView.setShowCreateTeamOption(
+                    !isAlreadyInAteam && 
+                    selectedCourse.hasTeamParams() && 
+                    homeView.isShowStudentMenuOptions());
+            homeView.setShowJoinTeamOption(!isAlreadyInAteam && 
+                                homeView.isShowStudentMenuOptions());
+            homeView.setShowAcceptStudentsOption(isLiaisonInTeam);
         } else {
             homeView.setShowCreateTeamOption(false);
+            homeView.setShowJoinTeamOption(false);
         }
     }
     
+    /**
+     * Sets the visibility of the Instructor options in the right most menu.
+     * 
+     * @param hasBothRoles if the user is both a Student and an Instructor
+     * @author Patrice Boulet
+     */
+    private void setShowInstructorsOptions(boolean hasBothRoles) {
+       homeView.setShowInstructorMenuOptions(
+            homeView.getCourseListTv().getActiveIndex() == homeView.getINSTRUCTOR_TAB_INDEX() ||
+            (!hasBothRoles && user.isInstructor()));
+    }
+    
+    /**
+     * Checks if the user is already in a team of the
+     * selected course.
+     * 
+     * @param selectedCourse the course selected by 
+     * the user in the student course list
+     * 
+     * @return true if the Student User is already in a Team
+     * for that course and false otherwise.
+     * 
+     * @author Patrice Boulet
+     */
+    private boolean isAlreadyInAteamFor(Course selectedCourse){
+        for(Team t : user.getStudent().getTeamList()) {
+            if (t.getCourse().equals(selectedCourse)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Checks if the session User Student is a 
+     * liaison for a team in the selected course.
+     * 
+     * @param selectedCourse the selected course
+     * 
+     * @return true if the session User Student is
+     * a liaison for an existing team in the selected,
+     * false otherwise.
+     * 
+     * @author Patrice Boulet
+     */
+    private boolean isLiaisonInTeamFor(Course selectedCourse){
+        for(Team t: user.getStudent().getLiaisonOf()){
+            if (t.getCourse().equals(selectedCourse))
+                return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Gets the Team of the Student Session User
+     * for the selected Course.
+     * 
+     * @return the Student Team for the selected Course.
+     * 
+     * @author Patrice Boulet
+     */
+    public Team getStudentTeamForSelectedCourse(){
+        Course selectedCourse = homeView.getSelectedStudentCourse();
+        if(user != null && selectedCourse != null){
+            for (Team t : user.getStudent().getLiaisonOf()){
+                if(t.getCourse().equals(selectedCourse))
+                    return t;
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * Handler for when a user changes the tab containing
+     * the course lists for an Instructor or a Student.
+     * 
+     * @param e the tab change event 
+     * @author Patrice Boulet
+     */
     public void onCourseListTabChange( TabChangeEvent e) {
         homeView.getCourseListTv()
                 .setActiveIndex(homeView
@@ -127,6 +208,13 @@ public class HomeController implements Serializable {
         setMenuOptionsVisibility();
     }
     
+    /**
+     * Initialize the course lists for the tabs
+     * based on the user logged in the session. Defaults the information
+     * on the first record if now user is found in the session.
+     * 
+     * @author Patrice Boulet
+     */
     @PostConstruct
     public void init() {
         //TODO: hookup everything to the user from the session
@@ -136,7 +224,7 @@ public class HomeController implements Serializable {
         if(sessionUser != null) 
             user=(User)sessionUser; 
         else
-            user = userFacade.find((long) 1); // default workaround in case auth fails 
+            user = tmsFacade.getUser((long) 1); // default workaround in case auth fails 
         
         if (user.isStudent()) 
             studentCourseList = user

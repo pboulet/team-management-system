@@ -18,26 +18,21 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import tms.boundaries.InstructorFacade;
-import tms.boundaries.StudentFacade;
-import tms.boundaries.UserFacade;
+import tms.boundaries.ITeamManagementFacade;
 import tms.models.Instructor;
 import tms.models.Student;
 import tms.models.User;
 /**
- *
- * @author Nick
+ * Controller to register a user
+ * 
+ * @author Nick, Patrice Boulet
  */
 @ManagedBean
 @ViewScoped
 public class RegisterController implements Serializable {
 
-    @EJB
-    private UserFacade userFacade;
-    @EJB
-    private StudentFacade studentFacade;
-    @EJB
-    private InstructorFacade instructorFacade;
+    @EJB(beanName="TeamManagementFacade")
+    private ITeamManagementFacade tmsFacade;
     
     private String password;
     private String login;
@@ -144,7 +139,18 @@ public class RegisterController implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
-
+    /**
+     * Called when the user submits the form
+     * set's the information of the account inside the created user bean,
+     * if student information was provided a student bean is created and filled,
+     * student bean is associated to user bean and put on the db
+     * if instructor information was provided an instructor bean is created and filled,
+     * instructor bean is associated to user bean and put on the db
+     * if none were provided the status is said and the register form is displayed
+     * the password is encoded and salt is added to it
+     * user bean is set to db
+     * @return the view to be displayed
+     */
     public String submit() {
                 try {
             User account = new User();
@@ -156,14 +162,14 @@ public class RegisterController implements Serializable {
                 s.setId(studentId);
                 s.setProgramOfStudy(programOfStudy);
                 account.setStudent(s);
-                studentFacade.create(s);
+                tmsFacade.createStudent(s);
                 
             }
             if(instructor){
                 Instructor i = new Instructor();
                 i.setId(instructorId);
                 account.setInstructor(i);
-                instructorFacade.create(i);
+                tmsFacade.createInstructor(i);
             }
             if(!(student||instructor)){
                 status="must be an instructor or a student";
@@ -180,7 +186,7 @@ public class RegisterController implements Serializable {
             byte[] passhash = digest.digest(saltedPass.getBytes("UTF-8"));
             account.setSalt(salt);
             account.setPassword(passhash);
-            userFacade.create(account);
+            tmsFacade.createUser(account);
             status="New Account Created Fine";
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
             session.setAttribute("User", account);

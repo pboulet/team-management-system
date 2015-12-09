@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tms.tcs.controllers;
 
 import java.sql.Timestamp;
@@ -18,24 +13,23 @@ import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
-import tms.boundaries.CourseFacade;
-import tms.boundaries.StudentFacade;
+import tms.boundaries.ITeamManagementFacade;
 import tms.models.Course;
 import tms.models.Student;
 import tms.models.User;
-import tms.tcs.boundaries.TeamFacade;
 import tms.tcs.models.Team;
 
+/**
+ * Create Team controller.
+ * 
+ * @author Maxime, Sofiane Batou, Patrice Boulet
+ */
 @ManagedBean(name = "createTeamController")
 @ViewScoped
 public class CreateTeamController {
 
-    @EJB
-    private StudentFacade studentFacade;
-    @EJB
-    private CourseFacade courseFacade;
-    @EJB
-    private TeamFacade teamFacade;
+    @EJB(beanName="TeamManagementFacade")
+    private ITeamManagementFacade tmsFacade;
 
     private String teamName;
     private DualListModel<String> studentList;
@@ -53,7 +47,7 @@ public class CreateTeamController {
         if (courseid == null) {
             return;
         }
-        course = courseFacade.find(courseid);
+        course = tmsFacade.getCourse(courseid);
 
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         Object sessionUser = session.getAttribute("User");
@@ -130,19 +124,19 @@ public class CreateTeamController {
         team.setCourse(course);
         team.setCreationDate(new Timestamp(new Date().getTime()));
         team.setLiaison(currentStudent);
-        List<Student> teamList = new LinkedList<Student>();
+        List<Student> teamList = new LinkedList<>();
         teamList.add(currentStudent);
         currentStudent.getTeamList().add(team);
         for (String s : studentList.getTarget()) {
-            Student t = studentFacade.find(s.split(" ")[0]);
+            Student t = tmsFacade.getStudent(s.split(" ")[0]);
             teamList.add(t);
             t.getTeamList().add(team);
         }
         team.setStudentList(teamList);
-        teamFacade.create(team);
-        courseFacade.edit(course);
+        tmsFacade.createTeam(team);
+        tmsFacade.editCourse(course);
         for (Student s : teamList) {
-            studentFacade.edit(s);
+            tmsFacade.editStudent(s);
         }
 
     }

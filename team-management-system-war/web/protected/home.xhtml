@@ -11,29 +11,34 @@
 
     <ui:define name="content">   
         <p:layout id="control-menu-container">
-            <p:layoutUnit position="east" size="190" style="border:none">
+            <p:layoutUnit position="east" size="190" style="border:none; min-height: 200px;">
                 <h:form id="control-menu">
                     <p:outputPanel rendered="#{homeView.showInstructorMenuOptions || homeView.showStudentMenuOptions}">
                         <p:menu>
-                            <p:menuitem rendered="#{homeView.showStudentMenuOptions}" 
+                            <p:menuitem rendered="#{homeView.showJoinTeamOption}" 
                                         disabled="#{homeView.selectedStudentCourse == null}" 
-                                        value="Visualize Incomplete Teams" outcome="joinTeam" >
+                                        value="Visualize Incomplete Teams" outcome="student/joinTeam" >
                                 <f:param name="courseid" 
                                          value="#{homeView.selectedStudentCourse.id}" />
                             </p:menuitem>
                             <p:menuitem rendered="#{homeView.showCreateTeamOption}"
                                         disabled="#{homeView.selectedStudentCourse == null}" 
-                                        value="Create a Team" outcome="createTeam" >
+                                        value="Create a Team" outcome="student/createTeam" >
                                 <f:param name="courseid" value="#{homeView.selectedStudentCourse.id}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{homeView.showAcceptStudentsOption}"
+                                        disabled="#{homeView.selectedStudentCourse == null}" 
+                                        value="Accept Students Join Requests" outcome="student/acceptStudent" >
+                                <f:param name="teamid" value="#{homeController.getStudentTeamForSelectedCourse().getId()}" />
                             </p:menuitem>
                             <p:menuitem rendered="#{homeView.showInstructorMenuOptions}"
                                         disabled="#{homeView.selectedInstructorCourse == null}" 
-                                        value="ViewTeams" outcome="visualizeStudentsTeams">
+                                        value="ViewTeams" outcome="instructor/visualizeStudentsTeams">
                                 <f:param name="courseid" value="#{homeView.selectedInstructorCourse.id}" />
                             </p:menuitem>
                             <p:menuitem rendered="#{homeView.showInstructorMenuOptions}"
                                         disabled="#{homeView.selectedInstructorCourse == null}" 
-                                        value="Set Up Parameters" outcome="setupParameters" >
+                                        value="Set Up Parameters" outcome="instructor/setupParameters" >
                                 <f:param name="courseid" value="#{homeView.selectedInstructorCourse.id}" />
                             </p:menuitem>
                         </p:menu>

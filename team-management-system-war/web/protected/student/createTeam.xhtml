@@ -1,4 +1,4 @@
-<ui:composition template="./home.xhtml"
+<ui:composition template="../home.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
@@ -17,7 +17,6 @@
     <ui:define name="content">
                <h:form id="form">
                     <p:growl id="msg" escape="false" />
-                    <h1>Create Team for course #{createTeamController.course.name}</h1>
                     <p:panel>
                         <h:panelGrid columns="1">        
                             <h:outputText value="Team Name:"></h:outputText>
@@ -32,7 +31,7 @@
                             </p:pickList>  
                         </h:panelGrid>
                         <h:panelGrid columns="1"> 
-                            <p:commandButton id="submit" value="Submit" type="command"  actionListener="#{createTeamController.submit}" action="home?faces-redirect=true" disabled="#{createTeamController.submitDisabled}"/>
+                            <p:commandButton id="submit" value="Submit" type="command"  actionListener="#{createTeamController.submit}" action="/faces/protected/home?faces-redirect=true" disabled="#{createTeamController.submitDisabled}"/>
                         </h:panelGrid>
                     </p:panel>
                 </h:form>

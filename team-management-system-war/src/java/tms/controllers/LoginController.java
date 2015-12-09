@@ -1,11 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tms.controllers;
 
-import java.io.IOException;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -17,16 +12,16 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import tms.boundaries.InstructorFacade;
-import tms.boundaries.StudentFacade;
-import tms.boundaries.UserFacade;
+import tms.boundaries.ITeamManagementFacade;
 import tms.models.Instructor;
 import tms.models.Student;
 import tms.models.User;
 
 /**
  *
- * @author Nick
+ * Controller to take care of the login page and the logout function
+ * 
+ * @author Nick, Patrice Boulet
  */
 @ManagedBean
 @RequestScoped
@@ -34,10 +29,9 @@ public class LoginController {
     private String userId;
     private String password;
     private String status;
-    @EJB
-    private StudentFacade studentFacade;
-    @EJB
-    private InstructorFacade instructorFacade;
+    
+    @EJB(beanName="TeamManagementFacade")
+    private ITeamManagementFacade tmsFacade;
     /**
      * Creates a new instance of LoginBean
      */
@@ -78,17 +72,24 @@ public class LoginController {
     public String getStatus() {
         return status;
     }
-
+    /**
+     * Goes to find the account associated to the id and password entered
+     * if it's an employee id performs a query in the instructor db
+     * if it's a student id it performs a query in the student db
+     * Then it get's the associated user, confirms the password 
+     * and put's the user in the session.
+     * @return Page to navigate to.
+     */
     public String login() {
         User account=null;
         if(userId.charAt(0)=='e'){
-            Instructor instructor = instructorFacade.find(userId);
+            Instructor instructor = tmsFacade.getInstructor(userId);
             if(instructor!=null){
                 account = instructor.getUser();
             }
         }
         else{
-            Student student = studentFacade.find(userId);
+            Student student = tmsFacade.getStudent(userId);
             if(student!=null){
                 account = student.getUser();
             }
@@ -117,13 +118,14 @@ public class LoginController {
          }
          return "login";
     }
-    
+    /**
+     * Called by the logout button
+     * Clears the session to remove current user
+     * @return navigate to login page 
+     */
     public String logout() {
-        System.out.println("called log out");
-        // invalidate session to remove User
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         session.invalidate();
-        // navigate to index - see faces-config.xml for navigation rules
         return "/faces/login.xhtml?faces-redirect=true";
     }
 }

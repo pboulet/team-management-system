@@ -15,30 +15,28 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
+import tms.boundaries.ITeamManagementFacade;
 import tms.models.Student;
-import tms.tcs.boundaries.JoinRequestFacade;
-import tms.tcs.boundaries.TeamFacade;
 import tms.tcs.models.JoinRequest;
 import tms.tcs.models.Team;
 
 /**
  *
- * @author maxime
+ * @author maxime, Patrice Boulet
  */
 @ManagedBean(name = "acceptStudentController")
 @ViewScoped
 public class AcceptStudentController {
 
-    @EJB
-    private TeamFacade teamFacade;
-    @EJB
-    private JoinRequestFacade joinRequestFacade;
+    @EJB(beanName="TeamManagementFacade")
+    private ITeamManagementFacade tmsFacade;
 
     private Long teamid;
     private Team team;
-    private DualListModel<Student> studentList;
+    private DualListModel<String> studentList;
     private List<JoinRequest> joinRequestList;
     private int maxStudents;
+    private boolean submitDisabled = false;
 
     public AcceptStudentController() {
     }
@@ -47,18 +45,28 @@ public class AcceptStudentController {
         if (teamid == null) {
             return;
         }
-        team = teamFacade.find(teamid);
+        team = tmsFacade.getTeam(teamid);
         if (team == null) {
             return;
         }
         joinRequestList = team.getJoinRequests();
-        LinkedList<Student> studentSource = new LinkedList<>();
-        LinkedList<Student> studentTarget = new LinkedList<>();
+        LinkedList<String> studentSource = new LinkedList<>();
+        LinkedList<String> studentTarget = new LinkedList<>();
         //get all join request not already accepted and add the student 
         //to the student list
+        boolean toAdd = true;
         for (JoinRequest j : joinRequestList) {
             if (!j.getAccepted()) {
-                studentSource.add(j.getStudent());
+                Student s = j.getStudent();
+                //get only the students that are not already in a team for this class
+                for (Team t : s.getTeamList()) {
+                    if (t.getCourse().equals(team.getCourse())) {
+                        toAdd = false;
+                    }
+                }
+                if (toAdd) {
+                    studentSource.add(s.getId() + " : " + s.getUser().getFirstName() + " " + s.getUser().getLastName());
+                }
             }
         }
         studentList = new DualListModel<>(studentSource, studentTarget);
@@ -66,20 +74,24 @@ public class AcceptStudentController {
     }
 
     public void submit(ActionEvent actionEvent) {
-        List<Student> studentTarget = studentList.getTarget();
-        for (Student s : studentTarget) {
-            team.getStudentList().add(s);
+        List<String> studentTarget = studentList.getTarget();
+        for (String s : studentTarget) {
+            Student student = tmsFacade.getStudent(s.split(" ")[0]);
+            team.getStudentList().add(student);
+            student.getTeamList().add(team);
+            tmsFacade.editStudent(student);
             for (JoinRequest j : joinRequestList) {
-                if (j.getStudent().equals(s)) {
+                if (j.getStudent().equals(student)) {
                     j.setAccepted(true);
-                    joinRequestFacade.edit(j);
+                    tmsFacade.editJoinRequest(j);
                 }
             }
         }
-        teamFacade.edit(team);
+        tmsFacade.editTeam(team);
     }
 
     public void onTransfer(TransferEvent event) {
+        submitDisabled = (studentList.getTarget().size() > maxStudents);
         if (!event.isAdd()) {
             return;
         }
@@ -89,12 +101,6 @@ public class AcceptStudentController {
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             msg.setSummary("Exceeded number of students in the team");
             FacesContext.getCurrentInstance().addMessage(null, msg);
-            List<Student> studentSource = studentList.getSource();
-            List<Student> studentTarget = studentList.getTarget();
-            while (maxStudents < studentList.getTarget().size()) {
-                studentSource.add(studentTarget.remove(studentTarget.size() - 1));
-            }
-            studentList = new DualListModel<>(studentSource, studentTarget);
         }
     }
 
@@ -130,12 +136,20 @@ public class AcceptStudentController {
         this.maxStudents = maxStudents;
     }
 
-    public DualListModel<Student> getStudentList() {
+    public DualListModel<String> getStudentList() {
         return studentList;
     }
 
-    public void setStudentList(DualListModel<Student> studentList) {
+    public void setStudentList(DualListModel<String> studentList) {
         this.studentList = studentList;
+    }
+
+    public boolean isSubmitDisabled() {
+        return submitDisabled;
+    }
+
+    public void setSubmitDisabled(boolean submitDisabled) {
+        this.submitDisabled = submitDisabled;
     }
 
 }

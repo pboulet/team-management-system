@@ -1,0 +1,33 @@
+<ui:composition template="../home.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">  
+
+    <f:metadata>
+        <f:viewParam name="teamid" value="#{acceptStudentController.teamid}" />
+        <f:event type="preRenderView" listener="#{acceptStudentController.init}" />
+    </f:metadata>
+    <ui:define name="top">
+        : Accept Students for team #{acceptStudentController.team.name}
+    </ui:define>
+
+
+    <ui:define name="content">
+        <h:form>
+            <p:growl id="msg" escape="false" />
+            <h1>Accept student to team: #{acceptStudentController.team.name}</h1>
+            <h3>The team currently have #{acceptStudentController.team.studentList.size()} member(s):</h3>
+            <ui:repeat var="student" value="#{acceptStudentController.team.studentList}">
+                <p:outputLabel value="- #{student.user.firstName} #{student.user.lastName}" style="margin-left: 20px;"/>
+            </ui:repeat>
+            <h3>#{acceptStudentController.maxStudents} more members are allowed</h3>
+            <p:pickList value="#{acceptStudentController.studentList}" var="student" 
+                        itemLabel="#{student}" itemValue="#{student}">
+                <p:ajax event="transfer" listener="#{acceptStudentController.onTransfer}" update="msg submit" />
+            </p:pickList>                
+            <p:commandButton id="submit" value="submit" actionListener="#{acceptStudentController.submit}" action="/faces/protected/home?faces-redirect=true" disabled="#{acceptStudentController.submitDisabled}" />
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -16,6 +16,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import tms.models.User;
 
 /**
  * 
@@ -57,10 +58,38 @@ public class AuthenticationFilter implements Filter {
         // is made by an anonymous (not logged) user
         
         //TODO: replace securePath by "protected" when ready -P
-        if (reqURI.contains("/protected/") && (ses == null || (ses != null && ses.getAttribute("User") == null))) {
-            String loginURL = req.getContextPath() + "/faces/login.xhtml";
-            res.sendRedirect(loginURL);
-        } else {
+        if (reqURI.contains("/protected/")){
+            if(ses == null || (ses != null && ses.getAttribute("User") == null)){
+                String loginURL = req.getContextPath() + "/faces/login.xhtml";
+                res.sendRedirect(loginURL);
+            }
+            else {
+                if(reqURI.contains("/student/")){
+                    User u = (User)ses.getAttribute("User");
+                    if(!u.isStudent()){
+                        String homeURL = req.getContextPath() + "/faces/protected/home.xhtml";
+                        res.sendRedirect(homeURL);
+                    }
+                    else{
+                        chain.doFilter(request, response);
+                    }
+                }
+                else if(reqURI.contains("/instructor/")){
+                    User u = (User)ses.getAttribute("User");
+                    if(!u.isInstructor()){
+                        String homeURL = req.getContextPath() + "/faces/protected/home.xhtml";
+                        res.sendRedirect(homeURL);
+                    }
+                    else{
+                        chain.doFilter(request, response);
+                    }
+                }
+                else{
+                    chain.doFilter(request, response);
+                }
+            }
+        }
+        else {
             chain.doFilter(request, response);
         }  
             
