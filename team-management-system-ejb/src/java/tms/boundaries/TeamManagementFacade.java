@@ -7,6 +7,8 @@ package tms.boundaries;
  */
 
 
+import java.util.LinkedList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -124,5 +126,55 @@ public class TeamManagementFacade implements ITeamManagementFacade {
     @Override
     public void editTeamParameters(TeamParameters p){
         tcsFacade.editTeamParameters(p);
+    }
+
+    @Override
+    public List<Team> getIncompleteTeamsToJoin(Long courseid, Student currentStudent) {
+        Course course = getCourse(courseid);
+        List<Team> teamList = new LinkedList<>();
+        boolean toAdd;
+        int maxStudent = course.getTeamParams().getMaxNumStudents();
+        for (Team t : course.getTeams()) {
+            toAdd = true;
+            for (JoinRequest j : t.getJoinRequests()) {
+                if (j.getStudent().equals(currentStudent)) {
+                    toAdd = false;
+                }
+            }       
+            if (t.getStudentList().size() < maxStudent && toAdd) {
+                teamList.add(t);
+            }
+        }
+        return teamList;
+    }
+
+    @Override
+    public boolean joinTeams(List<Team> teams, Student s) {
+        if (tcsFacade.joinTeams( teams, s)) {
+            try {
+                editStudent(s);
+                return true;
+            } catch (Exception e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+          
+    }
+
+    @Override
+    public List<Team> getCourseTeams(Long courseid) {
+        Course course = getCourse(courseid);
+        return course.getTeams();
+    }
+
+    @Override
+    public String getStudentName(Student s, Team t) {
+        if (s.equals(t.getLiaison())) {
+            return "";
+        }   
+        User u = s.getUser();
+        return u.getFirstName() + " " + u.getLastName();
     }
 }

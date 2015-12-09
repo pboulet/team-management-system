@@ -22,7 +22,7 @@
                 </h:panelGrid>
             </p:panel>
 
-            <ui:repeat var="team" value="#{visualizeStudentsTeamsController.course.teams}">
+            <ui:repeat var="team" value="#{visualizeStudentsTeamsController.teams}">
                 <p:panel header="#{team.name}" toggleable="true">
                     <h:panelGrid columns="1">
                         <p:outputLabel value="Team Liaison: #{team.liaison.user.firstName} #{team.liaison.user.lastName}" style="font-weight: bold"/> 

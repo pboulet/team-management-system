@@ -5,8 +5,10 @@
  */
 package tms.tcs.boundaries;
 
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import tms.models.Student;
 import tms.tcs.models.JoinRequest;
 import tms.tcs.models.Team;
 import tms.tcs.models.TeamParameters;
@@ -63,5 +65,26 @@ public class TeamCreationFacade implements ITeamCreationFacade {
     @Override
     public TeamParameters getTeamParameters(Long id){
         return teamParametersFacade.find(id);
+    }
+
+    @Override
+    public boolean joinTeams(List<Team> teams, Student s) {
+        try{
+            for (Team t : teams) {
+                JoinRequest j = new JoinRequest();
+                j.setAccepted(false);
+                j.setStudent(s);
+                j.setTeam(t);
+                createJoinRequest(j);
+                s.getJoinRequests().add(j);
+                t.getJoinRequests().add(j);
+                editTeam(t);
+            }
+
+            return true;
+        
+        } catch(Exception e) {
+            return false;
+        }
     }
 }

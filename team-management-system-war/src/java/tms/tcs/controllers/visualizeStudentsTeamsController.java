@@ -5,14 +5,15 @@
  */
 package tms.tcs.controllers;
 
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import tms.boundaries.ITeamManagementFacade;
 import tms.models.Course;
 import tms.models.Student;
-import tms.models.User;
 import tms.tcs.models.Team;
+import tms.tcs.models.TeamParameters;
 
 /**
  *
@@ -25,13 +26,42 @@ public class VisualizeStudentsTeamsController {
     @EJB(beanName="TeamManagementFacade")
     private ITeamManagementFacade tmsFacade;
     
-    private Long courseid;
+    private List<Team> teams;
+    
     private Course course;
+    
+    private TeamParameters tParams;
+    
+    private Long courseid;
 
+    public TeamParameters gettParams() {
+        return tParams;
+    }
+
+    public void settParams(TeamParameters tParams) {
+        this.tParams = tParams;
+    }    
+    
+    public List<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(List<Team> teams) {
+        this.teams = teams;
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+    
     public Long getCourseid() {
         return courseid;
     }
-
+    
     public void setCourseid(Long courseid) {
         this.courseid = courseid;
     }
@@ -47,15 +77,8 @@ public class VisualizeStudentsTeamsController {
             return;
         }
         course = tmsFacade.getCourse(courseid);
-    }
-
-    public Course getCourse() {
-        return course;
-    }
-
-    public void setCourse(Course course) {
-        this.course = course;
-    }
+        teams = tmsFacade.getCourseTeams(courseid);
+    } 
 /*
     public String validate(Team team) {
         int min = team.getCourse().getTeamParams().getMinNumStudents();
@@ -71,10 +94,6 @@ public class VisualizeStudentsTeamsController {
     }
 */
     public String getStudentName(Student student, Team team) {
-        if (student.equals(team.getLiaison())) {
-            return "";
-        }   
-        User u = student.getUser();
-        return u.getFirstName() + " " + u.getLastName();
+        return tmsFacade.getStudentName(student, team);
     }
 }

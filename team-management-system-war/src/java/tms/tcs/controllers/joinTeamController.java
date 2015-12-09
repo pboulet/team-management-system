@@ -13,7 +13,6 @@ import tms.boundaries.ITeamManagementFacade;
 import tms.models.Course;
 import tms.models.Student;
 import tms.models.User;
-import tms.tcs.models.JoinRequest;
 import tms.tcs.models.Team;
 
 /**
@@ -55,7 +54,7 @@ public class JoinTeamController {
         if (courseid == null) {
             return;
         }
-        course = tmsFacade.getCourse(courseid);
+        selectedTeam = new LinkedList<>();
 
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         Object sessionUser = session.getAttribute("User");
@@ -63,35 +62,12 @@ public class JoinTeamController {
         if (sessionUser != null) {
             currentStudent = ((User) sessionUser).getStudent();
         }
-        teamList = new LinkedList<>();
-        selectedTeam = new LinkedList<>();
-        boolean toAdd;
-        int maxStudent = course.getTeamParams().getMaxNumStudents();
-        for (Team t : course.getTeams()) {
-            toAdd = true;
-            for (JoinRequest j : t.getJoinRequests()) {
-                if (j.getStudent().equals(currentStudent)) {
-                    toAdd = false;
-                }
-            }
-            if (t.getStudentList().size() < maxStudent && toAdd) {
-                teamList.add(t);
-            }
-        }
+        
+        teamList = tmsFacade.getIncompleteTeamsToJoin(courseid, currentStudent);
     }
 
     public void submit(ActionEvent actionEvent) {
-        for (Team t : selectedTeam) {
-            JoinRequest j = new JoinRequest();
-            j.setAccepted(false);
-            j.setStudent(currentStudent);
-            j.setTeam(t);
-            tmsFacade.createJoinRequest(j);
-            currentStudent.getJoinRequests().add(j);
-            t.getJoinRequests().add(j);
-            tmsFacade.editTeam(t);
-        }
-        tmsFacade.editStudent(currentStudent);
+        boolean joinSuccessful = tmsFacade.joinTeams(selectedTeam, currentStudent);
     }
 
     public String getTeamName() {
