@@ -5,13 +5,14 @@ package tms.boundaries;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import java.util.LinkedList;
 import java.util.List;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -32,129 +33,132 @@ import tms.tcs.models.TeamParameters;
  */
 @Stateless
 public class TeamManagementFacade implements ITeamManagementFacade {
-    
+
     @Inject
     private StudentFacade studentFacade;
-    
+
     @Inject
     private InstructorFacade instructorFacade;
-    
+
     @Inject
     private UserFacade userFacade;
 
     @Inject
     private CourseFacade courseFacade;
-    
-    @EJB(beanName="TeamCreationFacade")
+
+    @EJB(beanName = "TeamCreationFacade")
     private ITeamCreationFacade tcsFacade;
-    
+
     @Override
-    public User getUser(Long id){
+    public User getUser(Long id) {
         return userFacade.find(id);
     }
-    
+
     @Override
     public Instructor getInstructor(String id) {
         return instructorFacade.find(id);
     }
-    
+
     @Override
-    public Student getStudent(String id){
+    public Student getStudent(String id) {
         return studentFacade.find(id);
     }
-    
+
     @Override
-    public void editStudent(Student s){
+    public void editStudent(Student s) {
         studentFacade.edit(s);
     }
-    
+
     @Override
-    public void createUser(User u){
+    public void createUser(User u) {
         userFacade.create(u);
-        if(u.isInstructor()) instructorFacade.create(u.getInstructor());
-        if(u.isStudent()) studentFacade.create(u.getStudent());
+        if (u.isInstructor()) {
+            instructorFacade.create(u.getInstructor());
+        }
+        if (u.isStudent()) {
+            studentFacade.create(u.getStudent());
+        }
     }
-    
+
     @Override
-    public User login(String userId, String password){
-        User account=null;
-        if(userId.charAt(0)=='e'){
+    public User login(String userId, String password) {
+        User account = null;
+        if (userId.charAt(0) == 'e') {
             Instructor instructor = instructorFacade.find(userId);
-            if(instructor!=null){
+            if (instructor != null) {
                 account = instructor.getUser();
             }
-        }
-        else{
+        } else {
             Student student = studentFacade.find(userId);
-            if(student!=null){
+            if (student != null) {
                 account = student.getUser();
             }
         }
-         if (account != null) {
-             try {
-                 // check password
-                 byte[] salt = account.getSalt();
-                 String saltString = new String(salt, "UTF-8");
-                 String checkPass = saltString+password;
-                 MessageDigest digest = MessageDigest.getInstance("SHA-256");
-                 byte[] checkPassHash = digest.digest(checkPass.getBytes("UTF-8"));
-                 if (Arrays.equals(checkPassHash, account.getPassword())) {
-                     return account;
-                 }
-             } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
-              Logger.getLogger(TeamManagementFacade.class.getName()).log(Level.SEVERE, null, ex);
-             }
-         }
-         return null;
+        if (account != null) {
+            try {
+                // check password
+                byte[] salt = account.getSalt();
+                String saltString = new String(salt, "UTF-8");
+                String checkPass = saltString + password;
+                MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                byte[] checkPassHash = digest.digest(checkPass.getBytes("UTF-8"));
+                if (Arrays.equals(checkPassHash, account.getPassword())) {
+                    return account;
+                }
+            } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
+                Logger.getLogger(TeamManagementFacade.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return null;
     }
-    
+
     @Override
-    public Team getTeam(Long id){
-       return tcsFacade.getTeam(id);
+    public Team getTeam(Long id) {
+        return tcsFacade.getTeam(id);
     }
-    
+
     @Override
-    public void editTeam(Team t){
+    public void editTeam(Team t) {
         tcsFacade.editTeam(t);
     }
-    
+
     @Override
-    public void editJoinRequest(JoinRequest j){
+    public void editJoinRequest(JoinRequest j) {
         tcsFacade.editJoinRequest(j);
     }
-    
+
     @Override
-    public Course getCourse(Long id){
+    public Course getCourse(Long id) {
         return courseFacade.find(id);
     }
-    
+
     @Override
-    public void editCourse(Course c){
+    public void editCourse(Course c) {
         courseFacade.edit(c);
     }
-    
+
     @Override
-    public void createTeam(Team t){
+    public void createTeam(Team t) {
         tcsFacade.createTeam(t);
     }
-    
+
     @Override
-    public void createJoinRequest(JoinRequest j){
+    public void createJoinRequest(JoinRequest j) {
         tcsFacade.createJoinRequest(j);
     }
-    
+
     @Override
-    public TeamParameters getTeamParameters(Long id){
+    public TeamParameters getTeamParameters(Long id) {
         return tcsFacade.getTeamParameters(id);
     }
-    
+
     @Override
-    public void createTeamParameters(TeamParameters p){
+    public void createTeamParameters(TeamParameters p) {
         tcsFacade.createTeamParameters(p);
     }
-    
+
     @Override
-    public void editTeamParameters(TeamParameters p){
+    public void editTeamParameters(TeamParameters p) {
         tcsFacade.editTeamParameters(p);
     }
 
@@ -170,7 +174,7 @@ public class TeamManagementFacade implements ITeamManagementFacade {
                 if (j.getStudent().equals(currentStudent)) {
                     toAdd = false;
                 }
-            }       
+            }
             if (t.getStudentList().size() < maxStudent && toAdd) {
                 teamList.add(t);
             }
@@ -180,7 +184,7 @@ public class TeamManagementFacade implements ITeamManagementFacade {
 
     @Override
     public boolean joinTeams(List<Team> teams, Student s) {
-        if (tcsFacade.joinTeams( teams, s)) {
+        if (tcsFacade.joinTeams(teams, s)) {
             try {
                 editStudent(s);
                 return true;
@@ -190,7 +194,7 @@ public class TeamManagementFacade implements ITeamManagementFacade {
         } else {
             return false;
         }
-          
+
     }
 
     @Override
@@ -203,8 +207,33 @@ public class TeamManagementFacade implements ITeamManagementFacade {
     public String getStudentName(Student s, Team t) {
         if (s.equals(t.getLiaison())) {
             return "";
-        }   
+        }
         User u = s.getUser();
         return u.getFirstName() + " " + u.getLastName();
     }
+
+    @Override
+    public boolean setupParameters(TeamParameters teamPara, Date deadline, Integer maxStudent, Integer minStudent, Course course) {
+        try {
+            boolean newTeamPara = (teamPara == null);
+            if (newTeamPara) {
+                teamPara = new TeamParameters();
+            }
+            teamPara.setCreationDeadline(new Timestamp(deadline.getTime()));
+            teamPara.setMaxNumStudents(maxStudent);
+            teamPara.setMinNumStudents(minStudent);
+            if (newTeamPara) {
+                createTeamParameters(teamPara);
+                course.setTeamParams(teamPara);
+                editCourse(course);
+            } else {
+                editTeamParameters(teamPara);
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
+
+

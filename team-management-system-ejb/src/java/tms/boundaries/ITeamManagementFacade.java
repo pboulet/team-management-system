@@ -1,5 +1,6 @@
 package tms.boundaries;
 
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 import tms.models.Course;
@@ -61,4 +62,10 @@ public interface ITeamManagementFacade {
     String getStudentName (Student s, Team t);
     
     User login(String userId, String password);
+    
+    boolean setupParameters(TeamParameters teamParaInfo, Course course);
+    
+    boolean modifyParameters(TeamParameters teamParaInfo);
+
+    public boolean setupParameters(TeamParameters teamPara, Date deadline, Integer maxStudent, Integer minStudent, Course course);
 }
