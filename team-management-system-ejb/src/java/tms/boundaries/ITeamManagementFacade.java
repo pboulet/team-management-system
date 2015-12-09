@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tms.boundaries;
 
 import javax.ejb.Local;
@@ -15,8 +10,13 @@ import tms.tcs.models.Team;
 import tms.tcs.models.TeamParameters;
 
 /**
- *
- * @author User
+ * Team Management System Main Facade Interface
+ * 
+ * Performs CRUD operations on Instructor, Course,
+ * User, Student and all the other operations handled
+ * by its sub systems.
+ * 
+ * @author Patrice Boulet
  */
 @Local
 public interface ITeamManagementFacade {

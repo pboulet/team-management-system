@@ -23,9 +23,9 @@ import tms.models.Instructor;
 import tms.models.Student;
 import tms.models.User;
 /**
- *
- * @author Nick
  * Controller to register a user
+ * 
+ * @author Nick, Patrice Boulet
  */
 @ManagedBean
 @ViewScoped

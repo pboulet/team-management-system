@@ -16,7 +16,7 @@ import tms.tcs.models.Team;
 
 /**
  *
- * @author maxime
+ * @author Maxime Bélair, Patrice Boulet
  */
 @ManagedBean(name = "visualizeStudentsTeamsController")
 @RequestScoped

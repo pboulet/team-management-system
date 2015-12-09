@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tms.tcs.controllers;
 
 import java.sql.Timestamp;
@@ -24,6 +19,11 @@ import tms.models.Student;
 import tms.models.User;
 import tms.tcs.models.Team;
 
+/**
+ * Create Team controller.
+ * 
+ * @author Maxime, Sofiane Batou, Patrice Boulet
+ */
 @ManagedBean(name = "createTeamController")
 @ViewScoped
 public class CreateTeamController {

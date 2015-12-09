@@ -19,8 +19,9 @@ import tms.models.User;
 
 /**
  *
- * @author Nick
  * Controller to take care of the login page and the logout function
+ * 
+ * @author Nick, Patrice Boulet
  */
 @ManagedBean
 @RequestScoped

@@ -16,6 +16,11 @@ import tms.models.User;
 import tms.tcs.models.JoinRequest;
 import tms.tcs.models.Team;
 
+/**
+ * Join Team Controller
+ * 
+ * @author Maxime Bélair, Patrice Boulet
+ */
 @ManagedBean(name = "joinTeamController")
 @ViewScoped
 public class JoinTeamController {

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tms.tcs.boundaries;
 
 import javax.ejb.Local;
@@ -12,6 +7,10 @@ import tms.tcs.models.TeamParameters;
 
 /**
  *
+ * Team Creation Sub-System Facade Interface
+ * 
+ * Performs CRUD operations on JoinRequests, Teams and TeamParameters.
+ * 
  * @author User
  */
 @Local

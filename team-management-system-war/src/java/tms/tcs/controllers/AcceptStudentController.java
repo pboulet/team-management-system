@@ -22,7 +22,7 @@ import tms.tcs.models.Team;
 
 /**
  *
- * @author maxime
+ * @author maxime, Patrice Boulet
  */
 @ManagedBean(name = "acceptStudentController")
 @ViewScoped
