@@ -5,9 +5,11 @@
  */
 package tms.tcs.boundaries;
 
+import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import tms.models.Course;
 import tms.models.Student;
 import tms.tcs.models.JoinRequest;
 import tms.tcs.models.Team;
@@ -86,5 +88,24 @@ public class TeamCreationFacade implements ITeamCreationFacade {
         } catch(Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public List<Team> getIncompleteTeamsToJoin(Course c, Student s) {
+        List<Team> teamList = new LinkedList<>();
+        boolean toAdd;
+        int maxStudent = c.getTeamParams().getMaxNumStudents();
+        for (Team t : c.getTeams()) {
+            toAdd = true;
+            for (JoinRequest j : t.getJoinRequests()) {
+                if (j.getStudent().equals(s)) {
+                    toAdd = false;
+                }
+            }       
+            if (t.getStudentList().size() < maxStudent && toAdd) {
+                teamList.add(t);
+            }
+        }
+        return teamList;
     }
 }

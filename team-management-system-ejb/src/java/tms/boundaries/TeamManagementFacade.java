@@ -161,26 +161,12 @@ public class TeamManagementFacade implements ITeamManagementFacade {
     @Override
     public List<Team> getIncompleteTeamsToJoin(Long courseid, Student currentStudent) {
         Course course = getCourse(courseid);
-        List<Team> teamList = new LinkedList<>();
-        boolean toAdd;
-        int maxStudent = course.getTeamParams().getMaxNumStudents();
-        for (Team t : course.getTeams()) {
-            toAdd = true;
-            for (JoinRequest j : t.getJoinRequests()) {
-                if (j.getStudent().equals(currentStudent)) {
-                    toAdd = false;
-                }
-            }       
-            if (t.getStudentList().size() < maxStudent && toAdd) {
-                teamList.add(t);
-            }
-        }
-        return teamList;
+        return tcsFacade.getIncompleteTeamsToJoin(course, currentStudent);
     }
 
     @Override
     public boolean joinTeams(List<Team> teams, Student s) {
-        if (tcsFacade.joinTeams( teams, s)) {
+        if (tcsFacade.joinTeams(teams, s)) {
             try {
                 editStudent(s);
                 return true;
