@@ -28,13 +28,12 @@ import tms.tcs.models.Team;
 @ViewScoped
 public class AcceptStudentController {
 
-    @EJB(beanName="TeamManagementFacade")
+    @EJB(beanName = "TeamManagementFacade")
     private ITeamManagementFacade tmsFacade;
 
     private Long teamid;
     private Team team;
     private DualListModel<String> studentList;
-    private List<JoinRequest> joinRequestList;
     private int maxStudents;
     private boolean submitDisabled = false;
 
@@ -49,45 +48,14 @@ public class AcceptStudentController {
         if (team == null) {
             return;
         }
-        joinRequestList = team.getJoinRequests();
-        LinkedList<String> studentSource = new LinkedList<>();
-        LinkedList<String> studentTarget = new LinkedList<>();
-        //get all join request not already accepted and add the student 
-        //to the student list
-        boolean toAdd = true;
-        for (JoinRequest j : joinRequestList) {
-            if (!j.getAccepted()) {
-                Student s = j.getStudent();
-                //get only the students that are not already in a team for this class
-                for (Team t : s.getTeamList()) {
-                    if (t.getCourse().equals(team.getCourse())) {
-                        toAdd = false;
-                    }
-                }
-                if (toAdd) {
-                    studentSource.add(s.getId() + " : " + s.getUser().getFirstName() + " " + s.getUser().getLastName());
-                }
-            }
-        }
-        studentList = new DualListModel<>(studentSource, studentTarget);
-        maxStudents = team.getCourse().getTeamParams().getMaxNumStudents() - team.getStudentList().size();
+        studentList = new DualListModel<>(tmsFacade.getStudentsFromJoinRequest(team), new LinkedList<String>());
+        maxStudents = tmsFacade.getMaxStudent(team);
+        maxStudents -= team.getStudentList().size();
     }
 
     public void submit(ActionEvent actionEvent) {
-        List<String> studentTarget = studentList.getTarget();
-        for (String s : studentTarget) {
-            Student student = tmsFacade.getStudent(s.split(" ")[0]);
-            team.getStudentList().add(student);
-            student.getTeamList().add(team);
-            tmsFacade.editStudent(student);
-            for (JoinRequest j : joinRequestList) {
-                if (j.getStudent().equals(student)) {
-                    j.setAccepted(true);
-                    tmsFacade.editJoinRequest(j);
-                }
-            }
-        }
-        tmsFacade.editTeam(team);
+        tmsFacade.acceptStudent(studentList.getTarget(), team);
+
     }
 
     public void onTransfer(TransferEvent event) {
@@ -118,14 +86,6 @@ public class AcceptStudentController {
 
     public void setTeam(Team team) {
         this.team = team;
-    }
-
-    public List<JoinRequest> getJoinRequestList() {
-        return joinRequestList;
-    }
-
-    public void setJoinRequestList(List<JoinRequest> joinRequestList) {
-        this.joinRequestList = joinRequestList;
     }
 
     public int getMaxStudents() {

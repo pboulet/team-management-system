@@ -27,7 +27,7 @@ import tms.tcs.models.TeamParameters;
 @ViewScoped
 public class SetupParametersController {
 
-    @EJB(beanName="TeamManagementFacade")
+    @EJB(beanName = "TeamManagementFacade")
     private ITeamManagementFacade tmsFacade;
 
     private TeamParameters teamParameters;
@@ -53,9 +53,10 @@ public class SetupParametersController {
         if (course == null) {
             return;
         }
+        //to display on the page
         courseSection = course.getCourseSection();
 
-        // initialize fields with model properties
+        // initialize fields with model properties, this is for use case Modify Team Parameters
         if (course.hasTeamParams() && teamParameters == null) {
             teamParameters = course.getTeamParams();
             minStudent = teamParameters.getMinNumStudents();
@@ -132,24 +133,14 @@ public class SetupParametersController {
     }
 
     public String submit() {
-         if (maxStudent < minStudent) {
+        if (maxStudent < minStudent) {
             FacesContext.getCurrentInstance().addMessage("form:maxStudent", new FacesMessage("Maximum students in team must be higher than minimum students"));
             return null;
-        }
-        boolean newTeamPara = (teamParameters == null);
-        if (newTeamPara) {
-            teamParameters = new TeamParameters();
-        }
-        teamParameters.setCreationDeadline(new Timestamp(deadline.getTime()));
-        teamParameters.setMaxNumStudents(maxStudent);
-        teamParameters.setMinNumStudents(minStudent);
-        course.setTeamParams(teamParameters);
-        if (newTeamPara) {
-            tmsFacade.createTeamParameters(teamParameters);
+        }       
+        if (tmsFacade.setupParameters(teamParameters, deadline, maxStudent, minStudent, course)) {
+            return "/faces/protected/home?faces-redirect=true";
         } else {
-            tmsFacade.editTeamParameters(teamParameters);
+            return null;
         }
-        tmsFacade.editCourse(course);
-        return "/faces/protected/home?faces-redirect=true";
     }
 }
