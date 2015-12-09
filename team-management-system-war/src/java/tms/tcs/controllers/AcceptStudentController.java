@@ -15,11 +15,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
-import tms.boundaries.StudentFacade;
+import tms.boundaries.ITeamManagementFacade;
 import tms.models.Student;
-import tms.models.User;
-import tms.tcs.boundaries.JoinRequestFacade;
-import tms.tcs.boundaries.TeamFacade;
 import tms.tcs.models.JoinRequest;
 import tms.tcs.models.Team;
 
@@ -31,13 +28,8 @@ import tms.tcs.models.Team;
 @ViewScoped
 public class AcceptStudentController {
 
-    @EJB
-    private StudentFacade studentFacade;
-
-    @EJB
-    private TeamFacade teamFacade;
-    @EJB
-    private JoinRequestFacade joinRequestFacade;
+    @EJB(beanName="TeamManagementFacade")
+    private ITeamManagementFacade tmsFacade;
 
     private Long teamid;
     private Team team;
@@ -53,7 +45,7 @@ public class AcceptStudentController {
         if (teamid == null) {
             return;
         }
-        team = teamFacade.find(teamid);
+        team = tmsFacade.getTeam(teamid);
         if (team == null) {
             return;
         }
@@ -84,18 +76,18 @@ public class AcceptStudentController {
     public void submit(ActionEvent actionEvent) {
         List<String> studentTarget = studentList.getTarget();
         for (String s : studentTarget) {
-            Student student = studentFacade.find(s.split(" ")[0]);
+            Student student = tmsFacade.getStudent(s.split(" ")[0]);
             team.getStudentList().add(student);
             student.getTeamList().add(team);
-            studentFacade.edit(student);
+            tmsFacade.editStudent(student);
             for (JoinRequest j : joinRequestList) {
                 if (j.getStudent().equals(student)) {
                     j.setAccepted(true);
-                    joinRequestFacade.edit(j);
+                    tmsFacade.editJoinRequest(j);
                 }
             }
         }
-        teamFacade.edit(team);
+        tmsFacade.editTeam(team);
     }
 
     public void onTransfer(TransferEvent event) {

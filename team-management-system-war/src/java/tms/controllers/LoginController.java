@@ -1,6 +1,6 @@
 package tms.controllers;
 
-import java.io.IOException;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -12,9 +12,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import tms.boundaries.InstructorFacade;
-import tms.boundaries.StudentFacade;
-import tms.boundaries.UserFacade;
+import tms.boundaries.ITeamManagementFacade;
 import tms.models.Instructor;
 import tms.models.Student;
 import tms.models.User;
@@ -30,10 +28,9 @@ public class LoginController {
     private String userId;
     private String password;
     private String status;
-    @EJB
-    private StudentFacade studentFacade;
-    @EJB
-    private InstructorFacade instructorFacade;
+    
+    @EJB(beanName="TeamManagementFacade")
+    private ITeamManagementFacade tmsFacade;
     /**
      * Creates a new instance of LoginBean
      */
@@ -85,13 +82,13 @@ public class LoginController {
     public String login() {
         User account=null;
         if(userId.charAt(0)=='e'){
-            Instructor instructor = instructorFacade.find(userId);
+            Instructor instructor = tmsFacade.getInstructor(userId);
             if(instructor!=null){
                 account = instructor.getUser();
             }
         }
         else{
-            Student student = studentFacade.find(userId);
+            Student student = tmsFacade.getStudent(userId);
             if(student!=null){
                 account = student.getUser();
             }

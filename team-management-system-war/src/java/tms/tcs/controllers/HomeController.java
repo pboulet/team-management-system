@@ -15,7 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.servlet.http.HttpSession;
 import org.primefaces.event.TabChangeEvent;
-import tms.boundaries.UserFacade;
+import tms.boundaries.ITeamManagementFacade;
 import tms.models.Course;
 import tms.models.User;
 import tms.tcs.boundaries.HomeView;
@@ -30,8 +30,8 @@ import tms.tcs.models.Team;
 @ViewScoped
 public class HomeController implements Serializable {
     
-    @EJB
-    private UserFacade userFacade;
+    @EJB(beanName="TeamManagementFacade")
+    private ITeamManagementFacade tmsFacade;
     
     @ManagedProperty("#{homeView}")
     private HomeView homeView;
@@ -229,7 +229,7 @@ public class HomeController implements Serializable {
         if(sessionUser != null) 
             user=(User)sessionUser; 
         else
-            user = userFacade.find((long) 1); // default workaround in case auth fails 
+            user = tmsFacade.getUser((long) 1); // default workaround in case auth fails 
         
         if (user.isStudent()) 
             studentCourseList = user

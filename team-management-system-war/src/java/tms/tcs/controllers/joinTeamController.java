@@ -9,13 +9,10 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
-import tms.boundaries.CourseFacade;
-import tms.boundaries.StudentFacade;
+import tms.boundaries.ITeamManagementFacade;
 import tms.models.Course;
 import tms.models.Student;
 import tms.models.User;
-import tms.tcs.boundaries.JoinRequestFacade;
-import tms.tcs.boundaries.TeamFacade;
 import tms.tcs.models.JoinRequest;
 import tms.tcs.models.Team;
 
@@ -23,14 +20,8 @@ import tms.tcs.models.Team;
 @ViewScoped
 public class JoinTeamController {
 
-    @EJB
-    private JoinRequestFacade joinRequestFacade;
-    @EJB
-    private StudentFacade studentFacade;
-    @EJB
-    private CourseFacade courseFacade;
-    @EJB
-    private TeamFacade teamFacade;
+    @EJB(beanName="TeamManagementFacade")
+    private ITeamManagementFacade tmsFacade;
 
     private String teamName;
     private List<Team> teamList;
@@ -59,7 +50,7 @@ public class JoinTeamController {
         if (courseid == null) {
             return;
         }
-        course = courseFacade.find(courseid);
+        course = tmsFacade.getCourse(courseid);
 
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         Object sessionUser = session.getAttribute("User");
@@ -67,8 +58,8 @@ public class JoinTeamController {
         if (sessionUser != null) {
             currentStudent = ((User) sessionUser).getStudent();
         }
-        teamList = new LinkedList<Team>();
-        selectedTeam = new LinkedList<Team>();
+        teamList = new LinkedList<>();
+        selectedTeam = new LinkedList<>();
         boolean toAdd;
         int maxStudent = course.getTeamParams().getMaxNumStudents();
         for (Team t : course.getTeams()) {
@@ -90,12 +81,12 @@ public class JoinTeamController {
             j.setAccepted(false);
             j.setStudent(currentStudent);
             j.setTeam(t);
-            joinRequestFacade.create(j);
+            tmsFacade.createJoinRequest(j);
             currentStudent.getJoinRequests().add(j);
             t.getJoinRequests().add(j);
-            teamFacade.edit(t);
+            tmsFacade.editTeam(t);
         }
-        studentFacade.edit(currentStudent);
+        tmsFacade.editStudent(currentStudent);
     }
 
     public String getTeamName() {

@@ -13,12 +13,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.validator.ValidatorException;
-import org.primefaces.context.RequestContext;
-import tms.boundaries.CourseFacade;
+import tms.boundaries.ITeamManagementFacade;
 import tms.models.Course;
-import tms.tcs.boundaries.TeamParametersFacade;
 import tms.tcs.models.TeamParameters;
 
 /**
@@ -30,10 +27,8 @@ import tms.tcs.models.TeamParameters;
 @ViewScoped
 public class SetupParametersController {
 
-    @EJB
-    private CourseFacade courseFacade;
-    @EJB
-    private TeamParametersFacade teamParametersFacade;
+    @EJB(beanName="TeamManagementFacade")
+    private ITeamManagementFacade tmsFacade;
 
     private TeamParameters teamParameters;
     private Course course;
@@ -54,7 +49,7 @@ public class SetupParametersController {
             return;
         }
         //get the team from courseId
-        course = courseFacade.find(courseid);
+        course = tmsFacade.getCourse(courseid);
         if (course == null) {
             return;
         }
@@ -150,11 +145,11 @@ public class SetupParametersController {
         teamParameters.setMinNumStudents(minStudent);
         course.setTeamParams(teamParameters);
         if (newTeamPara) {
-            teamParametersFacade.create(teamParameters);
+            tmsFacade.createTeamParameters(teamParameters);
         } else {
-            teamParametersFacade.edit(teamParameters);
+            tmsFacade.editTeamParameters(teamParameters);
         }
-        courseFacade.edit(course);
+        tmsFacade.editCourse(course);
         return "/faces/protected/home?faces-redirect=true";
     }
 }

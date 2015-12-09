@@ -18,9 +18,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import tms.boundaries.InstructorFacade;
-import tms.boundaries.StudentFacade;
-import tms.boundaries.UserFacade;
+import tms.boundaries.ITeamManagementFacade;
 import tms.models.Instructor;
 import tms.models.Student;
 import tms.models.User;
@@ -33,12 +31,8 @@ import tms.models.User;
 @ViewScoped
 public class RegisterController implements Serializable {
 
-    @EJB
-    private UserFacade userFacade;
-    @EJB
-    private StudentFacade studentFacade;
-    @EJB
-    private InstructorFacade instructorFacade;
+    @EJB(beanName="TeamManagementFacade")
+    private ITeamManagementFacade tmsFacade;
     
     private String password;
     private String login;
@@ -168,14 +162,14 @@ public class RegisterController implements Serializable {
                 s.setId(studentId);
                 s.setProgramOfStudy(programOfStudy);
                 account.setStudent(s);
-                studentFacade.create(s);
+                tmsFacade.createStudent(s);
                 
             }
             if(instructor){
                 Instructor i = new Instructor();
                 i.setId(instructorId);
                 account.setInstructor(i);
-                instructorFacade.create(i);
+                tmsFacade.createInstructor(i);
             }
             if(!(student||instructor)){
                 status="must be an instructor or a student";
@@ -192,7 +186,7 @@ public class RegisterController implements Serializable {
             byte[] passhash = digest.digest(saltedPass.getBytes("UTF-8"));
             account.setSalt(salt);
             account.setPassword(passhash);
-            userFacade.create(account);
+            tmsFacade.createUser(account);
             status="New Account Created Fine";
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
             session.setAttribute("User", account);

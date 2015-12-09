@@ -8,7 +8,7 @@ package tms.tcs.controllers;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import tms.boundaries.CourseFacade;
+import tms.boundaries.ITeamManagementFacade;
 import tms.models.Course;
 import tms.models.Student;
 import tms.models.User;
@@ -22,8 +22,9 @@ import tms.tcs.models.Team;
 @RequestScoped
 public class VisualizeStudentsTeamsController {
 
-    @EJB
-    private CourseFacade courseFacade;
+    @EJB(beanName="TeamManagementFacade")
+    private ITeamManagementFacade tmsFacade;
+    
     private Long courseid;
     private Course course;
 
@@ -45,7 +46,7 @@ public class VisualizeStudentsTeamsController {
         if (courseid == null) {
             return;
         }
-        course = courseFacade.find(courseid);
+        course = tmsFacade.getCourse(courseid);
     }
 
     public Course getCourse() {
