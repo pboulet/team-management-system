@@ -13,3 +13,9 @@ nb-configuration.xml
 # Package Files #
 *.war
 *.ear
+team-management-system-war/src/java/tms/tcs/controllers/JoinTeamController.java
+team-management-system-war/src/java/tms/tcs/controllers/JoinTeamController.java
+*.java
+*.java
+*.java
+*.java
