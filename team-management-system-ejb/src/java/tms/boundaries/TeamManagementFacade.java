@@ -55,17 +55,11 @@ public class TeamManagementFacade implements ITeamManagementFacade {
     }
 
     @Override
-    public Instructor getInstructor(String id) {
-        return instructorFacade.find(id);
-    }
-
-    @Override
     public Student getStudent(String id) {
         return studentFacade.find(id);
     }
 
-    @Override
-    public void editStudent(Student s) {
+    private void editStudent(Student s) {
         studentFacade.edit(s);
     }
 
@@ -117,13 +111,11 @@ public class TeamManagementFacade implements ITeamManagementFacade {
         return tcsFacade.getTeam(id);
     }
 
-    @Override
-    public void editTeam(Team t) {
+    private void editTeam(Team t) {
         tcsFacade.editTeam(t);
     }
 
-    @Override
-    public void editJoinRequest(JoinRequest j) {
+    private void editJoinRequest(JoinRequest j) {
         tcsFacade.editJoinRequest(j);
     }
 
@@ -131,9 +123,8 @@ public class TeamManagementFacade implements ITeamManagementFacade {
     public Course getCourse(Long id) {
         return courseFacade.find(id);
     }
-
-    @Override
-    public void editCourse(Course c) {
+    
+    private void editCourse(Course c) {
         courseFacade.edit(c);
     }
 
@@ -148,18 +139,8 @@ public class TeamManagementFacade implements ITeamManagementFacade {
     }
 
     @Override
-    public TeamParameters getTeamParameters(Long id) {
-        return tcsFacade.getTeamParameters(id);
-    }
-
-    @Override
     public void createTeamParameters(TeamParameters p) {
         tcsFacade.createTeamParameters(p);
-    }
-
-    @Override
-    public void editTeamParameters(TeamParameters p) {
-        tcsFacade.editTeamParameters(p);
     }
 
     @Override
@@ -180,7 +161,6 @@ public class TeamManagementFacade implements ITeamManagementFacade {
         } else {
             return false;
         }
-
     }
 
     @Override
@@ -200,25 +180,9 @@ public class TeamManagementFacade implements ITeamManagementFacade {
 
     @Override
     public boolean setupParameters(TeamParameters teamPara, Date deadline, Integer maxStudent, Integer minStudent, Course course) {
-        try {
-            boolean newTeamPara = (teamPara == null);
-            if (newTeamPara) {
-                teamPara = new TeamParameters();
-            }
-            teamPara.setCreationDeadline(new Timestamp(deadline.getTime()));
-            teamPara.setMaxNumStudents(maxStudent);
-            teamPara.setMinNumStudents(minStudent);
-            if (newTeamPara) {
-                createTeamParameters(teamPara);
-                course.setTeamParams(teamPara);
-                editCourse(course);
-            } else {
-                editTeamParameters(teamPara);
-            }
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        Course modifiedCourse = tcsFacade.setupTeamParameters(teamPara, deadline, maxStudent, minStudent, course);
+        editCourse(modifiedCourse);
+        return true;
     }
 
     @Override

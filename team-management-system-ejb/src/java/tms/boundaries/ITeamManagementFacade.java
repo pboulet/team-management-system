@@ -30,25 +30,11 @@ public interface ITeamManagementFacade {
 
     void createUser(User u);
 
-    void editCourse(Course c);
-
-    void editJoinRequest(JoinRequest j);
-
-    void editStudent(Student s);
-
-    void editTeam(Team t);
-
-    void editTeamParameters(TeamParameters p);
-
     Course getCourse(Long id);
-
-    Instructor getInstructor(String id);
 
     Student getStudent(String id);
 
     Team getTeam(Long id);
-
-    TeamParameters getTeamParameters(Long id);
 
     User getUser(Long id);
 

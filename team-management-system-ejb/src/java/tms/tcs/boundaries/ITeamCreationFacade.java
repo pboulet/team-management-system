@@ -1,10 +1,10 @@
 package tms.tcs.boundaries;
 
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 import tms.models.Course;
 import tms.models.Student;
-import tms.models.User;
 import tms.tcs.models.JoinRequest;
 import tms.tcs.models.Team;
 import tms.tcs.models.TeamParameters;
@@ -31,6 +31,8 @@ public interface ITeamCreationFacade {
     void editTeam(Team t);
 
     void editTeamParameters(TeamParameters p);
+    
+    Course setupTeamParameters(TeamParameters teamPara, Date deadline, Integer maxStudent, Integer minStudent, Course course); 
 
     Team getTeam(Long id);
 
