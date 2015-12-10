@@ -99,10 +99,12 @@ public class TeamCreationFacade implements ITeamCreationFacade {
         team.setCourse(course);
         team.setCreationDate(new Timestamp(new Date().getTime()));
         team.setLiaison(currentStudent);
-        team.setStudentList(new LinkedList<Student>());
+        team.setStudentList(new LinkedList<>());
         createTeam(team);
         return team;
     }
+    
+    @Override
     public List<Team> getIncompleteTeamsToJoin(Course c, Student s) {
         List<Team> teamList = new LinkedList<>();
         boolean toAdd;
