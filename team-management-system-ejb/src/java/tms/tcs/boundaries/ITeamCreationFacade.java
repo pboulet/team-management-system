@@ -39,6 +39,8 @@ public interface ITeamCreationFacade {
     TeamParameters getTeamParameters(Long id);
     
     boolean joinTeams(List<Team> teams, Student s);
+
+    Team createTeam(String teamName, Course course, Student currentStudent, List<String> selectedStudentList);
     
     List<Team> getIncompleteTeamsToJoin(Course c, Student s);
 }

@@ -257,24 +257,17 @@ public class TeamManagementFacade implements ITeamManagementFacade {
 
     @Override
     public void createTeam(String teamName, Course course, Student currentStudent, List<String> selectedStudentList) {
-        Team team = new Team();
-        team.setName(teamName);
-        team.setCourse(course);
-        team.setCreationDate(new Timestamp(new Date().getTime()));
-        team.setLiaison(currentStudent);
-        List<Student> teamList = new LinkedList<>();
-        teamList.add(currentStudent);
-        currentStudent.getTeamList().add(team);
+        Team team = tcsFacade.createTeam(teamName, course, currentStudent, selectedStudentList);
         for (String s : selectedStudentList) {
-            Student t = getStudent(s.split(" ")[0]);
-            teamList.add(t);
-            t.getTeamList().add(team);
+            Student st = getStudent(s.split(" ")[0]);
+            team.getStudentList().add(st);
+            st.getTeamList().add(team);
+            editStudent(st);
         }
-        team.setStudentList(teamList);
-        createTeam(team);
+        currentStudent.getTeamList().add(team);
+        team.getStudentList().add(currentStudent);
+        editStudent(currentStudent);
         editCourse(course);
-        for (Student s : teamList) {
-            editStudent(s);
-        }
+        editTeam(team);
     }
 }
