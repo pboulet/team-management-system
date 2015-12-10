@@ -106,15 +106,13 @@ public class TeamCreationFacade implements ITeamCreationFacade {
     
     @Override
     public List<Team> getIncompleteTeamsToJoin(Course c, Student s) {
-        List<Team> teamList = new LinkedList<>();
         boolean toAdd;
         int maxStudent = c.getTeamParams().getMaxNumStudents();
+        List<Team> teamList = new LinkedList<>();
         for (Team t : c.getTeams()) {
-            toAdd = true;
+            toAdd = false;
             for (JoinRequest j : t.getJoinRequests()) {
-                if (j.getStudent().equals(s)) {
-                    toAdd = false;
-                }
+                toAdd = !j.getStudent().equals(s);
             }       
             if (t.getStudentList().size() < maxStudent && toAdd) {
                 teamList.add(t);
