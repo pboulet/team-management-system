@@ -72,24 +72,19 @@ public class TeamCreationFacade implements ITeamCreationFacade {
     }
 
     @Override
-    public boolean joinTeams(List<Team> teams, Student s) {
-        try {
-            for (Team t : teams) {
-                JoinRequest j = new JoinRequest();
-                j.setAccepted(false);
-                j.setStudent(s);
-                j.setTeam(t);
-                createJoinRequest(j);
-                s.getJoinRequests().add(j);
-                t.getJoinRequests().add(j);
-                editTeam(t);
-            }
-
-            return true;
-
-        } catch (Exception e) {
-            return false;
+    public List<JoinRequest> joinTeams(List<Team> teams, Student s) {
+        List<JoinRequest> requests = new LinkedList<>();
+        for (Team t : teams) {
+            JoinRequest j = new JoinRequest();
+            j.setAccepted(false);
+            j.setStudent(s);
+            j.setTeam(t);
+            createJoinRequest(j);
+            t.getJoinRequests().add(j);
+            editTeam(t);
+            requests.add(j);
         }
+        return requests;
     }
 
     @Override

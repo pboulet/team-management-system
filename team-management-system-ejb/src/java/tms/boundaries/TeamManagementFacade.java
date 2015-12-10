@@ -151,8 +151,12 @@ public class TeamManagementFacade implements ITeamManagementFacade {
 
     @Override
     public boolean joinTeams(List<Team> teams, Student s) {
-        if (tcsFacade.joinTeams(teams, s)) {
+        List<JoinRequest> requests = tcsFacade.joinTeams(teams, s);
+        if (!requests.isEmpty()) {
             try {
+                for(JoinRequest j: requests){
+                    s.getJoinRequests().add(j);
+                }
                 editStudent(s);
                 return true;
             } catch (Exception e) {
