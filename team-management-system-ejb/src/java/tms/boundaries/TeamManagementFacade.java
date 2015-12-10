@@ -168,12 +168,6 @@ public class TeamManagementFacade implements ITeamManagementFacade {
     }
 
     @Override
-    public List<Team> getCourseTeams(Long courseid) {
-        Course course = getCourse(courseid);
-        return course.getTeams();
-    }
-
-    @Override
     public String getStudentName(Student s, Team t) {
         if (s.equals(t.getLiaison())) {
             return "";

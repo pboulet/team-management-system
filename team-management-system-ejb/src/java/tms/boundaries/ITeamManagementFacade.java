@@ -40,8 +40,6 @@ public interface ITeamManagementFacade {
 
     List<Team> getIncompleteTeamsToJoin(Long courseid, Student s);
 
-    List<Team> getCourseTeams(Long courseid);
-
     boolean joinTeams(List<Team> teams, Student s);
 
     String getStudentName(Student s, Team t);

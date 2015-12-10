@@ -77,7 +77,7 @@ public class VisualizeStudentsTeamsController {
             return;
         }
         course = tmsFacade.getCourse(courseid);
-        teams = tmsFacade.getCourseTeams(courseid);
+        teams = course.getTeams();
     } 
 /*
     public String validate(Team team) {
