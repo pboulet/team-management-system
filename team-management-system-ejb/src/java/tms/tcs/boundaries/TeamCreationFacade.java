@@ -5,6 +5,8 @@
  */
 package tms.tcs.boundaries;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -107,5 +109,24 @@ public class TeamCreationFacade implements ITeamCreationFacade {
             }
         }
         return teamList;
+    }
+
+    @Override
+    @SuppressWarnings("null")
+    public Course setupTeamParameters(TeamParameters teamPara, Date deadline, Integer maxStudent, Integer minStudent, Course course) {
+        boolean newTeamPara = (teamPara == null);
+        if (newTeamPara) {
+            teamPara = new TeamParameters();
+        }
+        teamPara.setCreationDeadline(new Timestamp(deadline.getTime()));
+        teamPara.setMaxNumStudents(maxStudent);
+        teamPara.setMinNumStudents(minStudent);
+        if (newTeamPara) {
+            createTeamParameters(teamPara);
+            course.setTeamParams(teamPara);
+        } else {
+            editTeamParameters(teamPara);
+        }
+        return course;
     }
 }
